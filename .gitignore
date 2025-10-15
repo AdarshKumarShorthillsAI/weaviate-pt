@@ -32,8 +32,6 @@ config.example.py
 # OS
 .DS_Store
 Thumbs.db
-verify_setup.py
-test_pipeline.py
 TESTING_GUIDE.md
 SYNC_VS_ASYNC_ANALYSIS.md
 setup_github.sh
@@ -49,3 +47,6 @@ QUICKSTART.md
 activate.sh
 FINAL_CONFIG_SUMMARY.md
 REMOTE_WEAVIATE_SETUP.md
+CLONE_QUICKSTART.txt
+GITHUB_AUTHENTICATION.md
+SERVER_CLONE_GUIDE.txt
