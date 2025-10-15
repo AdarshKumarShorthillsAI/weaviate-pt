@@ -1,0 +1,19 @@
+# Core dependencies
+pandas>=2.0.0
+numpy>=1.24.0
+
+# OpenAI SDK (with async support)
+openai>=1.0.0
+
+# Weaviate client
+weaviate-client>=3.24.0
+
+# Async HTTP client
+aiohttp>=3.9.0
+
+# Progress bar
+tqdm>=4.66.0
+
+# Optional: For better performance
+uvloop>=0.19.0; sys_platform != 'win32'
+

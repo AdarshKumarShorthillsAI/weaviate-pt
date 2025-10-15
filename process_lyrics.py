@@ -1,0 +1,422 @@
+"""
+Optimized CSV processing script with batch reading, parallel embedding, and Weaviate indexing.
+Supports resume capability and comprehensive error handling.
+"""
+
+import asyncio
+import json
+import logging
+import os
+import sys
+from typing import List, Dict, Any, Optional
+from datetime import datetime
+
+import pandas as pd
+import weaviate
+import weaviate.classes as wvc
+from weaviate.classes.config import Configure, Property, DataType
+from openai import AsyncOpenAI, AsyncAzureOpenAI
+from tqdm import tqdm
+import aiohttp
+
+import config
+
+
+# Setup logging
+logging.basicConfig(
+    level=getattr(logging, config.LOG_LEVEL),
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(config.LOG_FILE),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
+
+
+class CheckpointManager:
+    """Manages checkpoint state for resume capability"""
+    
+    def __init__(self, checkpoint_file: str):
+        self.checkpoint_file = checkpoint_file
+        self.state = self.load()
+    
+    def load(self) -> Dict[str, Any]:
+        """Load checkpoint from file"""
+        if os.path.exists(self.checkpoint_file):
+            try:
+                with open(self.checkpoint_file, 'r') as f:
+                    return json.load(f)
+            except Exception as e:
+                logger.warning(f"Could not load checkpoint: {e}. Starting fresh.")
+        return {"last_processed_row": 0, "total_processed": 0, "total_errors": 0}
+    
+    def save(self):
+        """Save checkpoint to file"""
+        try:
+            with open(self.checkpoint_file, 'w') as f:
+                json.dump(self.state, f, indent=2)
+        except Exception as e:
+            logger.error(f"Could not save checkpoint: {e}")
+    
+    def update(self, rows_processed: int, errors: int = 0):
+        """Update checkpoint state"""
+        self.state["last_processed_row"] += rows_processed
+        self.state["total_processed"] += rows_processed
+        self.state["total_errors"] += errors
+        self.state["last_updated"] = datetime.now().isoformat()
+        self.save()
+    
+    def get_last_row(self) -> int:
+        """Get the last processed row number"""
+        return self.state.get("last_processed_row", 0)
+
+
+class LyricsProcessor:
+    """Main processor for lyrics data with embedding and indexing"""
+    
+    def __init__(self):
+        # Initialize OpenAI client based on configuration
+        if config.USE_AZURE_OPENAI:
+            self.openai_client = AsyncAzureOpenAI(
+                api_key=config.AZURE_OPENAI_API_KEY,
+                azure_endpoint=config.AZURE_OPENAI_ENDPOINT,
+                api_version=config.AZURE_OPENAI_API_VERSION
+            )
+            self.embedding_model = config.AZURE_OPENAI_DEPLOYMENT_NAME
+            logger.info(f"Using Azure OpenAI with deployment: {self.embedding_model}")
+        else:
+            self.openai_client = AsyncOpenAI(api_key=config.OPENAI_API_KEY)
+            self.embedding_model = config.OPENAI_MODEL
+            logger.info(f"Using OpenAI with model: {self.embedding_model}")
+        
+        self.weaviate_client = None
+        self.collection = None
+        self.checkpoint = CheckpointManager(config.CHECKPOINT_FILE)
+        self.semaphore = asyncio.Semaphore(config.MAX_CONCURRENT_EMBEDDINGS)
+        
+    def initialize_weaviate(self):
+        """Initialize Weaviate client and get collection"""
+        try:
+            # Connect to Weaviate v4 client
+            # Parse URL to extract host and port
+            url_parts = config.WEAVIATE_URL.replace("http://", "").replace("https://", "").split(":")
+            host = url_parts[0]
+            port = int(url_parts[1]) if len(url_parts) > 1 else 8080
+            
+            # Connect based on whether it's local or remote
+            if host in ["localhost", "127.0.0.1"]:
+                self.weaviate_client = weaviate.connect_to_local(
+                    host=host,
+                    port=port,
+                    headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if config.WEAVIATE_API_KEY != "your-weaviate-api-key" else None
+                )
+            else:
+                # For remote Weaviate instances
+                self.weaviate_client = weaviate.connect_to_weaviate_cloud(
+                    cluster_url=config.WEAVIATE_URL,
+                    auth_credentials=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY)
+                )
+            
+            # Get or create collection
+            if not self.weaviate_client.collections.exists(config.WEAVIATE_CLASS_NAME):
+                logger.warning(f"Collection '{config.WEAVIATE_CLASS_NAME}' does not exist!")
+                logger.warning("Please run: python create_weaviate_schema.py first")
+                raise Exception(f"Collection {config.WEAVIATE_CLASS_NAME} not found. Run create_weaviate_schema.py first.")
+            
+            self.collection = self.weaviate_client.collections.get(config.WEAVIATE_CLASS_NAME)
+            logger.info(f"Connected to Weaviate collection: {config.WEAVIATE_CLASS_NAME}")
+                
+        except Exception as e:
+            logger.error(f"Failed to initialize Weaviate: {e}")
+            raise
+    
+    def clean_and_validate_row(self, row: pd.Series) -> Optional[Dict[str, Any]]:
+        """Clean and validate a single row of data"""
+        try:
+            # Convert row to dict
+            data = row.to_dict()
+            
+            # Validate required fields
+            if pd.isna(data.get('lyrics')) or str(data.get('lyrics')).strip() == '':
+                logger.warning(f"Skipping row with empty lyrics: ID={data.get('id')}")
+                return None
+            
+            # Clean and convert data types
+            cleaned_data = {
+                'title': str(data.get('title', '')),
+                'tag': str(data.get('tag', '')),
+                'artist': str(data.get('artist', '')),
+                'year': int(data.get('year', 0)) if pd.notna(data.get('year')) else 0,
+                'views': int(data.get('views', 0)) if pd.notna(data.get('views')) else 0,
+                'features': str(data.get('features', '')),
+                'lyrics': str(data.get('lyrics', '')),
+                'song_id': str(data.get('id', '')),
+                'language_cld3': str(data.get('language_cld3', '')),
+                'language_ft': str(data.get('language_ft', '')),
+                'language': str(data.get('language', ''))
+            }
+            
+            return cleaned_data
+            
+        except Exception as e:
+            logger.error(f"Error cleaning row: {e}, Row ID: {row.get('id')}")
+            return None
+    
+    async def get_embedding(self, text: str, retry_count: int = 0) -> Optional[List[float]]:
+        """Get embedding for text using OpenAI API with retry logic"""
+        async with self.semaphore:  # Limit concurrent requests
+            try:
+                response = await self.openai_client.embeddings.create(
+                    model=self.embedding_model,  # Use configured model/deployment
+                    input=text,
+                    timeout=config.OPENAI_TIMEOUT
+                )
+                return response.data[0].embedding
+                
+            except Exception as e:
+                if retry_count < config.OPENAI_MAX_RETRIES:
+                    logger.warning(f"Embedding request failed (attempt {retry_count + 1}): {e}. Retrying...")
+                    await asyncio.sleep(2 ** retry_count)  # Exponential backoff
+                    return await self.get_embedding(text, retry_count + 1)
+                else:
+                    logger.error(f"Embedding request failed after {config.OPENAI_MAX_RETRIES} retries: {e}")
+                    return None
+    
+    async def process_batch_embeddings(self, batch_data: List[Dict[str, Any]]) -> List[tuple]:
+        """Process embeddings for a batch of rows concurrently"""
+        # Create tasks for all embeddings in the batch
+        tasks = []
+        for data in batch_data:
+            task = self.get_embedding(data['lyrics'])
+            tasks.append(task)
+        
+        # Wait for all embeddings to complete
+        embeddings = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Pair data with embeddings
+        results = []
+        for data, embedding in zip(batch_data, embeddings):
+            if isinstance(embedding, Exception):
+                logger.error(f"Exception getting embedding for ID {data['song_id']}: {embedding}")
+                results.append((data, None))
+            else:
+                results.append((data, embedding))
+        
+        return results
+    
+    async def index_to_weaviate(self, batch_results: List[tuple]) -> tuple[int, int]:
+        """Index a batch of data to Weaviate using v4 API (async to not block)"""
+        success_count = 0
+        error_count = 0
+        
+        try:
+            # Prepare batch data for Weaviate v4
+            objects_to_insert = []
+            
+            for data, embedding in batch_results:
+                if embedding is None:
+                    logger.warning(f"Skipping indexing for ID {data['song_id']} due to missing embedding")
+                    error_count += 1
+                    continue
+                
+                try:
+                    # Prepare properties
+                    properties = {
+                        "title": data['title'],
+                        "tag": data['tag'],
+                        "artist": data['artist'],
+                        "year": data['year'],
+                        "views": data['views'],
+                        "features": data['features'],
+                        "lyrics": data['lyrics'],
+                        "song_id": data['song_id'],
+                        "language_cld3": data['language_cld3'],
+                        "language_ft": data['language_ft'],
+                        "language": data['language']
+                    }
+                    
+                    # Create data object with vector
+                    objects_to_insert.append(
+                        wvc.data.DataObject(
+                            properties=properties,
+                            vector=embedding
+                        )
+                    )
+                    
+                except Exception as e:
+                    logger.error(f"Error preparing data for Weaviate ID {data['song_id']}: {e}")
+                    error_count += 1
+            
+            # Batch insert using v4 API - run in thread pool to not block event loop
+            if objects_to_insert:
+                try:
+                    # Run sync Weaviate operation in thread pool
+                    def _insert_sync():
+                        return self.collection.data.insert_many(objects_to_insert)
+                    
+                    response = await asyncio.to_thread(_insert_sync)
+                    
+                    # Check for errors in batch insert
+                    if response.has_errors:
+                        for idx, error in enumerate(response.errors):
+                            if error:
+                                logger.error(f"Batch insert error at index {idx}: {error}")
+                                error_count += 1
+                            else:
+                                success_count += 1
+                    else:
+                        success_count = len(objects_to_insert)
+                    
+                    logger.info(f"Indexed batch: {success_count} successful, {error_count} errors")
+                    
+                except Exception as e:
+                    logger.error(f"Error during batch indexing: {e}")
+                    error_count = len(objects_to_insert)
+            
+        except Exception as e:
+            logger.error(f"Error during batch preparation: {e}")
+            error_count = len(batch_results)
+        
+        return success_count, error_count
+    
+    async def process_chunk(self, chunk_df: pd.DataFrame, chunk_number: int):
+        """Process a single chunk of data (10k rows) with pipelined embedding + indexing"""
+        total_rows = len(chunk_df)
+        logger.info(f"Processing chunk {chunk_number} with {total_rows} rows")
+        
+        chunk_success = 0
+        chunk_errors = 0
+        
+        # Prepare all batches first
+        batches = []
+        for batch_start in range(0, total_rows, config.BATCH_SIZE):
+            batch_end = min(batch_start + config.BATCH_SIZE, total_rows)
+            batch_df = chunk_df.iloc[batch_start:batch_end]
+            
+            # Clean and validate data
+            batch_data = []
+            for _, row in batch_df.iterrows():
+                cleaned = self.clean_and_validate_row(row)
+                if cleaned:
+                    batch_data.append(cleaned)
+            
+            if batch_data:
+                batches.append((batch_start, batch_df, batch_data))
+        
+        if not batches:
+            logger.warning(f"No valid data in chunk {chunk_number}")
+            return 0, 0
+        
+        # Process batches with pipelining: embed batch N while indexing batch N-1
+        # This allows embeddings and indexing to run concurrently for maximum throughput
+        indexing_task = None
+        last_batch_df = None
+        
+        with tqdm(total=len(batches), desc=f"Chunk {chunk_number}", unit="batch") as pbar:
+            for i, (batch_start, batch_df, batch_data) in enumerate(batches):
+                # Start embedding current batch immediately (non-blocking)
+                embedding_task = asyncio.create_task(self.process_batch_embeddings(batch_data))
+                
+                # If we have a previous batch being indexed, wait for it NOW
+                # This creates overlap: while we wait, the current batch is embedding
+                if indexing_task is not None:
+                    success, errors = await indexing_task
+                    chunk_success += success
+                    chunk_errors += errors
+                    # Update checkpoint for the previous batch
+                    if last_batch_df is not None:
+                        self.checkpoint.update(rows_processed=len(last_batch_df), errors=errors)
+                
+                # Wait for current batch embeddings to complete
+                batch_results = await embedding_task
+                
+                # Start indexing current batch immediately (will run while next batch embeds)
+                indexing_task = asyncio.create_task(self.index_to_weaviate(batch_results))
+                last_batch_df = batch_df
+                
+                pbar.update(1)
+            
+            # Wait for the last indexing task to complete
+            if indexing_task is not None:
+                success, errors = await indexing_task
+                chunk_success += success
+                chunk_errors += errors
+                if last_batch_df is not None:
+                    self.checkpoint.update(rows_processed=len(last_batch_df), errors=errors)
+        
+        logger.info(f"Chunk {chunk_number} complete: {chunk_success} indexed, {chunk_errors} errors")
+        return chunk_success, chunk_errors
+    
+    async def process_csv(self):
+        """Main processing function"""
+        logger.info("Starting CSV processing...")
+        logger.info(f"Resuming from row: {self.checkpoint.get_last_row()}")
+        
+        # Initialize Weaviate
+        self.initialize_weaviate()
+        
+        total_success = 0
+        total_errors = 0
+        chunk_number = 0
+        skip_rows = self.checkpoint.get_last_row()
+        
+        try:
+            # Get total rows for progress tracking
+            total_rows = sum(1 for _ in open(config.CSV_FILE_PATH)) - 1  # -1 for header
+            logger.info(f"Total rows in CSV: {total_rows}")
+            logger.info(f"Rows to process: {total_rows - skip_rows}")
+            
+            # Read and process CSV in chunks
+            chunk_iterator = pd.read_csv(
+                config.CSV_FILE_PATH,
+                chunksize=config.CHUNK_SIZE,
+                skiprows=range(1, skip_rows + 1) if skip_rows > 0 else None
+            )
+            
+            for chunk_df in chunk_iterator:
+                chunk_number += 1
+                success, errors = await self.process_chunk(chunk_df, chunk_number)
+                total_success += success
+                total_errors += errors
+            
+            logger.info("=" * 80)
+            logger.info("Processing complete!")
+            logger.info(f"Total records processed: {total_success}")
+            logger.info(f"Total errors: {total_errors}")
+            logger.info("=" * 80)
+            
+        except Exception as e:
+            logger.error(f"Fatal error during processing: {e}")
+            raise
+        finally:
+            # Close Weaviate client
+            if self.weaviate_client:
+                self.weaviate_client.close()
+    
+    async def close(self):
+        """Cleanup resources"""
+        if self.weaviate_client:
+            self.weaviate_client.close()
+        await self.openai_client.close()
+
+
+async def main():
+    """Main entry point"""
+    processor = LyricsProcessor()
+    
+    try:
+        await processor.process_csv()
+    except KeyboardInterrupt:
+        logger.info("Processing interrupted by user. Progress saved. Run again to resume.")
+    except Exception as e:
+        logger.error(f"Fatal error: {e}")
+        sys.exit(1)
+    finally:
+        await processor.close()
+
+
+if __name__ == "__main__":
+    # Run the async main function
+    asyncio.run(main())
+

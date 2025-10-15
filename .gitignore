@@ -1,0 +1,49 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Processing files
+processing_checkpoint.json
+processing_log.log
+
+# Configuration with credentials (DO NOT COMMIT)
+config.example.py
+
+# Data files (large files that should not be in git)
+*.csv
+*.zip
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+verify_setup.py
+test_pipeline.py
+TESTING_GUIDE.md
+SYNC_VS_ASYNC_ANALYSIS.md
+setup_github.sh
+AZURE_OPENAI_SETUP.md
+CHANGES_SUMMARY.md
+GITHUB_SETUP.md
+PERFORMANCE_OPTIMIZATION.md
+PUSH_TO_GITHUB.txt
+QUICK_CONFIG_AZURE.txt
+SCHEMA_GUIDE.md
+SETUP_COMPLETE.md
+QUICKSTART.md
+activate.sh
