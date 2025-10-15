@@ -17,12 +17,47 @@ def create_optimized_schema():
     """Create Weaviate schema with optimized tokenization and indexing"""
     
     try:
-        # Connect to Weaviate (v4 client)
-        client = weaviate.connect_to_local(
-            host=config.WEAVIATE_URL.replace("http://", "").replace("https://", "").split(":")[0],
-            port=int(config.WEAVIATE_URL.split(":")[-1]) if ":" in config.WEAVIATE_URL.split("//")[-1] else 8080,
-            headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if config.WEAVIATE_API_KEY != "your-weaviate-api-key" else None
-        )
+        # Parse URL to extract protocol, host, and port
+        url = config.WEAVIATE_URL
+        is_https = url.startswith("https://")
+        url_without_protocol = url.replace("https://", "").replace("http://", "")
+        
+        # Split host and port
+        if ":" in url_without_protocol:
+            host, port_str = url_without_protocol.split(":", 1)
+            port_str = port_str.split("/")[0]
+            port = int(port_str)
+        else:
+            host = url_without_protocol.split("/")[0]
+            port = 443 if is_https else 80
+        
+        # Check if authentication is needed
+        use_auth = config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key"
+        
+        logger.info(f"Connecting to Weaviate at {host}:{port} (HTTPS: {is_https}, Auth: {use_auth})")
+        
+        # Connect to Weaviate
+        if host in ["localhost", "127.0.0.1"]:
+            client = weaviate.connect_to_local(
+                host=host,
+                port=port,
+                grpc_port=port + 1,
+                headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if use_auth else None,
+                skip_init_checks=True
+            )
+        else:
+            # Remote connection (custom URL)
+            from weaviate.connect import ConnectionParams
+            
+            client = weaviate.WeaviateClient(
+                connection_params=ConnectionParams.from_url(
+                    url=config.WEAVIATE_URL,
+                    grpc_port=port + 1
+                ),
+                auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
+                skip_init_checks=True
+            )
+            client.connect()
         
         logger.info(f"Connected to Weaviate at {config.WEAVIATE_URL}")
         
@@ -42,6 +77,18 @@ def create_optimized_schema():
         collection = client.collections.create(
             name=config.WEAVIATE_CLASS_NAME,
             description="Song lyrics with metadata and embeddings",
+            
+            # Sharding configuration
+            sharding_config=Configure.sharding(
+                virtual_per_physical=128,
+                desired_count=3,  # 3 shards
+                desired_virtual_count=128
+            ),
+            
+            # Replication configuration
+            replication_config=Configure.replication(
+                factor=1  # Replication factor of 1
+            ),
             
             # # Vectorizer configuration - we're providing our own vectors
             # vectorizer_config=None,
@@ -163,6 +210,8 @@ def create_optimized_schema():
         logger.info(f"✅ Successfully created collection: {config.WEAVIATE_CLASS_NAME}")
         logger.info("=" * 70)
         logger.info("\nConfiguration Summary:")
+        logger.info(f"  - Sharding: 3 shards")
+        logger.info(f"  - Replication: Factor of 1")
         logger.info(f"  - Vectorizer: None (external embeddings)")
         logger.info(f"  - Vector Index: HNSW with cosine distance")
         logger.info(f"  - WAND: Disabled (accurate BM25 scoring)")

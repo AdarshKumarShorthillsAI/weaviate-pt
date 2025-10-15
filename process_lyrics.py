@@ -98,25 +98,50 @@ class LyricsProcessor:
     def initialize_weaviate(self):
         """Initialize Weaviate client and get collection"""
         try:
-            # Connect to Weaviate v4 client
-            # Parse URL to extract host and port
-            url_parts = config.WEAVIATE_URL.replace("http://", "").replace("https://", "").split(":")
-            host = url_parts[0]
-            port = int(url_parts[1]) if len(url_parts) > 1 else 8080
+            # Parse URL to extract protocol, host, and port
+            url = config.WEAVIATE_URL
+            is_https = url.startswith("https://")
+            url_without_protocol = url.replace("https://", "").replace("http://", "")
             
-            # Connect based on whether it's local or remote
+            # Split host and port
+            if ":" in url_without_protocol:
+                host, port_str = url_without_protocol.split(":", 1)
+                # Remove any trailing slashes or paths
+                port_str = port_str.split("/")[0]
+                port = int(port_str)
+            else:
+                host = url_without_protocol.split("/")[0]  # Remove any trailing paths
+                # Default ports: 443 for HTTPS, 80 for HTTP
+                port = 443 if is_https else 80
+            
+            # Check if authentication is needed
+            use_auth = config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key"
+            
+            logger.info(f"Connecting to Weaviate at {host}:{port} (HTTPS: {is_https}, Auth: {use_auth})")
+            
+            # Connect to Weaviate
             if host in ["localhost", "127.0.0.1"]:
+                # Local connection
                 self.weaviate_client = weaviate.connect_to_local(
                     host=host,
                     port=port,
-                    headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if config.WEAVIATE_API_KEY != "your-weaviate-api-key" else None
+                    grpc_port=port + 1,  # gRPC port is typically port + 1
+                    headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if use_auth else None,
+                    skip_init_checks=True
                 )
             else:
-                # For remote Weaviate instances
-                self.weaviate_client = weaviate.connect_to_weaviate_cloud(
-                    cluster_url=config.WEAVIATE_URL,
-                    auth_credentials=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY)
+                # Remote connection (custom URL)
+                from weaviate.connect import ConnectionParams
+                
+                self.weaviate_client = weaviate.WeaviateClient(
+                    connection_params=ConnectionParams.from_url(
+                        url=config.WEAVIATE_URL,
+                        grpc_port=port + 1  # gRPC port
+                    ),
+                    auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
+                    skip_init_checks=True
                 )
+                self.weaviate_client.connect()
             
             # Get or create collection
             if not self.weaviate_client.collections.exists(config.WEAVIATE_CLASS_NAME):
@@ -129,6 +154,8 @@ class LyricsProcessor:
                 
         except Exception as e:
             logger.error(f"Failed to initialize Weaviate: {e}")
+            logger.error(f"URL: {config.WEAVIATE_URL}")
+            logger.error(f"Parsed - Host: {host}, Port: {port}, HTTPS: {is_https}")
             raise
     
     def clean_and_validate_row(self, row: pd.Series) -> Optional[Dict[str, Any]]:
@@ -365,7 +392,20 @@ class LyricsProcessor:
             # Get total rows for progress tracking
             total_rows = sum(1 for _ in open(config.CSV_FILE_PATH)) - 1  # -1 for header
             logger.info(f"Total rows in CSV: {total_rows}")
-            logger.info(f"Rows to process: {total_rows - skip_rows}")
+            
+            # Check if MAX_ROWS_TO_PROCESS is set
+            max_rows = config.MAX_ROWS_TO_PROCESS
+            if max_rows is not None:
+                remaining_rows = max_rows - skip_rows
+                if remaining_rows <= 0:
+                    logger.info(f"MAX_ROWS_TO_PROCESS ({max_rows}) already reached. Nothing to process.")
+                    return
+                rows_to_process = min(remaining_rows, total_rows - skip_rows)
+                logger.info(f"MAX_ROWS_TO_PROCESS: {max_rows}")
+                logger.info(f"Rows to process: {rows_to_process} (limit: {max_rows})")
+            else:
+                rows_to_process = total_rows - skip_rows
+                logger.info(f"Rows to process: {rows_to_process} (no limit)")
             
             # Read and process CSV in chunks
             chunk_iterator = pd.read_csv(
@@ -376,12 +416,34 @@ class LyricsProcessor:
             
             for chunk_df in chunk_iterator:
                 chunk_number += 1
+                
+                # Check if we've reached the max rows limit
+                if max_rows is not None:
+                    current_row = skip_rows + (chunk_number - 1) * config.CHUNK_SIZE
+                    if current_row >= max_rows:
+                        logger.info(f"Reached MAX_ROWS_TO_PROCESS limit ({max_rows}). Stopping.")
+                        break
+                    
+                    # If this chunk would exceed the limit, truncate it
+                    rows_remaining = max_rows - self.checkpoint.get_last_row()
+                    if len(chunk_df) > rows_remaining:
+                        logger.info(f"Truncating final chunk to {rows_remaining} rows to reach limit")
+                        chunk_df = chunk_df.iloc[:rows_remaining]
+                
                 success, errors = await self.process_chunk(chunk_df, chunk_number)
                 total_success += success
                 total_errors += errors
+                
+                # Check again after processing this chunk
+                if max_rows is not None and self.checkpoint.get_last_row() >= max_rows:
+                    logger.info(f"Reached MAX_ROWS_TO_PROCESS limit ({max_rows}). Stopping.")
+                    break
             
             logger.info("=" * 80)
-            logger.info("Processing complete!")
+            if max_rows is not None and self.checkpoint.get_last_row() >= max_rows:
+                logger.info(f"Processing stopped at MAX_ROWS_TO_PROCESS limit: {max_rows}")
+            else:
+                logger.info("Processing complete!")
             logger.info(f"Total records processed: {total_success}")
             logger.info(f"Total errors: {total_errors}")
             logger.info("=" * 80)
