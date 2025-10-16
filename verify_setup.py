@@ -4,97 +4,47 @@ Tests connectivity to OpenAI and Weaviate.
 """
 
 import sys
-from openai import OpenAI, AzureOpenAI
-import weaviate
 import config
+from openai_client import create_sync_openai_client
+from weaviate_client import create_weaviate_client
 
 def test_openai():
-    """Test OpenAI API connection"""
-    if config.USE_AZURE_OPENAI:
-        print("Testing Azure OpenAI connection...")
-        try:
-            client = AzureOpenAI(
-                api_key=config.AZURE_OPENAI_API_KEY,
-                azure_endpoint=config.AZURE_OPENAI_ENDPOINT,
-                api_version=config.AZURE_OPENAI_API_VERSION
-            )
-            # Try a simple embedding request to verify deployment
-            response = client.embeddings.create(
-                model=config.AZURE_OPENAI_DEPLOYMENT_NAME,
-                input="test"
-            )
+    """Test OpenAI API connection using centralized client"""
+    try:
+        client, model = create_sync_openai_client()
+        
+        # Try a simple embedding request to verify
+        response = client.embeddings.create(
+            model=model,
+            input="test"
+        )
+        
+        if config.USE_AZURE_OPENAI:
             print("✅ Azure OpenAI connection successful!")
             print(f"   Endpoint: {config.AZURE_OPENAI_ENDPOINT}")
             print(f"   Deployment: {config.AZURE_OPENAI_DEPLOYMENT_NAME}")
             print(f"   API Version: {config.AZURE_OPENAI_API_VERSION}")
-            print(f"   Embedding dimension: {len(response.data[0].embedding)}")
-            return True
-        except Exception as e:
-            print(f"❌ Azure OpenAI connection failed: {e}")
-            print("   Please check your Azure OpenAI settings in config.py:")
-            print(f"   - AZURE_OPENAI_API_KEY")
-            print(f"   - AZURE_OPENAI_ENDPOINT")
-            print(f"   - AZURE_OPENAI_DEPLOYMENT_NAME")
-            return False
-    else:
-        print("Testing OpenAI connection...")
-        try:
-            client = OpenAI(api_key=config.OPENAI_API_KEY)
-            # Try to get models list
-            models = client.models.list()
+        else:
             print("✅ OpenAI connection successful!")
-            print(f"   Model to use: {config.OPENAI_MODEL}")
-            return True
-        except Exception as e:
-            print(f"❌ OpenAI connection failed: {e}")
+            print(f"   Model: {config.OPENAI_MODEL}")
+        
+        print(f"   Embedding dimension: {len(response.data[0].embedding)}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ OpenAI connection failed: {e}")
+        if config.USE_AZURE_OPENAI:
+            print("   Please check your Azure OpenAI settings in config.py")
+        else:
             print("   Please check your OPENAI_API_KEY in config.py")
-            return False
+        return False
 
 def test_weaviate():
-    """Test Weaviate connection"""
+    """Test Weaviate connection using centralized client"""
     print("\nTesting Weaviate connection...")
     try:
-        # Parse URL to extract protocol, host, and port
-        url = config.WEAVIATE_URL
-        is_https = url.startswith("https://")
-        url_without_protocol = url.replace("https://", "").replace("http://", "")
-        
-        # Split host and port
-        if ":" in url_without_protocol:
-            host, port_str = url_without_protocol.split(":", 1)
-            port_str = port_str.split("/")[0]
-            port = int(port_str)
-        else:
-            host = url_without_protocol.split("/")[0]
-            port = 443 if is_https else 80
-        
-        # Check if authentication is needed
-        use_auth = config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key"
-        
-        print(f"   Connecting to {host}:{port} (HTTPS: {is_https}, Auth: {use_auth})")
-        
-        # Connect to Weaviate
-        if host in ["localhost", "127.0.0.1"]:
-            client = weaviate.connect_to_local(
-                host=host,
-                port=port,
-                grpc_port=port + 1,
-                headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if use_auth else None,
-                skip_init_checks=True
-            )
-        else:
-            # Remote connection (custom URL)
-            from weaviate.connect import ConnectionParams
-            
-            client = weaviate.WeaviateClient(
-                connection_params=ConnectionParams.from_url(
-                    url=config.WEAVIATE_URL,
-                    grpc_port=port + 1
-                ),
-                auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
-                skip_init_checks=True
-            )
-            client.connect()
+        # Use centralized client creation
+        client = create_weaviate_client()
         
         # Test if server is reachable
         if client.is_ready():
@@ -115,10 +65,11 @@ def test_weaviate():
             print("❌ Weaviate server not ready")
             client.close()
             return False
+            
     except Exception as e:
         print(f"❌ Weaviate connection failed: {e}")
         print(f"   URL: {config.WEAVIATE_URL}")
-        print("   Please check your WEAVIATE_URL and WEAVIATE_API_KEY in config.py")
+        print("   Please check your WEAVIATE_URL in config.py")
         return False
 
 def test_csv():

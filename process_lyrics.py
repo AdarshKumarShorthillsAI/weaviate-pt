@@ -12,14 +12,12 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 
 import pandas as pd
-import weaviate
-import weaviate.classes as wvc
-from weaviate.classes.config import Configure, Property, DataType
-from openai import AsyncOpenAI, AsyncAzureOpenAI
 from tqdm import tqdm
 import aiohttp
 
 import config
+from openai_client import create_async_openai_client
+from weaviate_client import create_weaviate_client, batch_insert_objects
 
 
 # Setup logging
@@ -76,86 +74,22 @@ class LyricsProcessor:
     """Main processor for lyrics data with embedding and indexing"""
     
     def __init__(self):
-        # Initialize OpenAI client based on configuration
-        if config.USE_AZURE_OPENAI:
-            self.openai_client = AsyncAzureOpenAI(
-                api_key=config.AZURE_OPENAI_API_KEY,
-                azure_endpoint=config.AZURE_OPENAI_ENDPOINT,
-                api_version=config.AZURE_OPENAI_API_VERSION
-            )
-            self.embedding_model = config.AZURE_OPENAI_DEPLOYMENT_NAME
-            logger.info(f"Using Azure OpenAI with deployment: {self.embedding_model}")
-        else:
-            self.openai_client = AsyncOpenAI(api_key=config.OPENAI_API_KEY)
-            self.embedding_model = config.OPENAI_MODEL
-            logger.info(f"Using OpenAI with model: {self.embedding_model}")
+        # Initialize OpenAI client using centralized module
+        self.openai_client, self.embedding_model = create_async_openai_client()
         
         self.weaviate_client = None
-        self.collection = None
         self.checkpoint = CheckpointManager(config.CHECKPOINT_FILE)
         self.semaphore = asyncio.Semaphore(config.MAX_CONCURRENT_EMBEDDINGS)
         
     def initialize_weaviate(self):
-        """Initialize Weaviate client and get collection"""
+        """Initialize Weaviate client using centralized module"""
         try:
-            # Parse URL to extract protocol, host, and port
-            url = config.WEAVIATE_URL
-            is_https = url.startswith("https://")
-            url_without_protocol = url.replace("https://", "").replace("http://", "")
-            
-            # Split host and port
-            if ":" in url_without_protocol:
-                host, port_str = url_without_protocol.split(":", 1)
-                # Remove any trailing slashes or paths
-                port_str = port_str.split("/")[0]
-                port = int(port_str)
-            else:
-                host = url_without_protocol.split("/")[0]  # Remove any trailing paths
-                # Default ports: 443 for HTTPS, 80 for HTTP
-                port = 443 if is_https else 80
-            
-            # Check if authentication is needed
-            use_auth = config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key"
-            
-            logger.info(f"Connecting to Weaviate at {host}:{port} (HTTPS: {is_https}, Auth: {use_auth})")
-            
-            # Connect to Weaviate
-            if host in ["localhost", "127.0.0.1"]:
-                # Local connection
-                self.weaviate_client = weaviate.connect_to_local(
-                    host=host,
-                    port=port,
-                    grpc_port=port + 1,  # gRPC port is typically port + 1
-                    headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if use_auth else None,
-                    skip_init_checks=True
-                )
-            else:
-                # Remote connection (custom URL)
-                from weaviate.connect import ConnectionParams
-                
-                self.weaviate_client = weaviate.WeaviateClient(
-                    connection_params=ConnectionParams.from_url(
-                        url=config.WEAVIATE_URL,
-                        grpc_port=port + 1  # gRPC port
-                    ),
-                    auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
-                    skip_init_checks=True
-                )
-                self.weaviate_client.connect()
-            
-            # Get or create collection
-            if not self.weaviate_client.collections.exists(config.WEAVIATE_CLASS_NAME):
-                logger.warning(f"Collection '{config.WEAVIATE_CLASS_NAME}' does not exist!")
-                logger.warning("Please run: python create_weaviate_schema.py first")
-                raise Exception(f"Collection {config.WEAVIATE_CLASS_NAME} not found. Run create_weaviate_schema.py first.")
-            
-            self.collection = self.weaviate_client.collections.get(config.WEAVIATE_CLASS_NAME)
+            # Use centralized client creation
+            self.weaviate_client = create_weaviate_client()
             logger.info(f"Connected to Weaviate collection: {config.WEAVIATE_CLASS_NAME}")
                 
         except Exception as e:
             logger.error(f"Failed to initialize Weaviate: {e}")
-            logger.error(f"URL: {config.WEAVIATE_URL}")
-            logger.error(f"Parsed - Host: {host}, Port: {port}, HTTPS: {is_https}")
             raise
     
     def clean_and_validate_row(self, row: pd.Series) -> Optional[Dict[str, Any]]:
@@ -233,12 +167,12 @@ class LyricsProcessor:
         return results
     
     async def index_to_weaviate(self, batch_results: List[tuple]) -> tuple[int, int]:
-        """Index a batch of data to Weaviate using v4 API (async to not block)"""
+        """Index a batch of data to Weaviate using centralized batch insert (async to not block)"""
         success_count = 0
         error_count = 0
         
         try:
-            # Prepare batch data for Weaviate v4
+            # Prepare batch data
             objects_to_insert = []
             
             for data, embedding in batch_results:
@@ -248,52 +182,39 @@ class LyricsProcessor:
                     continue
                 
                 try:
-                    # Prepare properties
-                    properties = {
-                        "title": data['title'],
-                        "tag": data['tag'],
-                        "artist": data['artist'],
-                        "year": data['year'],
-                        "views": data['views'],
-                        "features": data['features'],
-                        "lyrics": data['lyrics'],
-                        "song_id": data['song_id'],
-                        "language_cld3": data['language_cld3'],
-                        "language_ft": data['language_ft'],
-                        "language": data['language']
+                    # Prepare object
+                    obj = {
+                        "properties": {
+                            "title": data['title'],
+                            "tag": data['tag'],
+                            "artist": data['artist'],
+                            "year": data['year'],
+                            "views": data['views'],
+                            "features": data['features'],
+                            "lyrics": data['lyrics'],
+                            "song_id": data['song_id'],
+                            "language_cld3": data['language_cld3'],
+                            "language_ft": data['language_ft'],
+                            "language": data['language']
+                        },
+                        "vector": embedding
                     }
-                    
-                    # Create data object with vector
-                    objects_to_insert.append(
-                        wvc.data.DataObject(
-                            properties=properties,
-                            vector=embedding
-                        )
-                    )
+                    objects_to_insert.append(obj)
                     
                 except Exception as e:
                     logger.error(f"Error preparing data for Weaviate ID {data['song_id']}: {e}")
                     error_count += 1
             
-            # Batch insert using v4 API - run in thread pool to not block event loop
+            # Batch insert using centralized function - run in thread pool to not block event loop
             if objects_to_insert:
                 try:
-                    # Run sync Weaviate operation in thread pool
-                    def _insert_sync():
-                        return self.collection.data.insert_many(objects_to_insert)
-                    
-                    response = await asyncio.to_thread(_insert_sync)
-                    
-                    # Check for errors in batch insert
-                    if response.has_errors:
-                        for idx, error in enumerate(response.errors):
-                            if error:
-                                logger.error(f"Batch insert error at index {idx}: {error}")
-                                error_count += 1
-                            else:
-                                success_count += 1
-                    else:
-                        success_count = len(objects_to_insert)
+                    # Run sync batch insert in thread pool
+                    success, errors = await asyncio.to_thread(
+                        batch_insert_objects,
+                        objects_to_insert
+                    )
+                    success_count += success
+                    error_count += errors
                     
                     logger.info(f"Indexed batch: {success_count} successful, {error_count} errors")
                     

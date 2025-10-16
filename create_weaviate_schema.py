@@ -3,13 +3,11 @@ Script to create Weaviate schema with proper tokenization and indexing configura
 Run this before starting the main processing to ensure schema is set up correctly.
 """
 
-import weaviate
-import weaviate.classes as wvc
-from weaviate.classes.config import Configure, Property, DataType
 import requests
 import json as json_lib
 import config
 import logging
+from weaviate_client import create_weaviate_client
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,49 +17,11 @@ def create_optimized_schema():
     """Create Weaviate schema with optimized tokenization and indexing"""
     
     try:
-        # Parse URL to extract protocol, host, and port
-        url = config.WEAVIATE_URL
-        is_https = url.startswith("https://")
-        url_without_protocol = url.replace("https://", "").replace("http://", "")
-        
-        # Split host and port
-        if ":" in url_without_protocol:
-            host, port_str = url_without_protocol.split(":", 1)
-            port_str = port_str.split("/")[0]
-            port = int(port_str)
-        else:
-            host = url_without_protocol.split("/")[0]
-            port = 443 if is_https else 80
+        # Use centralized client creation
+        client = create_weaviate_client()
         
         # Check if authentication is needed
         use_auth = config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key"
-        
-        logger.info(f"Connecting to Weaviate at {host}:{port} (HTTPS: {is_https}, Auth: {use_auth})")
-        
-        # Connect to Weaviate
-        if host in ["localhost", "127.0.0.1"]:
-            client = weaviate.connect_to_local(
-                host=host,
-                port=port,
-                grpc_port=port + 1,
-                headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if use_auth else None,
-                skip_init_checks=True
-            )
-        else:
-            # Remote connection (custom URL)
-            from weaviate.connect import ConnectionParams
-            
-            client = weaviate.WeaviateClient(
-                connection_params=ConnectionParams.from_url(
-                    url=config.WEAVIATE_URL,
-                    grpc_port=port + 1
-                ),
-                auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
-                skip_init_checks=True
-            )
-            client.connect()
-        
-        logger.info(f"Connected to Weaviate at {config.WEAVIATE_URL}")
         
         # Check if collection already exists
         if client.collections.exists(config.WEAVIATE_CLASS_NAME):

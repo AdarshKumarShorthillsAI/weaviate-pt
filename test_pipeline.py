@@ -6,11 +6,10 @@ This tests: CSV reading → Azure OpenAI embeddings → Weaviate indexing → Se
 import asyncio
 import sys
 import pandas as pd
-import weaviate
-import weaviate.classes as wvc
-from openai import AsyncAzureOpenAI, AsyncOpenAI
 
 import config
+from openai_client import create_async_openai_client
+from weaviate_client import create_weaviate_client, insert_single_object, batch_insert_objects
 
 # Number of test rows to process
 TEST_ROWS = 5
@@ -20,74 +19,25 @@ class PipelineTester:
     """Tests the complete pipeline with a small sample"""
     
     def __init__(self):
-        # Initialize OpenAI client
-        if config.USE_AZURE_OPENAI:
-            self.openai_client = AsyncAzureOpenAI(
-                api_key=config.AZURE_OPENAI_API_KEY,
-                azure_endpoint=config.AZURE_OPENAI_ENDPOINT,
-                api_version=config.AZURE_OPENAI_API_VERSION
-            )
-            self.embedding_model = config.AZURE_OPENAI_DEPLOYMENT_NAME
-            print(f"✓ Using Azure OpenAI: {self.embedding_model}")
-        else:
-            self.openai_client = AsyncOpenAI(api_key=config.OPENAI_API_KEY)
-            self.embedding_model = config.OPENAI_MODEL
-            print(f"✓ Using OpenAI: {self.embedding_model}")
+        # Initialize OpenAI client using centralized module
+        self.openai_client, self.embedding_model = create_async_openai_client()
+        print(f"✓ Using embedding model: {self.embedding_model}")
         
         self.weaviate_client = None
-        self.collection = None
     
     def connect_weaviate(self):
-        """Connect to Weaviate"""
+        """Connect to Weaviate using centralized client"""
         print("\n📊 Connecting to Weaviate...")
         try:
-            # Parse URL to extract protocol, host, and port
-            url = config.WEAVIATE_URL
-            is_https = url.startswith("https://")
-            url_without_protocol = url.replace("https://", "").replace("http://", "")
-            
-            # Split host and port
-            if ":" in url_without_protocol:
-                host, port_str = url_without_protocol.split(":", 1)
-                port_str = port_str.split("/")[0]
-                port = int(port_str)
-            else:
-                host = url_without_protocol.split("/")[0]
-                port = 443 if is_https else 80
-            
-            # Check if authentication is needed
-            use_auth = config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key"
-            
-            print(f"   Connecting to {host}:{port} (HTTPS: {is_https}, Auth: {use_auth})")
-            
-            # Connect to Weaviate
-            if host in ["localhost", "127.0.0.1"]:
-                self.weaviate_client = weaviate.connect_to_local(
-                    host=host,
-                    port=port,
-                    grpc_port=port + 1,
-                    headers={"X-OpenAI-Api-Key": config.WEAVIATE_API_KEY} if use_auth else None,
-                    skip_init_checks=True
-                )
-            else:
-                # Remote connection (custom URL)
-                from weaviate.connect import ConnectionParams
-                
-                self.weaviate_client = weaviate.WeaviateClient(
-                    connection_params=ConnectionParams.from_url(
-                        url=config.WEAVIATE_URL,
-                        grpc_port=port + 1
-                    ),
-                    auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
-                    skip_init_checks=True
-                )
-                self.weaviate_client.connect()
+            # Use centralized client creation
+            self.weaviate_client = create_weaviate_client()
             
             if not self.weaviate_client.collections.exists(config.WEAVIATE_CLASS_NAME):
                 print(f"❌ Collection '{config.WEAVIATE_CLASS_NAME}' does not exist!")
                 print("   Run: python create_weaviate_schema.py")
                 return False
             
+            # Get collection for search operations
             self.collection = self.weaviate_client.collections.get(config.WEAVIATE_CLASS_NAME)
             print(f"✓ Connected to collection: {config.WEAVIATE_CLASS_NAME}")
             return True
@@ -122,13 +72,17 @@ class PipelineTester:
             return None
     
     async def process_and_index(self, df):
-        """Process rows and index to Weaviate"""
+        """Process rows and index to Weaviate - Tests BOTH single and batch insert"""
         print(f"\n🔄 Processing {len(df)} rows...")
         print("=" * 70)
         
         success_count = 0
         error_count = 0
         indexed_ids = []
+        
+        # Collect all data and embeddings first
+        all_data = []
+        all_embeddings = []
         
         for idx, row in df.iterrows():
             try:
@@ -158,29 +112,75 @@ class PipelineTester:
                     continue
                 print(f"✓ ({len(embedding)} dims)")
                 
-                # Index to Weaviate
-                print(f"  → Indexing to Weaviate... ", end="", flush=True)
-                result = self.collection.data.insert(
-                    properties=data,
-                    vector=embedding
-                )
-                print(f"✓ UUID: {str(result)[:8]}...")
-                indexed_ids.append(result)
-                success_count += 1
+                all_data.append(data)
+                all_embeddings.append(embedding)
                 
             except Exception as e:
                 print(f"  ❌ Error: {e}")
                 error_count += 1
         
+        # Now test both insertion methods
+        print("\n" + "=" * 70)
+        print("Testing Insertion Methods:")
+        print("=" * 70)
+        
+        # Split data: first half for single insert, second half for batch insert
+        split_point = len(all_data) // 2
+        
+        # Test 1: Single Insert Method
+        if split_point > 0:
+            print(f"\n🔸 Test 1: Single Insert (insert_single_object)")
+            print(f"   Testing with {split_point} row(s)...")
+            for i in range(split_point):
+                print(f"   [{i+1}/{split_point}] Inserting: {all_data[i]['title'][:30]}... ", end="", flush=True)
+                result_id = insert_single_object(all_data[i], all_embeddings[i])
+                if result_id:
+                    print(f"✓ {result_id[:8]}...")
+                    indexed_ids.append(result_id)
+                    success_count += 1
+                else:
+                    print(f"❌ Failed")
+                    error_count += 1
+            print(f"   ✓ Single insert test complete: {split_point} inserted")
+        
+        # Test 2: Batch Insert Method
+        remaining = len(all_data) - split_point
+        if remaining > 0:
+            print(f"\n🔸 Test 2: Batch Insert (batch_insert_objects)")
+            print(f"   Testing with {remaining} row(s)...")
+            
+            # Prepare batch objects
+            batch_objects = []
+            for i in range(split_point, len(all_data)):
+                batch_objects.append({
+                    "properties": all_data[i],
+                    "vector": all_embeddings[i]
+                })
+                print(f"   [{i-split_point+1}/{remaining}] Prepared: {all_data[i]['title'][:30]}...")
+            
+            # Do batch insert
+            print(f"   → Sending batch of {remaining} objects... ", end="", flush=True)
+            batch_success, batch_errors = batch_insert_objects(batch_objects)
+            print(f"✓ Done")
+            print(f"   ✓ Batch insert complete: {batch_success} successful, {batch_errors} errors")
+            
+            success_count += batch_success
+            error_count += batch_errors
+            
+            # Note: batch insert doesn't return UUIDs, so we can't add to indexed_ids
+            # But we can verify they were inserted via search
+        
         print("=" * 70)
         print(f"\n✅ Indexing Complete:")
-        print(f"   Successfully indexed: {success_count}")
-        print(f"   Errors: {error_count}")
+        print(f"   Single insert: {split_point} rows")
+        print(f"   Batch insert: {batch_success if remaining > 0 else 0} rows")
+        print(f"   Total success: {success_count}")
+        print(f"   Total errors: {error_count}")
         
         return indexed_ids
     
     async def test_search(self, indexed_ids):
-        """Test searching the indexed data"""
+        """Test searching the indexed data using REST API (avoid gRPC issues)"""
         if not indexed_ids:
             print("\n⚠️  No data indexed, skipping search test")
             return
@@ -189,40 +189,101 @@ class PipelineTester:
         print("=" * 70)
         
         try:
-            # Test 1: Vector search
-            print("\n1. Vector Search Test: 'love songs'")
-            results = self.collection.query.bm25(
-                query="love songs",
-                query_properties=["title", "lyrics"],
-                limit=3
+            import requests
+            
+            headers = {"Content-Type": "application/json"}
+            if config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key":
+                headers["Authorization"] = f"Bearer {config.WEAVIATE_API_KEY}"
+            
+            # Test 1: GraphQL query (BM25 search)
+            print("\n1. BM25 Search Test: 'love songs'")
+            graphql_query = {
+                "query": """
+                {
+                  Get {
+                    """ + config.WEAVIATE_CLASS_NAME + """(
+                      bm25: {query: "love songs", properties: ["title", "lyrics"]}
+                      limit: 3
+                    ) {
+                      title
+                      artist
+                    }
+                  }
+                }
+                """
+            }
+            
+            response = requests.post(
+                f"{config.WEAVIATE_URL}/v1/graphql",
+                headers=headers,
+                json=graphql_query,
+                timeout=30
             )
             
-            if results.objects:
-                print(f"   ✓ Found {len(results.objects)} results:")
-                for i, obj in enumerate(results.objects, 1):
-                    print(f"   {i}. {obj.properties['title']} by {obj.properties['artist']}")
+            if response.status_code == 200:
+                result = response.json()
+                objects = result.get("data", {}).get("Get", {}).get(config.WEAVIATE_CLASS_NAME, [])
+                if objects:
+                    print(f"   ✓ Found {len(objects)} results:")
+                    for i, obj in enumerate(objects, 1):
+                        print(f"   {i}. {obj.get('title', 'N/A')} by {obj.get('artist', 'N/A')}")
+                else:
+                    print("   ⚠️  No results found")
             else:
-                print("   ⚠️  No results found")
+                print(f"   ❌ Search failed: {response.status_code}")
             
             # Test 2: Get by ID
             print(f"\n2. Fetch by UUID Test")
             test_id = indexed_ids[0]
-            obj = self.collection.query.fetch_object_by_id(test_id)
-            if obj:
-                print(f"   ✓ Retrieved: {obj.properties['title']}")
+            response = requests.get(
+                f"{config.WEAVIATE_URL}/v1/objects/{test_id}",
+                headers=headers,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                obj = response.json()
+                print(f"   ✓ Retrieved: {obj.get('properties', {}).get('title', 'N/A')}")
             else:
                 print("   ❌ Failed to retrieve")
             
-            # Test 3: Filtered search (if you have data)
+            # Test 3: Count total objects via GraphQL
             print(f"\n3. Count total objects in collection")
-            result = self.collection.aggregate.over_all(total_count=True)
-            print(f"   ✓ Total objects: {result.total_count}")
+            count_query = {
+                "query": """
+                {
+                  Aggregate {
+                    """ + config.WEAVIATE_CLASS_NAME + """ {
+                      meta {
+                        count
+                      }
+                    }
+                  }
+                }
+                """
+            }
+            
+            response = requests.post(
+                f"{config.WEAVIATE_URL}/v1/graphql",
+                headers=headers,
+                json=count_query,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                count = result.get("data", {}).get("Aggregate", {}).get(config.WEAVIATE_CLASS_NAME, [{}])[0].get("meta", {}).get("count", 0)
+                print(f"   ✓ Total objects: {count}")
+            else:
+                print(f"   ⚠️  Count failed: {response.status_code}")
             
             print("=" * 70)
             print("✅ All search tests completed!")
             
         except Exception as e:
             print(f"❌ Search test failed: {e}")
+            import traceback
+            traceback.print_exc()
     
     async def run(self):
         """Run the complete test pipeline"""
