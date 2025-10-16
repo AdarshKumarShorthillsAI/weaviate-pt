@@ -8,6 +8,8 @@ import json
 import logging
 import os
 import sys
+import gc
+import signal
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 
@@ -18,6 +20,12 @@ import aiohttp
 import config
 from openai_client import create_async_openai_client
 from weaviate_client import create_weaviate_client, batch_insert_objects
+from resource_manager import (
+    setup_signal_handlers, 
+    setup_atexit_handler,
+    register_cleanup,
+    force_cleanup
+)
 
 
 # Setup logging
@@ -275,6 +283,10 @@ class LyricsProcessor:
                     # Update checkpoint for the previous batch
                     if last_batch_df is not None:
                         self.checkpoint.update(rows_processed=len(last_batch_df), errors=errors)
+                    
+                    # Add small delay to prevent server overload
+                    if hasattr(config, 'BATCH_INSERT_DELAY') and config.BATCH_INSERT_DELAY > 0:
+                        await asyncio.sleep(config.BATCH_INSERT_DELAY)
                 
                 # Wait for current batch embeddings to complete
                 batch_results = await embedding_task
@@ -297,7 +309,7 @@ class LyricsProcessor:
         return chunk_success, chunk_errors
     
     async def process_csv(self):
-        """Main processing function"""
+        """Main processing function with proper file handle management"""
         logger.info("Starting CSV processing...")
         logger.info(f"Resuming from row: {self.checkpoint.get_last_row()}")
         
@@ -308,10 +320,12 @@ class LyricsProcessor:
         total_errors = 0
         chunk_number = 0
         skip_rows = self.checkpoint.get_last_row()
+        chunk_iterator = None
         
         try:
             # Get total rows for progress tracking
-            total_rows = sum(1 for _ in open(config.CSV_FILE_PATH)) - 1  # -1 for header
+            with open(config.CSV_FILE_PATH, 'r') as f:
+                total_rows = sum(1 for _ in f) - 1  # -1 for header
             logger.info(f"Total rows in CSV: {total_rows}")
             
             # Check if MAX_ROWS_TO_PROCESS is set
@@ -371,32 +385,113 @@ class LyricsProcessor:
             
         except Exception as e:
             logger.error(f"Fatal error during processing: {e}")
+            logger.error("Checkpoint has been saved - you can resume from this point")
             raise
         finally:
+            # Cleanup: Close chunk iterator if it exists
+            if chunk_iterator is not None:
+                try:
+                    chunk_iterator.close()
+                    logger.info("✓ CSV chunk iterator closed")
+                except:
+                    pass
+            
             # Close Weaviate client
             if self.weaviate_client:
-                self.weaviate_client.close()
+                try:
+                    self.weaviate_client.close()
+                    logger.info("✓ Weaviate connection closed")
+                except Exception as e:
+                    logger.error(f"Error closing Weaviate: {e}")
+            
+            # Force garbage collection of dataframes
+            gc.collect()
+            logger.info("✓ Memory cleaned up")
     
     async def close(self):
-        """Cleanup resources"""
+        """Cleanup resources with proper error handling"""
+        logger.info("Starting resource cleanup...")
+        
+        # Close Weaviate client
         if self.weaviate_client:
-            self.weaviate_client.close()
-        await self.openai_client.close()
+            try:
+                logger.info("Closing Weaviate connection...")
+                self.weaviate_client.close()
+                logger.info("✓ Weaviate connection closed")
+            except Exception as e:
+                logger.error(f"Error closing Weaviate: {e}")
+            finally:
+                self.weaviate_client = None
+        
+        # Close OpenAI client
+        if self.openai_client:
+            try:
+                logger.info("Closing OpenAI client...")
+                await self.openai_client.close()
+                logger.info("✓ OpenAI client closed")
+            except Exception as e:
+                logger.error(f"Error closing OpenAI client: {e}")
+            finally:
+                self.openai_client = None
+        
+        # Force garbage collection
+        logger.info("Running garbage collection...")
+        collected = gc.collect()
+        logger.info(f"✓ Garbage collection complete: {collected} objects collected")
+        
+        logger.info("✓ All resources cleaned up")
 
 
 async def main():
-    """Main entry point"""
-    processor = LyricsProcessor()
+    """Main entry point with proper resource management"""
+    # Setup signal handlers for graceful shutdown
+    setup_signal_handlers()
+    setup_atexit_handler()
+    
+    processor = None
     
     try:
+        processor = LyricsProcessor()
+        
+        # Register cleanup for Weaviate connection
+        if processor.weaviate_client:
+            register_cleanup(
+                lambda: processor.weaviate_client.close() if processor.weaviate_client else None,
+                "Weaviate connection"
+            )
+        
         await processor.process_csv()
+        
     except KeyboardInterrupt:
-        logger.info("Processing interrupted by user. Progress saved. Run again to resume.")
+        logger.warning("\n" + "=" * 70)
+        logger.warning("Processing interrupted by user (Ctrl+C)")
+        logger.warning("=" * 70)
+        logger.info("Progress has been saved to checkpoint file")
+        logger.info("Run the script again to resume from where you left off")
+        
     except Exception as e:
-        logger.error(f"Fatal error: {e}")
-        sys.exit(1)
+        logger.error("=" * 70)
+        logger.error(f"Fatal error occurred: {e}")
+        logger.error("=" * 70)
+        import traceback
+        traceback.print_exc()
+        logger.error("Initiating emergency cleanup...")
+        
     finally:
-        await processor.close()
+        # Always cleanup resources
+        if processor:
+            try:
+                await processor.close()
+            except Exception as e:
+                logger.error(f"Error during processor cleanup: {e}")
+        
+        # Force garbage collection
+        logger.info("Final garbage collection...")
+        for i in range(2):
+            collected = gc.collect()
+            logger.info(f"  GC pass {i+1}: {collected} objects collected")
+        
+        logger.info("All resources released")
 
 
 if __name__ == "__main__":

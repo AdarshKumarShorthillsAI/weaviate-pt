@@ -4,9 +4,13 @@ Tests connectivity to OpenAI and Weaviate.
 """
 
 import sys
+import logging
 import config
 from openai_client import create_sync_openai_client
 from weaviate_client import create_weaviate_client
+
+# Setup logging for verify_setup
+logging.basicConfig(level=logging.WARNING)  # Only show warnings and errors
 
 def test_openai():
     """Test OpenAI API connection using centralized client"""

@@ -5,6 +5,8 @@ All scripts use this module for consistent Weaviate operations.
 
 import logging
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import weaviate
 from weaviate.connect import ConnectionParams
 from typing import List, Dict, Any, Optional, Tuple
@@ -12,6 +14,49 @@ from typing import List, Dict, Any, Optional, Tuple
 import config
 
 logger = logging.getLogger(__name__)
+
+# Global session for connection pooling and reuse
+_http_session = None
+
+
+def get_http_session():
+    """
+    Get or create a requests session with connection pooling and retry logic.
+    Reuses connections to avoid 'Connection refused' errors.
+    """
+    global _http_session
+    
+    if _http_session is None:
+        _http_session = requests.Session()
+        
+        # Configure retry strategy
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=1,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS", "TRACE"]
+        )
+        
+        # Mount adapter with retry strategy
+        adapter = HTTPAdapter(
+            max_retries=retry_strategy,
+            pool_connections=10,  # Keep 10 connections alive
+            pool_maxsize=20,      # Max pool size
+            pool_block=False
+        )
+        
+        _http_session.mount("http://", adapter)
+        _http_session.mount("https://", adapter)
+        
+        # Set keep-alive
+        _http_session.headers.update({
+            'Connection': 'keep-alive',
+            'Keep-Alive': 'timeout=60, max=1000'
+        })
+        
+        logger.info("Created HTTP session with connection pooling and retry logic")
+    
+    return _http_session
 
 
 def create_weaviate_client():
@@ -49,6 +94,7 @@ def create_weaviate_client():
         if use_grpc:
             # gRPC enabled
             logger.info(f"  gRPC enabled: {host}:50051")
+            import weaviate.classes.init as wvc_init
             client = weaviate.WeaviateClient(
                 connection_params=ConnectionParams.from_params(
                     http_host=host,
@@ -59,13 +105,17 @@ def create_weaviate_client():
                     grpc_secure=is_https
                 ),
                 auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
-                skip_init_checks=True
+                skip_init_checks=True,
+                additional_config=wvc_init.AdditionalConfig(
+                    timeout=wvc_init.Timeout(init=30, query=60, insert=120)
+                )
             )
         else:
             # HTTP-only mode (no gRPC)
             logger.info(f"  gRPC disabled (HTTP-only mode)")
             # Must provide different port for validation but won't actually use gRPC
             dummy_grpc_port = port + 1 if port < 65535 else port - 1
+            import weaviate.classes.init as wvc_init
             client = weaviate.WeaviateClient(
                 connection_params=ConnectionParams.from_params(
                     http_host=host,
@@ -76,11 +126,19 @@ def create_weaviate_client():
                     grpc_secure=False
                 ),
                 auth_client_secret=weaviate.auth.AuthApiKey(config.WEAVIATE_API_KEY) if use_auth else None,
-                skip_init_checks=True
+                skip_init_checks=True,
+                additional_config=wvc_init.AdditionalConfig(
+                    timeout=wvc_init.Timeout(init=5, query=60, insert=120)  # Short init timeout
+                )
             )
         
-        client.connect()
-        logger.info(f"✓ Connected to Weaviate at {config.WEAVIATE_URL}")
+        try:
+            client.connect()
+            logger.info(f"✓ Connected to Weaviate at {config.WEAVIATE_URL}")
+        except Exception as conn_error:
+            logger.warning(f"Connection attempt had issues: {conn_error}")
+            logger.info("Client created anyway - REST API operations should still work")
+            # Don't raise - client object exists and REST API calls will work
         
         return client
         
@@ -92,7 +150,7 @@ def create_weaviate_client():
 def batch_insert_objects(objects: List[Dict[str, Any]], collection_name: str = None) -> Tuple[int, int]:
     """
     Insert multiple objects into Weaviate using REST API batch endpoint.
-    This avoids gRPC issues and provides faster batch inserts.
+    Uses connection pooling to avoid 'Connection refused' errors.
     
     Args:
         objects: List of objects to insert, each with 'properties' and 'vector'
@@ -120,13 +178,16 @@ def batch_insert_objects(objects: List[Dict[str, Any]], collection_name: str = N
         if not batch_payload:
             return 0, 0
         
+        # Get reusable session with connection pooling
+        session = get_http_session()
+        
         # Prepare headers
         headers = {"Content-Type": "application/json"}
         if config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key":
             headers["Authorization"] = f"Bearer {config.WEAVIATE_API_KEY}"
         
-        # Send batch insert request via REST API
-        response = requests.post(
+        # Send batch insert request using session (reuses connections)
+        response = session.post(
             f"{config.WEAVIATE_URL}/v1/batch/objects",
             headers=headers,
             json={"objects": batch_payload},
@@ -153,6 +214,11 @@ def batch_insert_objects(objects: List[Dict[str, Any]], collection_name: str = N
         
         return success_count, error_count
         
+    except requests.exceptions.ConnectionError as e:
+        logger.error(f"Connection error during batch insert: {e}")
+        logger.error("This might be due to server overload or network issues")
+        logger.error("Suggestion: Reduce MAX_CONCURRENT_EMBEDDINGS or add delay between batches")
+        return 0, len(objects)
     except Exception as e:
         logger.error(f"Error during batch insert: {e}")
         return 0, len(objects)
@@ -162,6 +228,7 @@ def insert_single_object(properties: Dict[str, Any], vector: List[float],
                         collection_name: str = None) -> Optional[str]:
     """
     Insert a single object into Weaviate using REST API.
+    Uses connection pooling for reliability.
     
     Args:
         properties: Object properties
@@ -175,6 +242,9 @@ def insert_single_object(properties: Dict[str, Any], vector: List[float],
         collection_name = config.WEAVIATE_CLASS_NAME
     
     try:
+        # Get reusable session
+        session = get_http_session()
+        
         headers = {"Content-Type": "application/json"}
         if config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key":
             headers["Authorization"] = f"Bearer {config.WEAVIATE_API_KEY}"
@@ -185,7 +255,7 @@ def insert_single_object(properties: Dict[str, Any], vector: List[float],
             "vector": vector
         }
         
-        response = requests.post(
+        response = session.post(
             f"{config.WEAVIATE_URL}/v1/objects",
             headers=headers,
             json=payload,
