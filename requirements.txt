@@ -8,8 +8,9 @@ openai>=1.0.0
 # Weaviate client
 weaviate-client>=3.24.0
 
-# Async HTTP client
+# HTTP clients
 aiohttp>=3.9.0
+requests>=2.31.0
 
 # Progress bar
 tqdm>=4.66.0
