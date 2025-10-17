@@ -14,6 +14,8 @@ __pycache__/
 # Processing files
 processing_checkpoint.json
 processing_log.log
+processing_errors.jsonl
+failed_ids.txt
 
 # Configuration with credentials (DO NOT COMMIT)
 config.example.py
@@ -53,3 +55,4 @@ activate.sh
 CENTRALIZED_CLIENTS.md
 CONNECTION_POOLING_FIX.md
 RESOURCE_MANAGEMENT.md
+ERROR_TRACKING_GUIDE.md

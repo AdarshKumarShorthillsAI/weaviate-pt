@@ -26,6 +26,7 @@ from resource_manager import (
     register_cleanup,
     force_cleanup
 )
+from error_tracker import ErrorTracker
 
 
 # Setup logging
@@ -87,6 +88,7 @@ class LyricsProcessor:
         
         self.weaviate_client = None
         self.checkpoint = CheckpointManager(config.CHECKPOINT_FILE)
+        self.error_tracker = ErrorTracker()  # Track all failures
         self.semaphore = asyncio.Semaphore(config.MAX_CONCURRENT_EMBEDDINGS)
         
     def initialize_weaviate(self):
@@ -105,10 +107,21 @@ class LyricsProcessor:
         try:
             # Convert row to dict
             data = row.to_dict()
+            song_id = str(data.get('id', 'unknown'))
             
             # Validate required fields
             if pd.isna(data.get('lyrics')) or str(data.get('lyrics')).strip() == '':
-                logger.warning(f"Skipping row with empty lyrics: ID={data.get('id')}")
+                logger.warning(f"Skipping row with empty lyrics: ID={song_id}")
+                # Log to error tracker
+                self.error_tracker.log_validation_error(
+                    song_id=song_id,
+                    reason="Empty or missing lyrics field",
+                    row_data={
+                        "title": str(data.get('title', '')),
+                        "artist": str(data.get('artist', '')),
+                        "lyrics": ""
+                    }
+                )
                 return None
             
             # Clean and convert data types
@@ -120,7 +133,7 @@ class LyricsProcessor:
                 'views': int(data.get('views', 0)) if pd.notna(data.get('views')) else 0,
                 'features': str(data.get('features', '')),
                 'lyrics': str(data.get('lyrics', '')),
-                'song_id': str(data.get('id', '')),
+                'song_id': song_id,
                 'language_cld3': str(data.get('language_cld3', '')),
                 'language_ft': str(data.get('language_ft', '')),
                 'language': str(data.get('language', ''))
@@ -129,7 +142,15 @@ class LyricsProcessor:
             return cleaned_data
             
         except Exception as e:
-            logger.error(f"Error cleaning row: {e}, Row ID: {row.get('id')}")
+            song_id = str(row.get('id', 'unknown'))
+            logger.error(f"Error cleaning row: {e}, Row ID: {song_id}")
+            # Log to error tracker
+            self.error_tracker.log_error(
+                error_type="DATA_CLEANING_ERROR",
+                song_id=song_id,
+                reason=str(e),
+                additional_data={"raw_data": str(row.to_dict())[:200]}
+            )
             return None
     
     async def get_embedding(self, text: str, retry_count: int = 0) -> Optional[List[float]]:
@@ -168,6 +189,12 @@ class LyricsProcessor:
         for data, embedding in zip(batch_data, embeddings):
             if isinstance(embedding, Exception):
                 logger.error(f"Exception getting embedding for ID {data['song_id']}: {embedding}")
+                # Log to error tracker
+                self.error_tracker.log_embedding_error(
+                    song_id=data['song_id'],
+                    reason=str(embedding),
+                    row_data=data
+                )
                 results.append((data, None))
             else:
                 results.append((data, embedding))
@@ -186,6 +213,12 @@ class LyricsProcessor:
             for data, embedding in batch_results:
                 if embedding is None:
                     logger.warning(f"Skipping indexing for ID {data['song_id']} due to missing embedding")
+                    # Log to error tracker
+                    self.error_tracker.log_indexing_error(
+                        song_id=data['song_id'],
+                        reason="Missing embedding (previous step failed)",
+                        row_data={"title": data['title'], "artist": data['artist'], "has_embedding": False}
+                    )
                     error_count += 1
                     continue
                 
