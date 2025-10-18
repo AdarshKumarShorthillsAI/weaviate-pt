@@ -17,6 +17,12 @@ processing_log.log
 processing_errors.jsonl
 failed_ids.txt
 
+# Performance testing query files (large, can be regenerated)
+queries_bm25.json
+queries_hybrid_01.json
+queries_hybrid_09.json
+queries_mixed.json
+
 # Configuration with credentials (DO NOT COMMIT)
 config.example.py
 
@@ -51,7 +57,6 @@ REMOTE_WEAVIATE_SETUP.md
 CLONE_QUICKSTART.txt
 GITHUB_AUTHENTICATION.md
 SERVER_CLONE_GUIDE.txt
-activate.sh
 CENTRALIZED_CLIENTS.md
 CONNECTION_POOLING_FIX.md
 RESOURCE_MANAGEMENT.md
@@ -59,3 +64,5 @@ ERROR_TRACKING_GUIDE.md
 COLLECTION_COPYING.md
 LYRICS_CHUNKING.md
 COPY_WORKFLOW_GUIDE.txt
+PERFORMANCE_TESTING_GUIDE.md
+PERFORMANCE_TEST_SCENARIOS.md
