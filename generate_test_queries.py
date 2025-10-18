@@ -71,7 +71,7 @@ def get_embedding_for_query(query_text):
         return None
 
 
-def generate_bm25_multi_collection_query(query_text):
+def generate_bm25_multi_collection_query(query_text, limit=200):
     """Generate BM25 search query for ALL collections in single request"""
     collection_queries = []
     
@@ -79,7 +79,7 @@ def generate_bm25_multi_collection_query(query_text):
         collection_query = f"""
         {collection}(
           bm25: {{query: "{query_text}", properties: ["title", "lyrics"]}}
-          limit: 200
+          limit: {limit}
         ) {{
           title
           tag
@@ -111,7 +111,7 @@ def generate_bm25_multi_collection_query(query_text):
     """
 
 
-def generate_hybrid_multi_collection_query(query_text, query_vector, alpha):
+def generate_hybrid_multi_collection_query(query_text, query_vector, alpha, limit=200):
     """Generate hybrid search query for ALL collections in single request"""
     # Format vector as JSON array
     vector_str = json.dumps(query_vector)
@@ -126,7 +126,7 @@ def generate_hybrid_multi_collection_query(query_text, query_vector, alpha):
             alpha: {alpha}
             vector: {vector_str}
           }}
-          limit: 200
+          limit: {limit}
         ) {{
           title
           tag
@@ -158,14 +158,33 @@ def generate_hybrid_multi_collection_query(query_text, query_vector, alpha):
     """
 
 
-def generate_all_query_files():
+def generate_all_query_files(result_limit=None):
     """Generate all 4 query files with pre-computed embeddings"""
     
     print("=" * 70)
     print("PERFORMANCE TEST QUERY GENERATOR")
     print("=" * 70)
+    
+    # Get limit from user if not provided
+    if result_limit is None:
+        print("\n📊 Configuration:")
+        limit_input = input("Enter result limit per collection (default: 200): ").strip()
+        if limit_input:
+            try:
+                result_limit = int(limit_input)
+                if result_limit <= 0:
+                    print("❌ Limit must be positive. Using default: 200")
+                    result_limit = 200
+            except ValueError:
+                print("❌ Invalid number. Using default: 200")
+                result_limit = 200
+        else:
+            result_limit = 200
+    
     print(f"\nGenerating queries for {len(SEARCH_QUERIES)} search terms")
     print(f"Across {len(COLLECTIONS)} collections")
+    print(f"Result limit per collection: {result_limit}")
+    print(f"Total results per query: {result_limit * len(COLLECTIONS):,}")
     print(f"Total queries per file: {len(SEARCH_QUERIES)}")
     print("=" * 70)
     
@@ -193,14 +212,16 @@ def generate_all_query_files():
         query_data = {
             "query_text": query_text,
             "search_type": "bm25",
-            "graphql": generate_bm25_multi_collection_query(query_text)
+            "limit": result_limit,
+            "graphql": generate_bm25_multi_collection_query(query_text, limit=result_limit)
         }
         bm25_queries.append(query_data)
     
-    with open("queries_bm25.json", "w") as f:
+    filename_bm25 = f"queries_bm25_{result_limit}.json"
+    with open(filename_bm25, "w") as f:
         json.dump(bm25_queries, f, indent=2)
     
-    print(f"✅ Created: queries_bm25.json ({len(bm25_queries)} multi-collection queries)")
+    print(f"✅ Created: {filename_bm25} ({len(bm25_queries)} multi-collection queries)")
     
     # File 2: Hybrid alpha=0.1
     print("\n📝 Step 3: Generating Hybrid (alpha=0.1) query file...")
@@ -210,16 +231,18 @@ def generate_all_query_files():
             "query_text": query_text,
             "search_type": "hybrid_0.1",
             "alpha": 0.1,
+            "limit": result_limit,
             "graphql": generate_hybrid_multi_collection_query(
-                query_text, query_embeddings[query_text], 0.1
+                query_text, query_embeddings[query_text], 0.1, limit=result_limit
             )
         }
         hybrid_01_queries.append(query_data)
     
-    with open("queries_hybrid_01.json", "w") as f:
+    filename_hybrid_01 = f"queries_hybrid_01_{result_limit}.json"
+    with open(filename_hybrid_01, "w") as f:
         json.dump(hybrid_01_queries, f, indent=2)
     
-    print(f"✅ Created: queries_hybrid_01.json ({len(hybrid_01_queries)} multi-collection queries)")
+    print(f"✅ Created: {filename_hybrid_01} ({len(hybrid_01_queries)} multi-collection queries)")
     
     # File 3: Hybrid alpha=0.9
     print("\n📝 Step 4: Generating Hybrid (alpha=0.9) query file...")
@@ -229,16 +252,18 @@ def generate_all_query_files():
             "query_text": query_text,
             "search_type": "hybrid_0.9",
             "alpha": 0.9,
+            "limit": result_limit,
             "graphql": generate_hybrid_multi_collection_query(
-                query_text, query_embeddings[query_text], 0.9
+                query_text, query_embeddings[query_text], 0.9, limit=result_limit
             )
         }
         hybrid_09_queries.append(query_data)
     
-    with open("queries_hybrid_09.json", "w") as f:
+    filename_hybrid_09 = f"queries_hybrid_09_{result_limit}.json"
+    with open(filename_hybrid_09, "w") as f:
         json.dump(hybrid_09_queries, f, indent=2)
     
-    print(f"✅ Created: queries_hybrid_09.json ({len(hybrid_09_queries)} multi-collection queries)")
+    print(f"✅ Created: {filename_hybrid_09} ({len(hybrid_09_queries)} multi-collection queries)")
     
     # File 4: Mixed (all three types)
     print("\n📝 Step 5: Generating Mixed query file...")
@@ -251,7 +276,8 @@ def generate_all_query_files():
             query_data = {
                 "query_text": query_text,
                 "search_type": "bm25",
-                "graphql": generate_bm25_multi_collection_query(query_text)
+                "limit": result_limit,
+                "graphql": generate_bm25_multi_collection_query(query_text, limit=result_limit)
             }
         
         elif i < 20:
@@ -260,8 +286,9 @@ def generate_all_query_files():
                 "query_text": query_text,
                 "search_type": "hybrid_0.1",
                 "alpha": 0.1,
+                "limit": result_limit,
                 "graphql": generate_hybrid_multi_collection_query(
-                    query_text, query_embeddings[query_text], 0.1
+                    query_text, query_embeddings[query_text], 0.1, limit=result_limit
                 )
             }
         
@@ -271,38 +298,57 @@ def generate_all_query_files():
                 "query_text": query_text,
                 "search_type": "hybrid_0.9",
                 "alpha": 0.9,
+                "limit": result_limit,
                 "graphql": generate_hybrid_multi_collection_query(
-                    query_text, query_embeddings[query_text], 0.9
+                    query_text, query_embeddings[query_text], 0.9, limit=result_limit
                 )
             }
         
         mixed_queries.append(query_data)
     
-    with open("queries_mixed.json", "w") as f:
+    filename_mixed = f"queries_mixed_{result_limit}.json"
+    with open(filename_mixed, "w") as f:
         json.dump(mixed_queries, f, indent=2)
     
-    print(f"✅ Created: queries_mixed.json ({len(mixed_queries)} multi-collection queries)")
+    print(f"✅ Created: {filename_mixed} ({len(mixed_queries)} multi-collection queries)")
     
     # Summary
     print("\n" + "=" * 70)
     print("SUMMARY")
     print("=" * 70)
-    print(f"✅ Generated 4 query files:")
-    print(f"   1. queries_bm25.json       - 30 BM25 queries")
-    print(f"   2. queries_hybrid_01.json  - 30 Hybrid (alpha=0.1) queries")
-    print(f"   3. queries_hybrid_09.json  - 30 Hybrid (alpha=0.9) queries")
-    print(f"   4. queries_mixed.json      - 10 BM25 + 10 Hybrid 0.1 + 10 Hybrid 0.9")
+    print(f"✅ Generated 4 query files with limit={result_limit}:")
+    print(f"   1. queries_bm25_{result_limit}.json       - 30 BM25 queries")
+    print(f"   2. queries_hybrid_01_{result_limit}.json  - 30 Hybrid (alpha=0.1) queries")
+    print(f"   3. queries_hybrid_09_{result_limit}.json  - 30 Hybrid (alpha=0.9) queries")
+    print(f"   4. queries_mixed_{result_limit}.json      - 10 BM25 + 10 Hybrid 0.1 + 10 Hybrid 0.9")
     print(f"\n📊 Each query searches {len(COLLECTIONS)} collections")
-    print(f"   Returns 200 results per collection")
-    print(f"   Total results per query: {200 * len(COLLECTIONS):,}")
+    print(f"   Returns {result_limit} results per collection")
+    print(f"   Total results per query: {result_limit * len(COLLECTIONS):,}")
     print("\n💡 Embeddings pre-generated (stored in files)")
     print("   No API calls needed during performance testing!")
+    print(f"\n📝 To use these files:")
+    print(f"   Update Locust files to load: queries_*_{result_limit}.json")
     print("=" * 70)
     
     return True
 
 
 if __name__ == "__main__":
-    success = generate_all_query_files()
+    import sys
+    
+    # Check if limit provided as command line argument
+    if len(sys.argv) > 1:
+        try:
+            limit = int(sys.argv[1])
+            success = generate_all_query_files(result_limit=limit)
+        except ValueError:
+            print(f"❌ Invalid limit: {sys.argv[1]}")
+            print("Usage: python generate_test_queries.py [limit]")
+            print("Example: python generate_test_queries.py 500")
+            sys.exit(1)
+    else:
+        # Interactive mode
+        success = generate_all_query_files()
+    
     sys.exit(0 if success else 1)
 
