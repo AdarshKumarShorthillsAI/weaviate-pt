@@ -146,10 +146,24 @@ class CollectionCopier:
             
             if response.status_code == 200:
                 result = response.json()
+                
+                # Check for GraphQL errors
+                if "errors" in result:
+                    logger.error(f"GraphQL errors: {result['errors']}")
+                    return None
+                
                 objects = result.get("data", {}).get("Get", {}).get(self.source_collection, [])
+                
+                # Debug: Log what we got
+                if not objects:
+                    logger.warning(f"GraphQL returned empty list. Full response: {result}")
+                else:
+                    logger.debug(f"Fetched {len(objects)} objects successfully")
+                
                 return objects
             else:
                 logger.error(f"Failed to fetch objects: {response.status_code}")
+                logger.error(f"Response: {response.text}")
                 return None
                 
         except Exception as e:
