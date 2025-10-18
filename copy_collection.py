@@ -207,14 +207,16 @@ class CollectionCopier:
             logger.error(f"Error during batch insert: {e}")
             return 0, len(objects)
     
-    def copy_objects(self, total_objects: int, batch_size: int = 100):
+    def copy_objects(self, total_objects: int, batch_size: int = None):
         """
         Copy objects from source to target collection with memory management.
         
         Args:
             total_objects: Total number of objects to copy
-            batch_size: Batch size for fetching and inserting
+            batch_size: Batch size for fetching and inserting (defaults to config.COPY_BATCH_SIZE)
         """
+        if batch_size is None:
+            batch_size = getattr(config, 'COPY_BATCH_SIZE', 100)
         logger.info("=" * 70)
         logger.info(f"Starting copy operation")
         logger.info(f"Source: {self.source_collection}")

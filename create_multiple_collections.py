@@ -32,14 +32,16 @@ COLLECTIONS_CONFIG = [
 ]
 
 
-def create_all_collections(source_collection: str = None, batch_size: int = 100):
+def create_all_collections(source_collection: str = None, batch_size: int = None):
     """
     Create all configured collections by copying from source.
     
     Args:
         source_collection: Source collection name (defaults to config.WEAVIATE_CLASS_NAME)
-        batch_size: Batch size for copying (default: 100)
+        batch_size: Batch size for copying (defaults to config.COPY_BATCH_SIZE)
     """
+    if batch_size is None:
+        batch_size = getattr(config, 'COPY_BATCH_SIZE', 100)
     if source_collection is None:
         source_collection = config.WEAVIATE_CLASS_NAME
     
