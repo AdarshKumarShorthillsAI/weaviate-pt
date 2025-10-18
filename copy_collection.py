@@ -94,26 +94,29 @@ class CollectionCopier:
             logger.error(f"Error creating target schema: {e}")
             return False
     
-    def get_objects_with_vectors(self, limit: int, offset: int = 0) -> Optional[List[Dict]]:
+    def get_objects_with_vectors(self, limit: int, after_id: str = None) -> Optional[List[Dict]]:
         """
-        Get objects from source collection with vectors using GraphQL.
+        Get objects from source collection with vectors using cursor-based pagination.
+        Uses 'after' parameter instead of offset to avoid offset limit (max ~100k).
         
         Args:
             limit: Number of objects to fetch
-            offset: Offset for pagination
+            after_id: UUID to start after (cursor-based pagination)
         
         Returns:
             List of objects with properties and vectors
         """
         try:
-            # GraphQL query to get objects with vectors
+            # Build GraphQL query with cursor-based pagination
+            after_clause = f'after: "{after_id}"' if after_id else ''
+            
             query = {
                 "query": f"""
                 {{
                   Get {{
                     {self.source_collection}(
                       limit: {limit}
-                      offset: {offset}
+                      {after_clause}
                     ) {{
                       title
                       tag
@@ -123,7 +126,6 @@ class CollectionCopier:
                       features
                       lyrics
                       song_id
-                      chunk_info
                       language_cld3
                       language_ft
                       language
@@ -241,27 +243,31 @@ class CollectionCopier:
         
         total_success = 0
         total_errors = 0
-        offset = 0
+        total_fetched = 0
         batch_count = 0
+        last_id = None  # Cursor for pagination
         
         with tqdm(total=total_objects, desc=f"Copying to {self.target_collection}", unit="obj") as pbar:
-            while offset < total_objects:
+            while total_fetched < total_objects:
                 batch_count += 1
                 
                 # Calculate batch size for this iteration
-                current_batch_size = min(batch_size, total_objects - offset)
+                current_batch_size = min(batch_size, total_objects - total_fetched)
                 
-                # Fetch objects with vectors
-                logger.debug(f"Fetching batch {batch_count}: offset={offset}, limit={current_batch_size}")
-                objects = self.get_objects_with_vectors(limit=current_batch_size, offset=offset)
+                # Fetch objects with vectors using cursor-based pagination
+                logger.debug(f"Fetching batch {batch_count}: after_id={last_id}, limit={current_batch_size}")
+                objects = self.get_objects_with_vectors(limit=current_batch_size, after_id=last_id)
                 
                 if objects is None:
-                    logger.error(f"Failed to fetch batch at offset {offset}")
+                    logger.error(f"Failed to fetch batch {batch_count}")
                     break
                 
                 if not objects:
-                    logger.warning(f"No more objects to fetch (got 0 objects at offset {offset})")
+                    logger.warning(f"No more objects to fetch (got 0 objects after ID {last_id})")
                     break
+                
+                # Get last object's ID for next cursor
+                last_id = objects[-1].get('_additional', {}).get('id')
                 
                 # Insert batch into target
                 logger.debug(f"Inserting {len(objects)} objects into {self.target_collection}")
@@ -269,12 +275,12 @@ class CollectionCopier:
                 
                 total_success += success
                 total_errors += errors
+                total_fetched += len(objects)
                 
                 logger.debug(f"Batch {batch_count} result: {success} successful, {errors} errors")
                 
                 # Update progress
                 pbar.update(len(objects))
-                offset += len(objects)
                 
                 # Explicit cleanup of batch data to free memory
                 objects = None
@@ -282,7 +288,7 @@ class CollectionCopier:
                 # Garbage collection every 10 batches (every 1000 objects)
                 if batch_count % 10 == 0:
                     collected = gc.collect()
-                    logger.info(f"GC after batch {batch_count}: {collected} objects freed, offset={offset:,}")
+                    logger.info(f"GC after batch {batch_count}: {collected} objects freed, fetched={total_fetched:,}")
                 
                 # Small delay to prevent server overload
                 time.sleep(0.1)
