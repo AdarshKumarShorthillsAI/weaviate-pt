@@ -25,9 +25,9 @@ def on_locust_init(environment, **kwargs):
     print("=" * 70)
     
     try:
-        with open("queries_bm25.json", "r") as f:
+        with open("queries_bm25_200.json", "r") as f:
             QUERIES_BM25 = json.load(f)
-        print(f"✓ Loaded queries_bm25.json: {len(QUERIES_BM25)} queries")
+        print(f"✓ Loaded query file: {len(QUERIES_BM25)} queries")
         print(f"  Each query searches 9 collections")
         print(f"  Returns 200 results per collection")
         print("=" * 70)

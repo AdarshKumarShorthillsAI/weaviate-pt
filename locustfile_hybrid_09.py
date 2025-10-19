@@ -25,9 +25,9 @@ def on_locust_init(environment, **kwargs):
     print("=" * 70)
     
     try:
-        with open("queries_hybrid_09.json", "r") as f:
+        with open("queries_hybrid_09_200.json", "r") as f:
             QUERIES_HYBRID_09 = json.load(f)
-        print(f"✓ Loaded queries_hybrid_09.json: {len(QUERIES_HYBRID_09)} queries")
+        print(f"✓ Loaded query file: {len(QUERIES_HYBRID_09)} queries")
         print(f"  Search type: Hybrid (alpha=0.9 - vector-focused)")
         print(f"  Each query searches 9 collections")
         print(f"  Returns 200 results per collection")

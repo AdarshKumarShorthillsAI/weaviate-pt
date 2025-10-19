@@ -54,36 +54,33 @@ def update_locustfile_for_limit(locustfile, limit):
     
     # Read file
     with open(locustfile, 'r') as f:
-        content = f.read()
+        lines = f.readlines()
     
     # Determine search type from filename
     if 'bm25' in locustfile:
-        old_pattern = 'queries_bm25'
         new_filename = f'queries_bm25_{limit}.json'
     elif 'hybrid_01' in locustfile:
-        old_pattern = 'queries_hybrid_01'
         new_filename = f'queries_hybrid_01_{limit}.json'
     elif 'hybrid_09' in locustfile:
-        old_pattern = 'queries_hybrid_09'
         new_filename = f'queries_hybrid_09_{limit}.json'
     elif 'mixed' in locustfile:
-        old_pattern = 'queries_mixed'
         new_filename = f'queries_mixed_{limit}.json'
     else:
         return
     
-    # Replace any queries_*_*.json with the correct one for this limit
-    import re
-    pattern = f'{old_pattern}_\\d+\\.json'
-    content = re.sub(pattern, new_filename, content)
-    
-    # Also handle case where it's just queries_*.json (no limit suffix)
-    pattern2 = f'{old_pattern}\\.json'
-    content = content.replace(pattern2, new_filename)
+    # Update the line with open("queries_*.json", "r")
+    updated_lines = []
+    for line in lines:
+        if 'with open(' in line and 'queries_' in line and '.json' in line:
+            # Replace with correct filename
+            import re
+            # Match pattern: with open("queries_something.json" or with open('queries_something.json'
+            line = re.sub(r'(with\s+open\s*\(\s*["\'])queries_[^"\']+\.json', rf'\1{new_filename}', line)
+        updated_lines.append(line)
     
     # Write back
     with open(locustfile, 'w') as f:
-        f.write(content)
+        f.writelines(updated_lines)
 
 
 def main():
