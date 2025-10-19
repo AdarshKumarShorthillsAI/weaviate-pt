@@ -18,17 +18,18 @@ processing_errors.jsonl
 failed_ids.txt
 
 # Performance testing query files (large, can be regenerated)
-queries_bm25.json
-queries_hybrid_01.json
-queries_hybrid_09.json
-queries_mixed.json
+queries_bm25*.json
+queries_hybrid_01*.json
+queries_hybrid_09*.json
+queries_mixed*.json
 
 # Configuration with credentials (DO NOT COMMIT)
 config.example.py
 
 # Data files (large files that should not be in git)
-#*.csv
+# *.csv
 *.zip
+song_lyrics.csv
 
 # IDE
 .vscode/
@@ -40,29 +41,4 @@ config.example.py
 # OS
 .DS_Store
 Thumbs.db
-TESTING_GUIDE.md
-SYNC_VS_ASYNC_ANALYSIS.md
-setup_github.sh
-AZURE_OPENAI_SETUP.md
-CHANGES_SUMMARY.md
-GITHUB_SETUP.md
-PERFORMANCE_OPTIMIZATION.md
-PUSH_TO_GITHUB.txt
-QUICK_CONFIG_AZURE.txt
-SCHEMA_GUIDE.md
-SETUP_COMPLETE.md
-QUICKSTART.md
-FINAL_CONFIG_SUMMARY.md
-REMOTE_WEAVIATE_SETUP.md
-CLONE_QUICKSTART.txt
-GITHUB_AUTHENTICATION.md
-SERVER_CLONE_GUIDE.txt
-CENTRALIZED_CLIENTS.md
-CONNECTION_POOLING_FIX.md
-RESOURCE_MANAGEMENT.md
-ERROR_TRACKING_GUIDE.md
-COLLECTION_COPYING.md
-LYRICS_CHUNKING.md
-COPY_WORKFLOW_GUIDE.txt
-PERFORMANCE_TESTING_GUIDE.md
-PERFORMANCE_TEST_SCENARIOS.md
+docFiles
