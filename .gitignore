@@ -27,7 +27,7 @@ queries_mixed.json
 config.example.py
 
 # Data files (large files that should not be in git)
-*.csv
+#*.csv
 *.zip
 
 # IDE
