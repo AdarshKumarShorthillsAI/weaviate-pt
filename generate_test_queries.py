@@ -125,6 +125,7 @@ def generate_hybrid_multi_collection_query(query_text, query_vector, alpha, limi
             query: "{query_text}"
             alpha: {alpha}
             vector: {vector_str}
+            properties: ["title", "lyrics"]
           }}
           limit: {limit}
         ) {{
