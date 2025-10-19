@@ -66,7 +66,7 @@ def scan_reports():
     results = defaultdict(lambda: defaultdict(dict))
     
     # Expected folders
-    folders = ['1stIterQueries/reports_10', '1stIterQueries/reports_50', '1stIterQueries/reports_100', '1stIterQueries/reports_150', '1stIterQueries/reports_200']
+    folders = ['2ndIterQueries/reports_10', '2ndIterQueries/reports_50', '2ndIterQueries/reports_100', '2ndIterQueries/reports_150', '2ndIterQueries/reports_200']
     
     # Search types
     search_types = ['bm25', 'hybrid_01', 'hybrid_09', 'mixed']
@@ -489,7 +489,7 @@ def main():
     print("\n📝 Generating combined HTML report...")
     html = generate_html_report(results)
     
-    output_file = "combined_performance_report.html"
+    output_file = "combined_performance_report_2nd.html"
     with open(output_file, 'w') as f:
         f.write(html)
     
