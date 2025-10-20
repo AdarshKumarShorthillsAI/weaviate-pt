@@ -114,8 +114,22 @@ class WeaviateParallelUser(HttpUser):
         # Track total time for parallel batch
         batch_start = time.time()
         
-        # Run async function
-        results = asyncio.run(send_all_requests())
+        # Get or create event loop (Locust may already have one running)
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        
+        # Run async function using the event loop
+        if loop.is_running():
+            # Event loop already running (nested) - use run_coroutine_threadsafe
+            import concurrent.futures
+            future = asyncio.run_coroutine_threadsafe(send_all_requests(), loop)
+            results = future.result(timeout=60)
+        else:
+            # No event loop running - safe to use run_until_complete
+            results = loop.run_until_complete(send_all_requests())
         
         # Calculate total batch time
         batch_time = (time.time() - batch_start) * 1000  # Convert to ms
