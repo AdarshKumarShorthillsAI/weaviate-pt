@@ -42,3 +42,7 @@ song_lyrics.csv
 .DS_Store
 Thumbs.db
 docFiles
+setup_github.sh
+AUTOMATED_TESTING_GUIDE.md
+PARALLEL_VS_SINGLE_COMPARISON.md
+*.html

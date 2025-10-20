@@ -23,6 +23,29 @@ echo ""
 echo "═══════════════════════════════════════════════════════════════════════"
 echo ""
 
+# Step 0: Generate query files if they don't exist
+echo "📝 Checking for query files..."
+if [ ! -f "queries_bm25_${LIMIT}.json" ]; then
+    echo "⚠️  Query files not found. Generating..."
+    python generate_single_collection_queries.py
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to generate single-collection queries"
+        exit 1
+    fi
+fi
+
+if [ ! -f "queries_parallel_bm25_${LIMIT}.json" ]; then
+    echo "⚠️  Parallel query files not found. Generating..."
+    python generate_parallel_queries.py
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to generate parallel queries"
+        exit 1
+    fi
+fi
+
+echo "✅ All query files present"
+echo ""
+
 # Create comparison reports folder
 mkdir -p comparison_reports
 
