@@ -59,8 +59,8 @@ class WeaviateParallelUser(HttpUser):
     @task
     def parallel_search(self):
         """
-        Send 9 parallel requests (one per collection) using ThreadPoolExecutor.
-        Measures total time for all 9 requests to complete.
+        Send 9 parallel requests (one per collection) using asyncio + aiohttp.
+        True async parallelization - much more efficient than threads!
         """
         if not QUERIES_PARALLEL:
             return
@@ -68,59 +68,69 @@ class WeaviateParallelUser(HttpUser):
         # Pick random query
         query_data = random.choice(QUERIES_PARALLEL)
         
-        # Use ThreadPoolExecutor for true parallel requests
-        from concurrent.futures import ThreadPoolExecutor, as_completed
+        # Use asyncio for true async parallel requests
         import time
-        import requests
+        import aiohttp
+        
+        async def send_all_requests():
+            """Send all 9 requests in parallel using asyncio.gather"""
+            
+            async def send_single_request(session, query_info):
+                """Send single async request to one collection"""
+                collection_name = query_info["collection"]
+                graphql = query_info["graphql"]
+                
+                try:
+                    async with session.post(
+                        f"{config.WEAVIATE_URL}/v1/graphql",
+                        headers=self.headers,
+                        json={"query": graphql},
+                        timeout=aiohttp.ClientTimeout(total=30)
+                    ) as response:
+                        if response.status == 200:
+                            result = await response.json()
+                            if "errors" not in result:
+                                return ("success", collection_name, result)
+                            else:
+                                return ("error", collection_name, None)
+                        else:
+                            return ("error", collection_name, None)
+                except Exception as e:
+                    return ("error", collection_name, None)
+            
+            # Create aiohttp session
+            async with aiohttp.ClientSession() as session:
+                # Create tasks for all 9 collections
+                tasks = [
+                    send_single_request(session, query_info)
+                    for query_info in query_data["queries"]
+                ]
+                
+                # Execute all 9 requests in parallel using asyncio.gather
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                
+                return results
         
         # Track total time for parallel batch
         batch_start = time.time()
         
-        def send_single_request(query_info):
-            """Send single request to one collection"""
-            collection_name = query_info["collection"]
-            graphql = query_info["graphql"]
-            
-            try:
-                response = requests.post(
-                    f"{config.WEAVIATE_URL}/v1/graphql",
-                    headers=self.headers,
-                    json={"query": graphql},
-                    timeout=30
-                )
-                
-                if response.status_code == 200:
-                    result = response.json()
-                    if "errors" not in result:
-                        return ("success", collection_name, result, response.elapsed.total_seconds() * 1000)
-                    else:
-                        return ("error", collection_name, None, 0)
-                else:
-                    return ("error", collection_name, None, 0)
-            except Exception as e:
-                return ("error", collection_name, None, 0)
-        
-        # Send all 9 requests in parallel using ThreadPoolExecutor
-        results = []
-        with ThreadPoolExecutor(max_workers=9) as executor:
-            futures = [executor.submit(send_single_request, q) for q in query_data["queries"]]
-            
-            for future in as_completed(futures):
-                status, collection, result, response_time = future.result()
-                if status == "success":
-                    results.append(result)
+        # Run async function
+        results = asyncio.run(send_all_requests())
         
         # Calculate total batch time
         batch_time = (time.time() - batch_start) * 1000  # Convert to ms
         
+        # Count successes
+        successful_results = [r for r in results if isinstance(r, tuple) and r[0] == "success"]
+        
         # Report to Locust as a single logical operation
-        # This shows the TOTAL time to get results from all 9 collections
+        # This shows the TOTAL time to get results from all 9 collections using asyncio
         self.environment.events.request.fire(
             request_type="POST",
-            name="Parallel_All_9_Collections",
+            name="Async_Parallel_All_9_Collections",
             response_time=batch_time,
-            response_length=sum(len(str(r)) for r in results),
-            exception=None if len(results) == 9 else Exception(f"Only got {len(results)}/9 results"),
+            response_length=sum(len(str(r[2])) for r in successful_results if len(r) > 2),
+            exception=None if len(successful_results) == 9 else Exception(f"Only {len(successful_results)}/9 succeeded"),
             context={}
         )
 
