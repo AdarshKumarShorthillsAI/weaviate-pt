@@ -66,7 +66,7 @@ class APIUser(HttpUser):
             "/parallel-search",
             json=api_request,
             catch_response=True,
-            name="API_Parallel_9_Collections"
+            name="API_Total_Time"
         ) as response:
             if response.status_code == 200:
                 result = response.json()
@@ -74,6 +74,20 @@ class APIUser(HttpUser):
                 # Check if all 9 succeeded
                 if result.get("successful") == 9:
                     response.success()
+                    
+                    # Report pure search time separately (what we really care about!)
+                    timing = result.get("timing", {})
+                    pure_search_time = timing.get("pure_search_time_ms", 0)
+                    
+                    # Fire separate event for pure Weaviate search time
+                    self.environment.events.request.fire(
+                        request_type="SEARCH",
+                        name="Pure_Weaviate_Search_Time",
+                        response_time=pure_search_time,
+                        response_length=0,
+                        exception=None,
+                        context={}
+                    )
                 else:
                     response.failure(f"Only {result.get('successful')}/9 succeeded")
             else:

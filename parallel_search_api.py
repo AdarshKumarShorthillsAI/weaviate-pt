@@ -33,6 +33,7 @@ async def root():
 async def parallel_search(request: SearchRequest):
     """
     Execute 9 Weaviate searches in parallel using asyncio.gather().
+    Tracks pure search time separately from API overhead.
     
     Request body:
     {
@@ -43,17 +44,24 @@ async def parallel_search(request: SearchRequest):
         ]
     }
     
-    Returns merged results from all 9 collections.
+    Returns merged results with timing breakdown.
     """
+    import time
+    
+    # Track total API time
+    api_start = time.time()
     
     async def send_single_request(session, query_info):
-        """Send single async GraphQL request"""
+        """Send single async GraphQL request with timing"""
         collection = query_info.get("collection")
         graphql = query_info.get("graphql")
         
         headers = {"Content-Type": "application/json"}
         if config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key":
             headers["Authorization"] = f"Bearer {config.WEAVIATE_API_KEY}"
+        
+        # Track search time for this collection
+        search_start = time.time()
         
         try:
             async with session.post(
@@ -62,32 +70,42 @@ async def parallel_search(request: SearchRequest):
                 json={"query": graphql},
                 timeout=aiohttp.ClientTimeout(total=30)
             ) as response:
+                search_time = (time.time() - search_start) * 1000  # ms
+                
                 if response.status == 200:
                     result = await response.json()
                     if "errors" not in result:
                         return {
                             "status": "success",
                             "collection": collection,
+                            "search_time_ms": search_time,
                             "data": result
                         }
                     else:
                         return {
                             "status": "error",
                             "collection": collection,
+                            "search_time_ms": search_time,
                             "errors": result.get("errors")
                         }
                 else:
                     return {
                         "status": "error",
                         "collection": collection,
+                        "search_time_ms": search_time,
                         "http_status": response.status
                     }
         except Exception as e:
+            search_time = (time.time() - search_start) * 1000
             return {
                 "status": "error",
                 "collection": collection,
+                "search_time_ms": search_time,
                 "error": str(e)
             }
+    
+    # Track just the parallel search execution time
+    search_start = time.time()
     
     # Execute all 9 requests in parallel using asyncio.gather
     async with aiohttp.ClientSession() as session:
@@ -99,14 +117,32 @@ async def parallel_search(request: SearchRequest):
         # Execute in parallel
         results = await asyncio.gather(*tasks, return_exceptions=True)
     
+    # Pure search time (parallel execution only)
+    pure_search_time = (time.time() - search_start) * 1000  # ms
+    
     # Aggregate results
     successful = [r for r in results if isinstance(r, dict) and r.get("status") == "success"]
     errors = [r for r in results if isinstance(r, dict) and r.get("status") == "error"]
+    
+    # Get max search time (slowest collection)
+    max_search_time = max([r.get("search_time_ms", 0) for r in results if isinstance(r, dict)], default=0)
+    
+    # Total API time
+    total_api_time = (time.time() - api_start) * 1000  # ms
+    
+    # Calculate overhead
+    api_overhead = total_api_time - pure_search_time
     
     return {
         "total_collections": len(request.queries),
         "successful": len(successful),
         "errors": len(errors),
+        "timing": {
+            "total_api_time_ms": round(total_api_time, 2),
+            "pure_search_time_ms": round(pure_search_time, 2),
+            "max_collection_time_ms": round(max_search_time, 2),
+            "api_overhead_ms": round(api_overhead, 2)
+        },
         "results": results
     }
 
