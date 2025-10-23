@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Run ALL search types with TAX-RELATED queries
-# Tests: BM25, Hybrid 0.1, Hybrid 0.9, nearVector, Mixed
-# 5 search types × 5 limits = 25 total tests
+# Tests: BM25, Hybrid 0.1, Hybrid 0.9, nearVector (no parallel)
+# 4 search types × 5 limits = 20 total tests
 
 echo "╔══════════════════════════════════════════════════════════════════════╗"
 echo "║    TAX QUERY PERFORMANCE TESTS - ALL SEARCH TYPES & LIMITS           ║"
@@ -31,19 +31,24 @@ if [ ! -f "queries_tax_bm25_200.json" ]; then
     echo ""
 fi
 
-# Function to update locustfile with correct query file
-update_locustfile() {
+# Function to update LIMIT variable in locustfile
+update_limit() {
     local locustfile=$1
-    local query_file=$2
+    local limit=$2
     
-    # Use sed to replace the filename in the locustfile
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS
-        sed -i '' "s/with open(\"queries_[^\"]*\.json\"/with open(\"$query_file\"/" "$locustfile"
-    else
-        # Linux
-        sed -i "s/with open(\"queries_[^\"]*\.json\"/with open(\"$query_file\"/" "$locustfile"
-    fi
+    # Update LIMIT variable using Python (works on all OS)
+    python3 << PYEOF
+import re
+
+with open('$locustfile', 'r') as f:
+    content = f.read()
+
+# Replace LIMIT = any_number with LIMIT = $limit
+content = re.sub(r'LIMIT\s*=\s*\d+', f'LIMIT = $limit', content)
+
+with open('$locustfile', 'w') as f:
+    f.write(content)
+PYEOF
 }
 
 # Array of limits
@@ -61,11 +66,11 @@ for LIMIT in "${LIMITS[@]}"; do
     mkdir -p "$REPORT_DIR"
     
     # Test 1: BM25
-    echo "🔍 Test 1/5: BM25 (limit=$LIMIT)"
+    echo "🔍 Test 1/4: BM25 (limit=$LIMIT)"
     echo "────────────────────────────────────────────────────────────────────"
-    update_locustfile "locustfile_bm25.py" "queries_tax_bm25_${LIMIT}.json"
+    update_limit "locustfile_tax_bm25.py" "$LIMIT"
     
-    locust -f locustfile_bm25.py --users 100 --spawn-rate 5 --run-time 5m --headless \
+    locust -f locustfile_tax_bm25.py --users 100 --spawn-rate 5 --run-time 5m --headless \
         --html "$REPORT_DIR/bm25_report.html" \
         --csv "$REPORT_DIR/bm25"
     
@@ -74,11 +79,11 @@ for LIMIT in "${LIMITS[@]}"; do
     
     # Test 2: Hybrid 0.1
     echo ""
-    echo "🔍 Test 2/5: Hybrid α=0.1 (limit=$LIMIT)"
+    echo "🔍 Test 2/4: Hybrid α=0.1 (limit=$LIMIT)"
     echo "────────────────────────────────────────────────────────────────────"
-    update_locustfile "locustfile_hybrid_01.py" "queries_tax_hybrid_01_${LIMIT}.json"
+    update_limit "locustfile_tax_hybrid_01.py" "$LIMIT"
     
-    locust -f locustfile_hybrid_01.py --users 100 --spawn-rate 5 --run-time 5m --headless \
+    locust -f locustfile_tax_hybrid_01.py --users 100 --spawn-rate 5 --run-time 5m --headless \
         --html "$REPORT_DIR/hybrid_01_report.html" \
         --csv "$REPORT_DIR/hybrid_01"
     
@@ -87,11 +92,11 @@ for LIMIT in "${LIMITS[@]}"; do
     
     # Test 3: Hybrid 0.9
     echo ""
-    echo "🔍 Test 3/5: Hybrid α=0.9 (limit=$LIMIT)"
+    echo "🔍 Test 3/4: Hybrid α=0.9 (limit=$LIMIT)"
     echo "────────────────────────────────────────────────────────────────────"
-    update_locustfile "locustfile_hybrid_09.py" "queries_tax_hybrid_09_${LIMIT}.json"
+    update_limit "locustfile_tax_hybrid_09.py" "$LIMIT"
     
-    locust -f locustfile_hybrid_09.py --users 100 --spawn-rate 5 --run-time 5m --headless \
+    locust -f locustfile_tax_hybrid_09.py --users 100 --spawn-rate 5 --run-time 5m --headless \
         --html "$REPORT_DIR/hybrid_09_report.html" \
         --csv "$REPORT_DIR/hybrid_09"
     
@@ -100,28 +105,15 @@ for LIMIT in "${LIMITS[@]}"; do
     
     # Test 4: Pure Vector
     echo ""
-    echo "🔍 Test 4/5: nearVector (limit=$LIMIT)"
+    echo "🔍 Test 4/4: nearVector (limit=$LIMIT)"
     echo "────────────────────────────────────────────────────────────────────"
-    update_locustfile "locustfile_vector.py" "queries_tax_vector_${LIMIT}.json"
+    update_limit "locustfile_tax_vector.py" "$LIMIT"
     
-    locust -f locustfile_vector.py --users 100 --spawn-rate 5 --run-time 5m --headless \
+    locust -f locustfile_tax_vector.py --users 100 --spawn-rate 5 --run-time 5m --headless \
         --html "$REPORT_DIR/vector_report.html" \
         --csv "$REPORT_DIR/vector"
     
     echo "✅ nearVector complete"
-    sleep 3
-    
-    # Test 5: Mixed
-    echo ""
-    echo "🔍 Test 5/5: Mixed Types (limit=$LIMIT)"
-    echo "────────────────────────────────────────────────────────────────────"
-    update_locustfile "locustfile_mixed.py" "queries_tax_mixed_${LIMIT}.json"
-    
-    locust -f locustfile_mixed.py --users 100 --spawn-rate 5 --run-time 5m --headless \
-        --html "$REPORT_DIR/mixed_report.html" \
-        --csv "$REPORT_DIR/mixed"
-    
-    echo "✅ Mixed complete"
     
     if [ "$LIMIT" != "200" ]; then
         echo ""
