@@ -184,6 +184,7 @@ class WeaviateBackup:
     async def backup_collection_parallel(
         self,
         collection_name: str,
+        backup_run_id: str,
         batch_size: int = 1000,
         max_parallel: int = 5,
         max_objects: int = None
@@ -193,12 +194,14 @@ class WeaviateBackup:
         
         Args:
             collection_name: Collection to backup
+            backup_run_id: Unique ID for this backup run (e.g., timestamp)
             batch_size: Objects per file (default 1000)
             max_parallel: Concurrent uploads (default 5)
             max_objects: Max objects to backup (None for all)
         """
         logger.info("=" * 70)
         logger.info(f"Starting backup: {collection_name}")
+        logger.info(f"Backup run ID: {backup_run_id}")
         logger.info(f"Batch size: {batch_size} objects per file")
         logger.info(f"Parallel uploads: {max_parallel}")
         logger.info(f"Target: Azure Blob - {self.container_name}")
@@ -251,9 +254,8 @@ class WeaviateBackup:
                     
                     total_bytes += len(compressed_data)
                     
-                    # Generate blob name
-                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-                    blob_name = f"{collection_name}/backup_{timestamp}_batch{file_number:05d}_{len(objects)}objs.json.gz"
+                    # Generate blob name with backup run folder
+                    blob_name = f"{collection_name}/{backup_run_id}/batch{file_number:05d}_{len(objects)}objs.json.gz"
                     
                     # Create upload task (async)
                     upload_task = upload_async(blob_name, compressed_data)
@@ -303,7 +305,7 @@ class WeaviateBackup:
             gc.collect()
 
 
-async def backup_all_collections(connection_string: str, collections: List[str], batch_size: int = 1000):
+async def backup_all_collections(connection_string: str, collections: List[str], backup_run_id: str, batch_size: int = 1000):
     """Backup multiple collections"""
     
     backup = WeaviateBackup(connection_string)
@@ -315,6 +317,7 @@ async def backup_all_collections(connection_string: str, collections: List[str],
         
         await backup.backup_collection_parallel(
             collection_name=collection,
+            backup_run_id=backup_run_id,
             batch_size=batch_size,
             max_parallel=5
         )
@@ -338,13 +341,20 @@ def main():
     print("║" + " "*18 + "WEAVIATE TO AZURE BLOB BACKUP" + " "*20 + "║")
     print("╚" + "="*68 + "╝")
     
-    # Get Azure connection string
+    # Get Azure connection string from config
     print("\n📝 Configuration:")
-    connection_string = input("Enter Azure Blob Storage connection string: ").strip()
+    connection_string = config.AZURE_BLOB_CONNECTION_STRING
     
-    if not connection_string:
-        print("❌ Connection string required")
+    if not connection_string or connection_string == "your-azure-blob-connection-string-here":
+        print("❌ Azure Blob connection string not configured!")
+        print("   Update AZURE_BLOB_CONNECTION_STRING in config.py")
+        print("   Get it from: Azure Portal → Storage Account → Access keys")
         return 1
+    
+    print(f"✓ Using connection string from config.py")
+    
+    container_name = config.AZURE_BLOB_CONTAINER_NAME
+    print(f"✓ Container: {container_name}")
     
     # Collections to backup
     collections = [
@@ -363,12 +373,22 @@ def main():
     for i, col in enumerate(collections, 1):
         print(f"  {i}. {col}")
     
-    # Configuration
-    batch_size = 1000
-    print(f"\nBatch size: {batch_size} objects per file")
+    # Configuration from config.py
+    batch_size = getattr(config, 'BACKUP_BATCH_SIZE', 1000)
+    
+    # Generate backup run ID
+    backup_run_id = datetime.now().strftime('backup_%Y%m%d_%H%M%S')
+    
+    print(f"\nBackup run ID: {backup_run_id}")
+    print(f"Batch size: {batch_size} objects per file")
     print("Compression: gzip")
     print("Parallel uploads: 5 concurrent")
     print("Disk usage: 0 (streams directly)")
+    
+    print(f"\n📂 Backup structure:")
+    print(f"   Container: weaviate-backups")
+    print(f"   Folders: <collection>/{backup_run_id}/")
+    print(f"   Example: SongLyrics/{backup_run_id}/batch00001_1000objs.json.gz")
     
     # Confirm
     print("\n" + "="*70)
@@ -378,7 +398,7 @@ def main():
         return 0
     
     # Run backup
-    asyncio.run(backup_all_collections(connection_string, collections, batch_size))
+    asyncio.run(backup_all_collections(connection_string, collections, backup_run_id, batch_size))
     
     return 0
 

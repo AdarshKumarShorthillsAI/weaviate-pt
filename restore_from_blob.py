@@ -34,14 +34,71 @@ class WeaviateRestore:
         self.blob_service_client = BlobServiceClient.from_connection_string(connection_string)
         self.container_client = self.blob_service_client.get_container_client(container_name)
     
-    def list_backup_files(self, collection_name: str) -> List[str]:
-        """List all backup files for a collection"""
+    def list_backup_runs(self, collection_name: str) -> List[str]:
+        """List all backup run IDs for a collection"""
         try:
+            backup_runs = set()
             blobs = self.container_client.list_blobs(name_starts_with=f"{collection_name}/")
+            
+            for blob in blobs:
+                # Extract backup run ID (second part of path)
+                # Format: collection/backup_run_id/filename
+                parts = blob.name.split('/')
+                if len(parts) >= 2:
+                    backup_run_id = parts[1]
+                    backup_runs.add(backup_run_id)
+            
+            return sorted(list(backup_runs), reverse=True)  # Newest first
+        except Exception as e:
+            logger.error(f"Error listing backup runs: {e}")
+            return []
+    
+    def list_backup_files(self, collection_name: str, backup_run_id: str) -> List[str]:
+        """List all backup files for a specific backup run"""
+        try:
+            prefix = f"{collection_name}/{backup_run_id}/"
+            blobs = self.container_client.list_blobs(name_starts_with=prefix)
             return sorted([blob.name for blob in blobs])
         except Exception as e:
             logger.error(f"Error listing blobs: {e}")
             return []
+    
+    def get_backup_run_info(self, collection_name: str, backup_run_id: str) -> dict:
+        """Get information about a backup run"""
+        try:
+            prefix = f"{collection_name}/{backup_run_id}/"
+            blobs = list(self.container_client.list_blobs(name_starts_with=prefix))
+            
+            if not blobs:
+                return None
+            
+            total_size = sum(blob.size for blob in blobs)
+            file_count = len(blobs)
+            
+            # Estimate object count from filenames
+            total_objects = 0
+            for blob in blobs:
+                try:
+                    count_str = blob.name.split('_')[-1].replace('objs.json.gz', '')
+                    total_objects += int(count_str)
+                except:
+                    pass
+            
+            # Get timestamp of first and last file
+            sorted_blobs = sorted(blobs, key=lambda b: b.last_modified)
+            first_timestamp = sorted_blobs[0].last_modified
+            last_timestamp = sorted_blobs[-1].last_modified
+            
+            return {
+                'file_count': file_count,
+                'total_size': total_size,
+                'estimated_objects': total_objects,
+                'first_timestamp': first_timestamp,
+                'last_timestamp': last_timestamp
+            }
+        except Exception as e:
+            logger.error(f"Error getting backup info: {e}")
+            return None
     
     def download_and_decompress(self, blob_name: str) -> List[Dict]:
         """Download and decompress a backup file"""
@@ -65,18 +122,62 @@ class WeaviateRestore:
             logger.error(f"Error downloading {blob_name}: {e}")
             return []
     
-    async def restore_collection(self, collection_name: str):
-        """Restore a collection from backup files"""
+    async def restore_collection(self, collection_name: str, backup_run_id: str = None):
+        """
+        Restore a collection from backup files.
+        
+        Args:
+            collection_name: Collection to restore
+            backup_run_id: Specific backup run to restore (None to choose interactively)
+        """
         
         logger.info("=" * 70)
         logger.info(f"Restoring: {collection_name}")
         logger.info("=" * 70)
         
-        # List backup files
-        backup_files = self.list_backup_files(collection_name)
+        # List available backup runs
+        backup_runs = self.list_backup_runs(collection_name)
+        
+        if not backup_runs:
+            logger.warning(f"No backups found for {collection_name}")
+            return
+        
+        # If backup_run_id not specified, let user choose
+        if not backup_run_id:
+            print(f"\n📂 Available backups for {collection_name}:")
+            print("-" * 70)
+            
+            for i, run_id in enumerate(backup_runs, 1):
+                info = self.get_backup_run_info(collection_name, run_id)
+                if info:
+                    size_mb = info['total_size'] / (1024 * 1024)
+                    print(f"{i}. {run_id}")
+                    print(f"   Files: {info['file_count']}, Size: {size_mb:.2f} MB, Objects: ~{info['estimated_objects']:,}")
+                    print(f"   Created: {info['first_timestamp'].strftime('%Y-%m-%d %H:%M:%S')}")
+                else:
+                    print(f"{i}. {run_id}")
+            
+            print("-" * 70)
+            
+            # Get user choice
+            try:
+                choice = int(input(f"\nChoose backup to restore (1-{len(backup_runs)}): "))
+                if 1 <= choice <= len(backup_runs):
+                    backup_run_id = backup_runs[choice - 1]
+                else:
+                    print("❌ Invalid choice")
+                    return
+            except ValueError:
+                print("❌ Invalid input")
+                return
+        
+        print(f"\n✅ Restoring from: {backup_run_id}")
+        
+        # List backup files for this run
+        backup_files = self.list_backup_files(collection_name, backup_run_id)
         
         if not backup_files:
-            logger.warning(f"No backup files found for {collection_name}")
+            logger.warning(f"No backup files found for {collection_name}/{backup_run_id}")
             return
         
         logger.info(f"Found {len(backup_files)} backup files")
@@ -134,12 +235,17 @@ def main():
     print("║" + " "*16 + "RESTORE FROM AZURE BLOB BACKUP" + " "*21 + "║")
     print("╚" + "="*68 + "╝")
     
-    # Get connection string
-    connection_string = input("\nEnter Azure Blob Storage connection string: ").strip()
+    # Get connection string from config
+    connection_string = config.AZURE_BLOB_CONNECTION_STRING
     
-    if not connection_string:
-        print("❌ Connection string required")
+    if not connection_string or connection_string == "your-azure-blob-connection-string-here":
+        print("\n❌ Azure Blob connection string not configured!")
+        print("   Update AZURE_BLOB_CONNECTION_STRING in config.py")
         return 1
+    
+    print("\n✓ Using connection string from config.py")
+    container_name = config.AZURE_BLOB_CONTAINER_NAME
+    print(f"✓ Container: {container_name}")
     
     # Get collection name
     collection_name = input("Enter collection name to restore: ").strip()
@@ -151,13 +257,14 @@ def main():
     # Confirm
     print(f"\n⚠️  This will restore data into: {collection_name}")
     print("   Make sure the collection schema exists!")
-    confirm = input("Proceed? (yes/no): ").strip().lower()
+    print("   The script will show available backup runs and let you choose.")
+    confirm = input("\nProceed? (yes/no): ").strip().lower()
     
     if confirm != 'yes':
         print("❌ Restore cancelled")
         return 0
     
-    # Run restore
+    # Run restore (will prompt for backup run choice)
     restore = WeaviateRestore(connection_string)
     asyncio.run(restore.restore_collection(collection_name))
     
