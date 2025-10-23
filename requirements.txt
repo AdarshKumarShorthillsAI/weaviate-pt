@@ -18,6 +18,10 @@ tqdm>=4.66.0
 # Performance testing
 locust>=2.15.0
 
+# API server for parallel search
+fastapi>=0.104.0
+uvicorn>=0.24.0
+
 # Azure Blob Storage (for backups)
 azure-storage-blob>=12.19.0
 
