@@ -115,14 +115,6 @@ def create_optimized_schema():
                     "tokenization": "field"
                 },
                 {
-                    "name": "chunk_info",
-                    "dataType": ["text"],
-                    "description": "Chunk information for long lyrics (e.g., 'Part 1 of 3')",
-                    "indexSearchable": False,
-                    "indexFilterable": True,
-                    "tokenization": "field"
-                },
-                {
                     "name": "language_cld3",
                     "dataType": ["text"],
                     "description": "Language detected by CLD3",
