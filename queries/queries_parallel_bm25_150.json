@@ -1,0 +1,1292 @@
+[
+  {
+    "query_text": "love and heartbreak",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"love and heartbreak\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "summer party vibes",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"summer party vibes\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "feeling alone tonight",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"feeling alone tonight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "dance all night long",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"dance all night long\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "broken dreams and hope",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"broken dreams and hope\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "city lights at midnight",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"city lights at midnight\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "memories of yesterday",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"memories of yesterday\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "living life to fullest",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"living life to fullest\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "chasing dreams forever",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"chasing dreams forever\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "never give up fighting",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"never give up fighting\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "friendship and loyalty",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"friendship and loyalty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "money power respect",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"money power respect\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "family comes first always",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"family comes first always\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "trust nobody believe yourself",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"trust nobody believe yourself\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "hustle grind every day",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"hustle grind every day\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "success and motivation",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"success and motivation\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "romantic love story",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"romantic love story\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "pain and suffering",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"pain and suffering\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "celebration and joy",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"celebration and joy\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "freedom and liberty",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"freedom and liberty\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "hope for better tomorrow",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"hope for better tomorrow\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "struggle and perseverance",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"struggle and perseverance\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "peace and tranquility",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"peace and tranquility\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "anger and revenge",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"anger and revenge\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "happiness and laughter",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"happiness and laughter\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "sadness and tears",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"sadness and tears\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "victory and triumph",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"victory and triumph\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "loss and defeat",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"loss and defeat\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "passion and desire",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"passion and desire\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  },
+  {
+    "query_text": "fear and courage",
+    "search_type": "bm25",
+    "limit": 150,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "\n        {\n          Get {\n            SongLyrics(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_400k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_200k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_50k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_30k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_20k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_15k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_12k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "\n        {\n          Get {\n            SongLyrics_10k(\n              bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n              limit: 150\n            ) {\n              title\n              tag\n              artist\n              year\n              views\n              features\n              lyrics\n              song_id\n              language_cld3\n              language_ft\n              language\n              _additional { score }\n            }\n          }\n        }\n        "
+      }
+    ]
+  }
+]
