@@ -6,6 +6,16 @@ echo "Queries: 30 tax-related queries"
 echo "Search Types: Mix of BM25, Hybrid 0.1, Hybrid 0.9"
 echo ""
 
+# Check if tax query files exist
+if [ ! -f "queries_tax_mixed_200.json" ]; then
+    echo "⚠️  Tax query files not found. Generating..."
+    python generate_tax_queries.py
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to generate tax queries"
+        exit 1
+    fi
+fi
+
 for LIMIT in 10 50 100 150 200; do
     echo "Testing limit $LIMIT..."
     

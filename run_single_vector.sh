@@ -6,6 +6,16 @@ echo "Collection: SongLyrics (1M objects)"
 echo "Search Type: nearVector (pure semantic)"
 echo ""
 
+# Check if vector query files exist
+if [ ! -f "queries_vector_200.json" ]; then
+    echo "⚠️  Vector query files not found. Generating..."
+    python generate_vector_queries.py
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to generate vector queries"
+        exit 1
+    fi
+fi
+
 for LIMIT in 10 50 100 150 200; do
     echo "Testing limit $LIMIT..."
     
