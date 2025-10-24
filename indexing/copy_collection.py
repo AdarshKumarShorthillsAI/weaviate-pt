@@ -366,7 +366,7 @@ def main():
     
     # Copy objects
     print("\n📦 Starting copy operation...")
-    success, errors = copier.copy_objects(num_objects, batch_size=100)
+    success, errors = copier.copy_objects(num_objects, batch_size=2000)
     
     if errors == 0:
         print(f"\n✅ Successfully copied {success:,} objects!")

@@ -212,7 +212,7 @@ python process_lyrics.py
 
 **Main Guides (Root):**
 - `README.md` - This file (project overview)
-- `HANDOVER_GUIDE.md` - Complete handover guide for manager
+- `HANDOVER_GUIDE.md` - Complete handover guide
 
 **Module Guides:**
 - `indexing/README.md` - Indexing module

@@ -24,6 +24,7 @@ performance_testing/embeddings_cache.json
 
 # Configuration with credentials (DO NOT COMMIT)
 config.example.py
+config.py
 
 # Data files (large files that should not be in git)
 # *.csv
