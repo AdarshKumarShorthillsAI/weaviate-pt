@@ -3,6 +3,11 @@ Resource manager for proper cleanup of connections, files, and memory.
 Ensures cleanup happens even on crashes, interruptions, or network failures.
 """
 
+
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
 import logging
 import signal
 import gc

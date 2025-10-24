@@ -18,10 +18,9 @@ processing_errors.jsonl
 failed_ids.txt
 
 # Performance testing query files (large, can be regenerated)
-queries_bm25*.json
-queries_hybrid_01*.json
-queries_hybrid_09*.json
-queries_mixed*.json
+performance_testing/multi_collection/queries/
+performance_testing/single_collection/queries/
+performance_testing/embeddings_cache.json
 
 # Configuration with credentials (DO NOT COMMIT)
 config.example.py
@@ -46,3 +45,7 @@ setup_github.sh
 AUTOMATED_TESTING_GUIDE.md
 PARALLEL_VS_SINGLE_COMPARISON.md
 *.html
+
+oldReports
+test_venv/
+config.py
