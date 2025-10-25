@@ -32,7 +32,7 @@ Tests queries on SongLyrics (1M objects) only.
 | **Hybrid α=0.1** | 90% keyword, 10% vector | Keyword-focused |
 | **Hybrid α=0.9** | 10% keyword, 90% vector | Semantic-focused |
 | **Vector** | 100% semantic | Pure meaning |
-| **Mixed** | Random combination | Realistic workload |
+| **Mixed** | All 4 types (rotates) | Realistic workload |
 
 ---
 
@@ -115,10 +115,10 @@ python generate_all_queries.py --type single
 ```
 
 **Features:**
-- ✅ Embedding caching (saves 30 API calls!)
+- ✅ Embedding caching (saves 40 API calls!)
 - ✅ Generates all 5 types × 5 limits = 25 files
 - ✅ Saved to `queries/` subfolders
-- ✅ First run: ~30 seconds, After: <1 second
+- ✅ First run: ~40 seconds, After: <1 second
 
 ### Generate Specific Types/Limits
 
@@ -205,7 +205,7 @@ locust -f locustfile_bm25.py --users 100 --run-time 5m --headless \
 
 **First run:**
 ```
-Generating embeddings... (30 API calls, ~30 seconds)
+Generating embeddings... (40 API calls, ~40 seconds)
 Saved to embeddings_cache.json
 ```
 
@@ -214,7 +214,7 @@ Saved to embeddings_cache.json
 Loading cached embeddings... (0 API calls, <1 second)
 ```
 
-**Savings:** 30 OpenAI API calls every run!
+**Savings:** 40 OpenAI API calls every run!
 
 ### Query Organization
 

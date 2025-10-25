@@ -1,6 +1,6 @@
 """
 Locust performance testing for Weaviate - Mixed Search Types
-Tests realistic workload with BM25, Hybrid 0.1, and Hybrid 0.9.
+Tests realistic workload with BM25, Hybrid 0.1, Hybrid 0.9, and Vector.
 
 Usage:
     locust -f locustfile_mixed.py --users 100 --spawn-rate 5 --run-time 5m --headless
@@ -33,13 +33,13 @@ def on_locust_init(environment, **kwargs):
         with open("queries/queries_mixed_200.json", "r") as f:
             QUERIES_MIXED = json.load(f)
         print(f"✓ Loaded query file: {len(QUERIES_MIXED)} queries")
-        print(f"  Search types: 10 BM25 + 10 Hybrid 0.1 + 10 Hybrid 0.9")
+        print(f"  Search types: 10 BM25 + 10 Hybrid 0.1 + 10 Hybrid 0.9 + 10 Vector")
         print(f"  Each query searches 9 collections")
         print(f"  Returns 200 results per collection")
         print("=" * 70)
     except Exception as e:
         print(f"❌ Failed to load queries_mixed.json: {e}")
-        print("   Run: python generate_test_queries.py")
+        print("   Run: python ../generate_all_queries.py --type multi --search-types mixed")
         print("=" * 70)
 
 
@@ -61,7 +61,7 @@ class WeaviateMixedUser(HttpUser):
         if not QUERIES_MIXED:
             return
         
-        # Pick random query from 30 options (mix of BM25, Hybrid 0.1, Hybrid 0.9)
+        # Pick random query from 40 options (mix of BM25, Hybrid 0.1, Hybrid 0.9, Vector)
         query_data = random.choice(QUERIES_MIXED)
         search_type = query_data["search_type"]
         
