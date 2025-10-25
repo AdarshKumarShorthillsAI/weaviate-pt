@@ -30,7 +30,6 @@ SEARCH_QUERIES = [
     "struggle and perseverance", "peace and tranquility", "anger and revenge",
     "happiness and laughter", "sadness and tears", "victory and triumph",
     "loss and defeat", "passion and desire", "fear and courage",
-    # 10 new queries for perfect 40-query split (10 per search type in mixed)
     "nature beauty mountains rivers", "faith hope spiritual journey", "young forever memories aging",
     "transformation change new beginnings", "rebel against system rules", "missing you come back",
     "adventure explore unknown world", "betrayal lies broken trust", "destiny fate written stars",
@@ -58,14 +57,14 @@ def get_embeddings(cache_file='embeddings_cache.json'):
             print(f"⚠️  Cache error: {e}, regenerating...")
     
     # Generate fresh embeddings
-    print("\n🔄 Generating embeddings for 30 queries (this takes ~30 seconds)...")
+    print("\n🔄 Generating embeddings for 40 queries (this takes ~40 seconds)...")
     print("   These will be cached for future use!")
     
     client, model = create_sync_openai_client()
     embeddings = {}
     
     for i, query in enumerate(SEARCH_QUERIES, 1):
-        print(f"  [{i}/30] {query}...", end=' ', flush=True)
+        print(f"  [{i}/40] {query}...", end=' ', flush=True)
         try:
             response = client.embeddings.create(model=model, input=query)
             embeddings[query] = response.data[0].embedding

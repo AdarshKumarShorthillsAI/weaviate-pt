@@ -142,7 +142,7 @@ python restore_v4.py --start 1 --end 10  # File range
 - Hybrid α=0.1 (keyword-focused)
 - Hybrid α=0.9 (vector-focused)
 - Vector (semantic)
-- Mixed (realistic)
+- Mixed (all 4 types, realistic)
 
 **Usage:**
 ```bash

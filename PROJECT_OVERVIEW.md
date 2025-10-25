@@ -135,7 +135,7 @@ weaviate-backups/
 2. **Hybrid α=0.1** - Keyword-focused (90% keyword, 10% vector)
 3. **Hybrid α=0.9** - Vector-focused (10% keyword, 90% vector)
 4. **Vector (nearVector)** - Pure semantic search
-5. **Mixed** - Combination (realistic workload)
+5. **Mixed** - All 4 types rotating (realistic workload)
 
 **Result Limits:**
 - 10, 50, 100, 150, 200 results per collection
