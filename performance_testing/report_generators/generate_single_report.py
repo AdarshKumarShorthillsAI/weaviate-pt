@@ -329,41 +329,6 @@ def generate_html_report(results):
     
     html += "        </table>\n    </div>\n"
     
-    # Table 4: Failure Rate
-    html += """
-    <div class="section">
-        <h2>❌ Failure Rate (%)</h2>
-        <table>
-            <tr>
-                <th>Result Limit</th>
-                <th>BM25</th>
-                <th>Hybrid α=0.1</th>
-                <th>Hybrid α=0.9</th>
-                <th>nearVector</th>
-                <th>Mixed</th>
-            </tr>
-"""
-    
-    for limit in sorted(results.keys(), key=lambda x: int(x)):
-        html += f"            <tr><td><b>Limit {limit}</b></td>"
-        
-        for search_type in ['bm25', 'hybrid_01', 'hybrid_09', 'vector', 'mixed']:
-            metrics = results[limit].get(search_type, {})
-            failure_rate = metrics.get('failure_rate', 0)
-            
-            if failure_rate == 0:
-                html += f'<td class="metric-good">{failure_rate:.2f}%</td>'
-            elif failure_rate < 1:
-                html += f'<td class="metric-good">{failure_rate:.2f}%</td>'
-            elif failure_rate < 5:
-                html += f'<td class="metric-warning">{failure_rate:.2f}%</td>'
-            else:
-                html += f'<td class="metric-bad">{failure_rate:.2f}%</td>'
-        
-        html += "</tr>\n"
-    
-    html += "        </table>\n    </div>\n"
-    
     # Detailed breakdown per limit
     for limit in sorted(results.keys(), key=lambda x: int(x)):
         html += f"""
@@ -418,57 +383,6 @@ def generate_html_report(results):
         
         html += "        </table>\n    </div>\n"
     
-    # Insights section
-    html += """
-    <div class="section">
-        <h2>💡 Key Insights</h2>
-        <div style="line-height: 1.8;">
-"""
-    
-    # Find fastest search type
-    if results:
-        fastest_by_limit = {}
-        for limit in results.keys():
-            fastest_time = float('inf')
-            fastest_type = None
-            
-            for search_type in ['bm25', 'hybrid_01', 'hybrid_09', 'vector', 'mixed']:
-                metrics = results[limit].get(search_type, {})
-                avg = metrics.get('avg_response', float('inf'))
-                if avg < fastest_time and avg > 0:
-                    fastest_time = avg
-                    fastest_type = search_type
-            
-            if fastest_type:
-                fastest_by_limit[limit] = (fastest_type, fastest_time)
-        
-        html += "<h3>🏆 Fastest Search Type by Limit:</h3><ul>"
-        for limit in sorted(fastest_by_limit.keys(), key=lambda x: int(x)):
-            search_type, time_ms = fastest_by_limit[limit]
-            html += f"<li><b>Limit {limit}:</b> {search_type.upper()} ({time_ms:.1f}ms)</li>"
-        html += "</ul>"
-    
-    html += """
-            <h3>📊 Performance Trends:</h3>
-            <ul>
-                <li>Response times generally increase with result limit (expected)</li>
-                <li>BM25 typically fastest (keyword-only, no vector overhead)</li>
-                <li>Hybrid 0.9 typically slowest (heavy vector computation)</li>
-                <li>Throughput decreases as response time increases</li>
-            </ul>
-            
-            <h3>🎯 Recommendations:</h3>
-            <ul>
-                <li>If avg response time < 500ms: ✅ Excellent performance</li>
-                <li>If avg response time 500-1000ms: ⚠️ Acceptable, consider optimization</li>
-                <li>If avg response time > 1000ms: ❌ Needs optimization</li>
-                <li>If failure rate > 1%: Investigate server capacity</li>
-                <li>Compare 95th percentile across limits to find sweet spot</li>
-            </ul>
-        </div>
-    </div>
-"""
-    
     html += """
 </body>
 </html>
@@ -521,4 +435,3 @@ def main():
 if __name__ == "__main__":
     import sys
     sys.exit(main())
-
