@@ -33,7 +33,7 @@ def on_locust_init(environment, **kwargs):
         print("=" * 70)
     except Exception as e:
         print(f"❌ Failed to load {filename}: {e}")
-        print("   Run: python generate_single_vector_queries.py")
+        print("   Run: python ../generate_all_queries.py --type single --search-types vector")
         print("=" * 70)
 
 

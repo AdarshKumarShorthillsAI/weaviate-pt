@@ -39,7 +39,7 @@ def on_locust_init(environment, **kwargs):
         print("=" * 70)
     except Exception as e:
         print(f"❌ Failed to load queries_mixed.json: {e}")
-        print("   Run: python generate_test_queries.py")
+        print("   Run: python ../generate_all_queries.py --type multi --search-types mixed")
         print("=" * 70)
 
 
@@ -61,7 +61,7 @@ class WeaviateMixedUser(HttpUser):
         if not QUERIES_MIXED:
             return
         
-        # Pick random query from 30 options (mix of BM25, Hybrid 0.1, Hybrid 0.9)
+        # Pick random query from 40 options (mix of BM25, Hybrid 0.1, Hybrid 0.9, Vector)
         query_data = random.choice(QUERIES_MIXED)
         search_type = query_data["search_type"]
         

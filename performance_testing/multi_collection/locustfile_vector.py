@@ -63,7 +63,7 @@ class WeaviateVectorUser(HttpUser):
         if not QUERIES_VECTOR:
             return
         
-        # Pick random query from 30 options
+        # Pick random query from 40 options
         query_data = random.choice(QUERIES_VECTOR)
         
         # Execute single GraphQL query that searches all collections

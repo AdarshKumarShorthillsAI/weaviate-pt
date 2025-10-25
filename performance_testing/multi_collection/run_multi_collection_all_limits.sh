@@ -177,14 +177,16 @@ echo "STEP 3: Generating Combined Report"
 echo "═══════════════════════════════════════════════════════════════════════"
 echo ""
 
-python generate_combined_report.py
+cd ../report_generators
+python3 generate_combined_report.py
 if [ $? -eq 0 ]; then
     echo ""
-    echo "✅ Combined report generated: combined_performance_report_2nd.html"
+    echo "✅ Combined report generated: ../../multi_collection_report.html"
 else
     echo ""
     echo "⚠️  Report generation had warnings (check above)"
 fi
+cd ../multi_collection
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════════════════╗"

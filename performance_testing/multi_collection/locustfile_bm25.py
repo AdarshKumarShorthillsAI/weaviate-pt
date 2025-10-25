@@ -38,7 +38,7 @@ def on_locust_init(environment, **kwargs):
         print("=" * 70)
     except Exception as e:
         print(f"❌ Failed to load queries_bm25.json: {e}")
-        print("   Run: python generate_test_queries.py")
+        print("   Run: python ../generate_all_queries.py --type multi --search-types bm25")
         print("=" * 70)
 
 
@@ -60,7 +60,7 @@ class WeaviateBM25User(HttpUser):
         if not QUERIES_BM25:
             return
         
-        # Pick random query from 30 options
+        # Pick random query from 40 options
         query_data = random.choice(QUERIES_BM25)
         
         # Execute single GraphQL query that searches all collections
