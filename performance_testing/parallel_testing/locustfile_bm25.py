@@ -76,7 +76,7 @@ class ParallelBM25User(HttpUser):
                 "/v1/graphql",
                 headers=self.headers,
                 json={"query": query_data["graphql"]},
-                timeout=30,
+                timeout=60,
                 name=f"Parallel_BM25_{query_data['collection']}"
             )
             
@@ -113,8 +113,8 @@ class ParallelBM25User(HttpUser):
             greenlet = gevent.spawn(self.execute_single_query, query_data)
             greenlets.append(greenlet)
         
-        # Wait for ALL 9 requests to complete (with 30s timeout)
-        gevent.joinall(greenlets, timeout=30)
+        # Wait for ALL 9 requests to complete (with 60s timeout)
+        gevent.joinall(greenlets, timeout=60)
         
         # Calculate total time
         total_time = (time.time() - start_time) * 1000  # Convert to ms
