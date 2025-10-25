@@ -89,7 +89,7 @@ def generate_bm25_query(query_text, collections, limit):
           bm25: {{query: "{query_text}", properties: ["title", "lyrics"]}}
           limit: {limit}
         ) {{
-          title artist year views lyrics song_id language
+          title tag artist year views features lyrics song_id language_cld3 language_ft language
           _additional {{ score }}
         }}''')
     
@@ -113,7 +113,7 @@ def generate_hybrid_query(query_text, query_vector, alpha, collections, limit):
           }}
           limit: {limit}
         ) {{
-          title artist year views lyrics song_id language
+          title tag artist year views features lyrics song_id language_cld3 language_ft language
           _additional {{ score }}
         }}''')
     
@@ -132,7 +132,7 @@ def generate_vector_query(query_vector, collections, limit):
           nearVector: {{vector: {vector_str}}}
           limit: {limit}
         ) {{
-          title artist year views lyrics song_id language
+          title tag artist year views features lyrics song_id language_cld3 language_ft language
           _additional {{ distance certainty }}
         }}''')
     
