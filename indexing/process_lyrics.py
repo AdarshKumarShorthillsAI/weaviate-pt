@@ -139,7 +139,6 @@ class LyricsProcessor:
                 'features': str(data.get('features', '')),
                 'lyrics': str(data.get('lyrics', '')),
                 'song_id': song_id,
-                'chunk_info': '',  # Will be set if lyrics are chunked
                 'language_cld3': str(data.get('language_cld3', '')),
                 'language_ft': str(data.get('language_ft', '')),
                 'language': str(data.get('language', ''))
@@ -159,52 +158,24 @@ class LyricsProcessor:
             )
             return None
     
-    def chunk_text(self, text: str, max_tokens: int = 8000) -> List[str]:
-        """
-        Split text into chunks that fit within token limit.
-        Uses character-based approximation (1 token ≈ 4 characters).
-        
-        Args:
-            text: Text to chunk
-            max_tokens: Maximum tokens per chunk (default 8000 for safety margin)
-        
-        Returns:
-            List of text chunks
-        """
-        # Approximate: 1 token ≈ 4 characters
-        # Use 8000 tokens max (safer than 8192 limit)
-        max_chars = max_tokens * 4
-        
-        if len(text) <= max_chars:
-            return [text]
-        
-        # Split into chunks
-        chunks = []
-        for i in range(0, len(text), max_chars):
-            chunk = text[i:i + max_chars]
-            chunks.append(chunk)
-        
-        logger.info(f"Split long text into {len(chunks)} chunks (original: {len(text)} chars)")
-        return chunks
-    
     async def get_embedding(self, text: str, retry_count: int = 0) -> Optional[List[float]]:
         """Get embedding for text using OpenAI API with retry logic"""
         async with self.semaphore:  # Limit concurrent requests
             try:
+                # Truncate text if too long (simple approach without chunking)
+                max_chars = 8000 * 4  # ~8000 tokens
+                if len(text) > max_chars:
+                    logger.warning(f"Text too long ({len(text)} chars), truncating to {max_chars}")
+                    text = text[:max_chars]
+                
                 response = await self.openai_client.embeddings.create(
-                    model=self.embedding_model,  # Use configured model/deployment
+                    model=self.embedding_model,
                     input=text,
                     timeout=config.OPENAI_TIMEOUT
                 )
                 return response.data[0].embedding
                 
             except Exception as e:
-                # Check if it's a token limit error
-                if "maximum context length" in str(e).lower() or "8192" in str(e):
-                    logger.warning(f"Token limit exceeded for text: {len(text)} chars")
-                    # Return None to signal chunking is needed at higher level
-                    return None
-                
                 if retry_count < config.OPENAI_MAX_RETRIES:
                     logger.warning(f"Embedding request failed (attempt {retry_count + 1}): {e}. Retrying...")
                     await asyncio.sleep(2 ** retry_count)  # Exponential backoff
@@ -216,7 +187,7 @@ class LyricsProcessor:
     async def process_batch_embeddings(self, batch_data: List[Dict[str, Any]]) -> List[tuple]:
         """
         Process embeddings for a batch of rows concurrently.
-        Handles long lyrics by splitting into chunks and creating multiple objects.
+        Long lyrics are truncated (no chunking).
         """
         # Create tasks for all embeddings in the batch
         tasks = []
@@ -227,7 +198,7 @@ class LyricsProcessor:
         # Wait for all embeddings to complete
         embeddings = await asyncio.gather(*tasks, return_exceptions=True)
         
-        # Pair data with embeddings and handle chunking for long lyrics
+        # Pair data with embeddings
         results = []
         for data, embedding in zip(batch_data, embeddings):
             if isinstance(embedding, Exception):
@@ -239,43 +210,11 @@ class LyricsProcessor:
                     row_data=data
                 )
                 results.append((data, None))
-            
             elif embedding is None:
-                # Token limit exceeded - need to chunk the lyrics
-                logger.info(f"ID {data['song_id']}: Lyrics too long, splitting into chunks...")
-                
-                # Split lyrics into chunks
-                lyrics_chunks = self.chunk_text(data['lyrics'], max_tokens=8000)
-                
-                # Get embeddings for each chunk
-                chunk_tasks = []
-                for chunk in lyrics_chunks:
-                    chunk_tasks.append(self.get_embedding(chunk, retry_count=0))
-                
-                chunk_embeddings = await asyncio.gather(*chunk_tasks, return_exceptions=True)
-                
-                # Create separate result for each chunk
-                for idx, (chunk, chunk_embedding) in enumerate(zip(lyrics_chunks, chunk_embeddings)):
-                    if isinstance(chunk_embedding, Exception) or chunk_embedding is None:
-                        logger.error(f"Failed to embed chunk {idx+1} for ID {data['song_id']}")
-                        self.error_tracker.log_embedding_error(
-                            song_id=f"{data['song_id']}_chunk{idx+1}",
-                            reason=f"Chunk {idx+1} embedding failed",
-                            row_data=data
-                        )
-                        results.append((data, None))
-                    else:
-                        # Create data copy with chunked lyrics and chunk identifier
-                        chunk_data = data.copy()
-                        chunk_data['lyrics'] = chunk
-                        chunk_data['song_id'] = f"{data['song_id']}_chunk{idx+1}"  # Add chunk suffix
-                        chunk_data['chunk_info'] = f"Part {idx+1} of {len(lyrics_chunks)}"
-                        
-                        results.append((chunk_data, chunk_embedding))
-                        logger.info(f"ID {data['song_id']}: Chunk {idx+1}/{len(lyrics_chunks)} embedded successfully")
-            
+                logger.error(f"Failed to get embedding for ID {data['song_id']}")
+                results.append((data, None))
             else:
-                # Normal case: single embedding for entire lyrics
+                # Normal case: single embedding for lyrics
                 results.append((data, embedding))
         
         return results
@@ -313,7 +252,6 @@ class LyricsProcessor:
                             "features": data['features'],
                             "lyrics": data['lyrics'],
                             "song_id": data['song_id'],
-                            "chunk_info": data.get('chunk_info', ''),  # Add chunk info if present
                             "language_cld3": data['language_cld3'],
                             "language_ft": data['language_ft'],
                             "language": data['language']

@@ -361,22 +361,55 @@ def main():
     container_name = config.AZURE_BLOB_CONTAINER_NAME
     print(f"✓ Container: {container_name}")
     
-    # Collections to backup
-    collections = [
+    # All available collections
+    all_collections = [
         "SongLyrics",
         "SongLyrics_400k",
         "SongLyrics_200k",
+        "SongLyrics_100k",
         "SongLyrics_50k",
         "SongLyrics_30k",
+        "SongLyrics_25k",
         "SongLyrics_20k",
         "SongLyrics_15k",
         "SongLyrics_12k",
-        "SongLyrics_10k"
+        "SongLyrics_10k",
+        "SongLyrics_5k",
+        "SongLyrics_1k"
     ]
     
-    print(f"\nCollections to backup: {len(collections)}")
-    for i, col in enumerate(collections, 1):
-        print(f"  {i}. {col}")
+    print(f"\nAvailable collections:")
+    for i, col in enumerate(all_collections, 1):
+        print(f"  {i:2}. {col}")
+    
+    print("\nBackup options:")
+    print("  • Enter 'all' to backup all collections")
+    print("  • Enter collection number (e.g., '11' for SongLyrics_10k)")
+    print("  • Enter multiple numbers (e.g., '1 11' for SongLyrics and SongLyrics_10k)")
+    print()
+    
+    choice = input("Your choice: ").strip().lower()
+    
+    if choice == 'all':
+        collections = all_collections
+        print(f"\n✅ Selected: All {len(collections)} collections")
+    else:
+        try:
+            indices = [int(x) for x in choice.split()]
+            collections = [all_collections[i-1] for i in indices if 1 <= i <= len(all_collections)]
+            
+            if not collections:
+                print("❌ No valid collections selected")
+                return 1
+            
+            print(f"\n✅ Selected {len(collections)} collection(s):")
+            for col in collections:
+                print(f"   • {col}")
+        except:
+            print("❌ Invalid input")
+            return 1
+    
+    print(f"\nTotal collections to backup: {len(collections)}")
     
     # Configuration from config.py
     batch_size = getattr(config, 'BACKUP_BATCH_SIZE', 1000)
