@@ -16,16 +16,12 @@ ALL_COLLECTIONS = [
     'SongLyrics',
     'SongLyrics_400k',
     'SongLyrics_200k',
-    'SongLyrics_100k',
     'SongLyrics_50k',
     'SongLyrics_30k',
-    'SongLyrics_25k',
     'SongLyrics_20k',
     'SongLyrics_15k',
     'SongLyrics_12k',
-    'SongLyrics_10k',
-    'SongLyrics_5k',
-    'SongLyrics_1k'
+    'SongLyrics_10k'
 ]
 
 # Complete schema (copied from create_weaviate_schema.py)
