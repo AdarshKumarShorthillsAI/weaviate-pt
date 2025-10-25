@@ -39,7 +39,7 @@ def on_locust_init(environment, **kwargs):
         print("=" * 70)
     except Exception as e:
         print(f"❌ Failed to load queries_hybrid_09.json: {e}")
-        print("   Run: python generate_test_queries.py")
+        print("   Run: python ../generate_all_queries.py --type multi --search-types hybrid_09")
         print("=" * 70)
 
 
@@ -61,7 +61,7 @@ class WeaviateHybrid09User(HttpUser):
         if not QUERIES_HYBRID_09:
             return
         
-        # Pick random query from 30 options
+        # Pick random query from 40 options
         query_data = random.choice(QUERIES_HYBRID_09)
         
         # Execute single GraphQL query that searches all collections

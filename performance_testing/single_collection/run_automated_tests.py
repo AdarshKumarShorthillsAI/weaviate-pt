@@ -1,7 +1,7 @@
 """
 Automated performance testing script.
-Runs all 4 search types across 5 different limits.
-Total: 20 tests (4 search types × 5 limits).
+Runs all 5 search types across 5 different limits.
+Total: 25 tests (5 search types × 5 limits).
 """
 
 
@@ -68,6 +68,8 @@ def update_locustfile_for_limit(locustfile, limit):
         new_filename = f'queries_hybrid_01_{limit}.json'
     elif 'hybrid_09' in locustfile:
         new_filename = f'queries_hybrid_09_{limit}.json'
+    elif 'vector' in locustfile:
+        new_filename = f'queries_vector_{limit}.json'
     elif 'mixed' in locustfile:
         new_filename = f'queries_mixed_{limit}.json'
     else:
@@ -108,8 +110,8 @@ def main():
     print(f"   Users: {users}")
     print(f"   Spawn rate: {spawn_rate} users/second")
     print(f"   Duration: {duration} per test")
-    print(f"   Total tests: {len(limits) * 4} (4 search types × {len(limits)} limits)")
-    print(f"   Estimated time: ~{len(limits) * 4 * 5 + len(limits) * 2} minutes")
+    print(f"   Total tests: {len(limits) * 5} (5 search types × {len(limits)} limits)")
+    print(f"   Estimated time: ~{len(limits) * 5 * 5 + len(limits) * 2} minutes")
     print("=" * 70)
     
     # Confirm
@@ -118,11 +120,11 @@ def main():
         print("❌ Testing cancelled")
         return 0
     
-    # Step 1: Generate embeddings (one-time)
+    # Step 1: Generate queries (one-time)
     print("\n" + "=" * 70)
-    print("STEP 1: Generating Embeddings (One-Time)")
+    print("STEP 1: Generating Queries (One-Time)")
     print("=" * 70)
-    subprocess.run(['python', 'generate_single_collection_queries.py'], check=True)
+    subprocess.run(['python', '../generate_all_queries.py', '--type', 'single'], check=True)
     
     # Step 2: Run tests for each limit
     test_results = []
@@ -168,7 +170,19 @@ def main():
         test_results.append(('Hybrid 0.9', limit, success))
         time.sleep(5)
         
-        # Test 4: Mixed
+        # Test 4: Vector
+        success = run_locust_test(
+            'locustfile_single_vector.py',
+            limit,
+            'vector',
+            users=users,
+            spawn_rate=spawn_rate,
+            duration=duration
+        )
+        test_results.append(('Vector', limit, success))
+        time.sleep(5)
+        
+        # Test 5: Mixed
         success = run_locust_test(
             'locustfile_mixed.py',
             limit,
@@ -209,7 +223,8 @@ def main():
         print(f"   reports_{limit}/")
     
     print("\n📊 Generate combined report:")
-    print("   python generate_combined_report.py")
+    print("   cd ../report_generators")
+    print("   python3 generate_single_report.py")
     print("=" * 70)
     
     return 0
