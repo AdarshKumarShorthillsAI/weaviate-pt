@@ -8,7 +8,7 @@ from azure.storage.blob import BlobServiceClient
 # Replace with your values
 connection_string = config.AZURE_BLOB_CONNECTION_STRING
 container_name = config.AZURE_BLOB_CONTAINER_NAME
-prefix_to_delete = "" 
+prefix_to_delete = ".." 
 
 try:
     # Connect to the blob service
