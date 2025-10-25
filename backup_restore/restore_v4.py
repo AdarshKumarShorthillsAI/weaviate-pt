@@ -65,12 +65,11 @@ def read_blob_content(blob_service_client, container_name, blob_name):
         return None
 
 
-def restore_batch_v4(client, collection_name, json_data):
+def restore_batch_v4(collection_name, json_data):
     """
-    Restore batch of objects to Weaviate using v4 client.
+    Restore batch using REST API (faster and more reliable).
     
     Args:
-        client: Weaviate v4 client
         collection_name: Target collection
         json_data: List of objects to restore
     
@@ -78,11 +77,14 @@ def restore_batch_v4(client, collection_name, json_data):
         (success_count, error_count)
     """
     try:
-        collection = client.collections.get(collection_name)
+        import requests
         
-        # Prepare objects for batch import
-        objects_to_insert = []
+        headers = {"Content-Type": "application/json"}
+        if config.WEAVIATE_API_KEY and config.WEAVIATE_API_KEY != "your-weaviate-api-key":
+            headers["Authorization"] = f"Bearer {config.WEAVIATE_API_KEY}"
         
+        # Prepare batch payload for REST API
+        batch_objects = []
         for data in json_data:
             # Extract vector
             vector = data.get('_additional', {}).get('vector')
@@ -90,28 +92,41 @@ def restore_batch_v4(client, collection_name, json_data):
             # Extract properties (exclude _additional)
             properties = {k: v for k, v in data.items() if k != '_additional'}
             
-            objects_to_insert.append({
-                'properties': properties,
-                'vector': vector
+            batch_objects.append({
+                "class": collection_name,
+                "properties": properties,
+                "vector": vector
             })
         
-        # Batch insert using v4 client
-        success_count = 0
-        error_count = 0
+        # Send batch insert via REST API
+        response = requests.post(
+            f"{config.WEAVIATE_URL}/v1/batch/objects",
+            headers=headers,
+            json={"objects": batch_objects},
+            timeout=300  # 5 minutes for large batches
+        )
         
-        with collection.batch.dynamic() as batch:
-            for obj in objects_to_insert:
-                try:
-                    batch.add_object(
-                        properties=obj['properties'],
-                        vector=obj['vector']
-                    )
-                    success_count += 1
-                except Exception as e:
-                    print(f"Error adding object: {e}")
+        if response.status_code == 200:
+            result = response.json()
+            
+            # Count successes
+            success_count = 0
+            error_count = 0
+            
+            for item in result:
+                if item.get("result", {}).get("errors"):
                     error_count += 1
-        
-        return success_count, error_count
+                else:
+                    success_count += 1
+            
+            # If no explicit counts, assume all succeeded
+            if success_count == 0 and error_count == 0:
+                success_count = len(batch_objects)
+            
+            return success_count, error_count
+        else:
+            print(f"Batch insert failed: {response.status_code}")
+            return 0, len(json_data)
         
     except Exception as e:
         print(f"Batch restore error: {e}")
@@ -192,42 +207,54 @@ def restore_collection(client, collection_name, azure_connection_string, contain
     total_restored = 0
     total_errors = 0
     
-    with tqdm(total=len(blob_files), desc=f"Restoring {collection_name}", unit="file") as pbar:
-        for i, blob_name in enumerate(blob_files, 1):
-            try:
-                # Download blob
-                print(f"\n[{i}/{len(blob_files)}] Downloading {blob_name}...")
-                json_data = read_blob_content(blob_service_client, container_name, blob_name)
-                
-                if not json_data:
-                    print(f"   ⚠️  No data in file, skipping")
+    try:
+        with tqdm(total=len(blob_files), desc=f"Restoring {collection_name}", unit="file") as pbar:
+            for blob_name in blob_files:
+                try:
+                    # Download blob
+                    json_data = read_blob_content(blob_service_client, container_name, blob_name)
+                    
+                    if not json_data:
+                        pbar.update(1)
+                        continue
+                    
+                    # Restore batch using REST API (faster!)
+                    success, errors = restore_batch_v4(collection_name, json_data)
+                    
+                    total_restored += success
+                    total_errors += errors
+                    
+                    # Clear references immediately
+                    json_data = None
+                    
+                    pbar.update(1)
+                    
+                    # Aggressive memory cleanup
+                    collected = gc.collect()
+                    
+                    # Extra GC every 5 files
+                    if pbar.n % 5 == 0:
+                        for _ in range(2):
+                            collected += gc.collect()
+                        print(f"\n   🧹 Memory cleaned: freed {collected} objects, restored: {total_restored:,}")
+                    
+                    time.sleep(0.5)
+                    
+                except Exception as e:
+                    print(f"\n❌ Error processing {blob_name}: {e}")
                     pbar.update(1)
                     continue
-                
-                print(f"   ✅ Downloaded {len(json_data)} objects")
-                
-                # Restore batch
-                print(f"   Restoring to Weaviate...", end=' ', flush=True)
-                success, errors = restore_batch_v4(client, collection_name, json_data)
-                print(f"Done ({success} success, {errors} errors)")
-                
-                total_restored += success
-                total_errors += errors
-                
-                pbar.update(1)
-                
-                # Memory cleanup
-                gc.collect()
-                time.sleep(0.5)
-                
-            except Exception as e:
-                print(f"\n❌ Error processing {blob_name}: {e}")
-                import traceback
-                traceback.print_exc()
-                pbar.update(1)
-                continue
     
-    blob_service_client.close()
+    finally:
+        # Always close blob client
+        blob_service_client.close()
+        
+        # Final aggressive garbage collection
+        print(f"\n🧹 Final cleanup...")
+        for i in range(3):
+            collected = gc.collect()
+            if collected > 0:
+                print(f"   GC pass {i+1}: freed {collected} objects")
     
     print(f"\n{'='*70}")
     print(f"✅ Restore complete: {collection_name}")

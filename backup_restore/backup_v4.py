@@ -177,51 +177,72 @@ def backup_collection(collection_name, azure_connection_string, container_name,
     cursor = None
     file_index = 1
     total_objects = 0
+    azure_client = None
     
-    while True:
-        try:
-            # Fetch batch using REST API (no gRPC issues!)
-            print(f"Fetching batch {file_index}...", end=' ', flush=True)
-            batch = get_batch_with_cursor_rest(collection_name, batch_size, cursor, properties)
-            
-            if not batch or len(batch) == 0:
-                print("No more objects")
-                break
-            
-            print(f"Got {len(batch)} objects")
-            
-            # Save to local JSON file
-            file_name = f"{collection_name}_{backup_prefix}_{file_index}.json"
-            print(f"   Saving to {file_name}...", end=' ', flush=True)
-            
-            with open(file_name, 'w') as json_file:
-                json.dump(batch, json_file)
-            
-            file_size = os.path.getsize(file_name) / (1024 * 1024)
-            print(f"{file_size:.2f} MB")
-            
-            # Upload to Azure
-            blob_name = f"{collection_name}/{backup_prefix}/{file_name}"
-            upload_success = upload_to_azure(file_name, blob_name, azure_connection_string, container_name)
-            
-            # Delete local file
-            if upload_success:
-                os.remove(file_name)
-                print(f"   ✅ Cleaned up local file")
-            
-            # Update cursor and counters
-            cursor = batch[-1]["_additional"]["id"]
-            total_objects += len(batch)
-            file_index += 1
-            
-            # Memory cleanup
-            gc.collect()
-            time.sleep(1)  # Brief pause
-            
-        except Exception as e:
-            print(f"\n❌ Error in batch {file_index}: {e}")
-            # Continue to next batch
-            continue
+    try:
+    
+        while True:
+            try:
+                # Fetch batch using REST API (no gRPC issues!)
+                print(f"Fetching batch {file_index}...", end=' ', flush=True)
+                batch = get_batch_with_cursor_rest(collection_name, batch_size, cursor, properties)
+                
+                if not batch or len(batch) == 0:
+                    print("No more objects")
+                    break
+                
+                print(f"Got {len(batch)} objects")
+                
+                # Save to local JSON file
+                file_name = f"{collection_name}_{backup_prefix}_{file_index}.json"
+                print(f"   Saving to {file_name}...", end=' ', flush=True)
+                
+                with open(file_name, 'w') as json_file:
+                    json.dump(batch, json_file)
+                
+                file_size = os.path.getsize(file_name) / (1024 * 1024)
+                print(f"{file_size:.2f} MB")
+                
+                # Upload to Azure
+                blob_name = f"{collection_name}/{backup_prefix}/{file_name}"
+                upload_success = upload_to_azure(file_name, blob_name, azure_connection_string, container_name)
+                
+                # Delete local file immediately
+                if upload_success:
+                    os.remove(file_name)
+                    print(f"   ✅ Cleaned up local file")
+                
+                # Update cursor and counters
+                cursor = batch[-1]["_additional"]["id"]
+                total_objects += len(batch)
+                file_index += 1
+                
+                # Aggressive memory cleanup
+                batch = None  # Clear reference
+                
+                # Force garbage collection
+                collected = gc.collect()
+                
+                # Extra GC every 5 files
+                if file_index % 5 == 0:
+                    for _ in range(2):
+                        collected += gc.collect()
+                    print(f"\n   🧹 Memory cleaned: freed {collected} objects")
+                
+                time.sleep(1)  # Brief pause for stability
+                
+            except Exception as e:
+                print(f"\n❌ Error in batch {file_index}: {e}")
+                # Continue to next batch
+                continue
+    
+    finally:
+        # Final cleanup
+        print(f"\n🧹 Final cleanup...")
+        for i in range(3):
+            collected = gc.collect()
+            if collected > 0:
+                print(f"   GC pass {i+1}: freed {collected} objects")
     
     print(f"\n{'='*70}")
     print(f"✅ Backup complete: {collection_name}")
