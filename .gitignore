@@ -21,6 +21,7 @@ failed_ids.txt
 # Performance testing query files (large, can be regenerated)
 performance_testing/multi_collection/queries/
 performance_testing/single_collection/queries/
+performance_testing/parallel_testing/queries/
 performance_testing/embeddings_cache.json
 
 # Configuration with credentials (DO NOT COMMIT)
