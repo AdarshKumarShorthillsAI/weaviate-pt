@@ -87,10 +87,10 @@
 </head>
 <body>
     <div class="header">
-        <h1>🚀 Weaviate Performance Test - Combined Report</h1>
+        <h1>Weaviate Performance Test - Combined Report</h1>
         <div class="subtitle">
             Comprehensive analysis across different result limits and search types<br>
-            Generated: 2025-10-25 00:33:37
+            Generated: 2025-10-25 10:04:31
         </div>
     </div>
 
@@ -120,6 +120,7 @@
                 <th>BM25</th>
                 <th>Hybrid α=0.1</th>
                 <th>Hybrid α=0.9</th>
+                <th>nearVector</th>
                 <th>Mixed</th>
             </tr>
             <tr><td><b>Limit 10</b></td><td class="metric-good">23.5</td><td class="metric-good">186.5</td><td class="metric-good">185.0</td><td class="metric-good">123.6</td><td class="metric-good">142.8</td></tr>
@@ -165,25 +166,6 @@
             <tr><td><b>Limit 100</b></td><td class="metric-warning">27.19</td><td class="metric-bad">8.73</td><td class="metric-bad">8.87</td><td class="metric-bad">9.28</td><td class="metric-bad">11.83</td></tr>
             <tr><td><b>Limit 150</b></td><td class="metric-bad">19.72</td><td class="metric-bad">7.67</td><td class="metric-bad">8.11</td><td class="metric-bad">8.47</td><td class="metric-bad">9.83</td></tr>
             <tr><td><b>Limit 200</b></td><td class="metric-bad">15.42</td><td class="metric-bad">6.96</td><td class="metric-bad">7.29</td><td class="metric-bad">7.70</td><td class="metric-bad">8.66</td></tr>
-        </table>
-    </div>
-
-    <div class="section">
-        <h2>❌ Failure Rate (%)</h2>
-        <table>
-            <tr>
-                <th>Result Limit</th>
-                <th>BM25</th>
-                <th>Hybrid α=0.1</th>
-                <th>Hybrid α=0.9</th>
-                <th>nearVector</th>
-                <th>Mixed</th>
-            </tr>
-            <tr><td><b>Limit 10</b></td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td></tr>
-            <tr><td><b>Limit 50</b></td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td></tr>
-            <tr><td><b>Limit 100</b></td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td></tr>
-            <tr><td><b>Limit 150</b></td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td></tr>
-            <tr><td><b>Limit 200</b></td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td><td class="metric-good">0.00%</td></tr>
         </table>
     </div>
 
@@ -600,29 +582,6 @@
                 <td>8.66</td>
             </tr>
         </table>
-    </div>
-
-    <div class="section">
-        <h2>💡 Key Insights</h2>
-        <div style="line-height: 1.8;">
-<h3>🏆 Fastest Search Type by Limit:</h3><ul><li><b>Limit 10:</b> BM25 (23.5ms)</li><li><b>Limit 50:</b> BM25 (42.0ms)</li><li><b>Limit 100:</b> BM25 (64.3ms)</li><li><b>Limit 150:</b> BM25 (87.7ms)</li><li><b>Limit 200:</b> BM25 (111.2ms)</li></ul>
-            <h3>📊 Performance Trends:</h3>
-            <ul>
-                <li>Response times generally increase with result limit (expected)</li>
-                <li>BM25 typically fastest (keyword-only, no vector overhead)</li>
-                <li>Hybrid 0.9 typically slowest (heavy vector computation)</li>
-                <li>Throughput decreases as response time increases</li>
-            </ul>
-            
-            <h3>🎯 Recommendations:</h3>
-            <ul>
-                <li>If avg response time < 500ms: ✅ Excellent performance</li>
-                <li>If avg response time 500-1000ms: ⚠️ Acceptable, consider optimization</li>
-                <li>If avg response time > 1000ms: ❌ Needs optimization</li>
-                <li>If failure rate > 1%: Investigate server capacity</li>
-                <li>Compare 95th percentile across limits to find sweet spot</li>
-            </ul>
-        </div>
     </div>
 
 </body>
