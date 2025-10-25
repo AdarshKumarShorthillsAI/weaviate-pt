@@ -50,30 +50,6 @@ Total: 1,737,416 objects
 
 ---
 
-### delete_collection.py
-
-**Purpose:** Safely delete Weaviate collections
-
-**Features:**
-- Lists all collections with object counts
-- Number-based selection
-- Double confirmation (prevents accidents)
-- Shows what will be deleted
-
-**Usage:**
-```bash
-python delete_collection.py
-```
-
-**Workflow:**
-1. Lists collections with counts
-2. Enter number to delete
-3. Shows preview
-4. Type exact collection name to confirm
-5. Deletes collection
-
----
-
 ### check_test_data.py
 
 **Purpose:** Verify performance test results exist
@@ -201,6 +177,3 @@ python delete_collection.py  # Delete collections safely
 ```
 
 ---
-
-**Version:** 2.0  
-**Last Updated:** 2025-10-25

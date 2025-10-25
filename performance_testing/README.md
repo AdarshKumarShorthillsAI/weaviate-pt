@@ -236,22 +236,10 @@ All 10 locustfiles follow identical structure:
 - No wait_time (maximum throughput)
 - All use REST API (no gRPC)
 
----
-
-## 📊 Sample Results
-
-**Multi-Collection (9 collections, limit 200):**
-```
-Search Type    | Requests | Avg Time | RPS
----------------|----------|----------|-----
-BM25           | 91,399   | 298ms    | 305
-Hybrid 0.1     | 42,659   | 676ms    | 142
-Vector         | 72,513   | 395ms    | 242
-```
 
 ---
 
-## ⚠️ Notes
+## Notes
 
 - All locustfiles use REST API (Weaviate HTTP-only, no gRPC)
 - No wait_time between requests (maximum load)
@@ -259,6 +247,3 @@ Vector         | 72,513   | 395ms    | 242
 - Results include HTML reports and CSV data
 
 ---
-
-**Version:** 2.0  
-**Last Updated:** 2025-10-25

@@ -114,12 +114,6 @@ weaviate-backups/
 │   └── ... (100 files for 1M objects)
 ```
 
-**Why Backup?**
-- Infrastructure changes require Weaviate restart
-- Backup once, restore multiple times
-- Test different configurations quickly
-- No need to re-index (saves 10-20 hours!)
-
 ---
 
 ### Phase 4: Performance Testing
@@ -219,8 +213,8 @@ cd performance_testing
 │  │ create_weaviate_schema.py                                │   │
 │  │ Creates: SongLyrics collection                           │   │
 │  └──────────────────────────────────────────────────────────┘   │
-│                         │                                        │
-│                         ▼                                        │
+│                         │                                       │
+│                         ▼                                       │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │ process_lyrics.py                                        │   │
 │  │ • Read CSV chunks                                        │   │
@@ -228,12 +222,12 @@ cd performance_testing
 │  │ • Batch insert to Weaviate                               │   │
 │  │ Time: 10-20 hours                                        │   │
 │  └──────────────────────────────────────────────────────────┘   │
-│                         │                                        │
-│                         ▼                                        │
+│                         │                                       │
+│                         ▼                                       │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │ create_multiple_collections.py                           │   │
-│  │ Creates: 12 collection variants (1M, 400k, ..., 1k)      │   │
-│  │ Copy parent Data to other 8 collections for cost saving  │   │
+│  │ Creates: 8 collection variants (400k, 200k..., 10k)      │   │
+│  │ Copy Parent Data to other 8 collections for cost saving  │   │
 │  └──────────────────────────────────────────────────────────┘   │
 └────────────────────────┬────────────────────────────────────────┘
                          │
@@ -258,7 +252,7 @@ cd performance_testing
 │  │ • 100 users, 5 minutes each                              │   │
 │  │ • Results → multi_collection_report.html                 │   │
 │  └──────────────────────────────────────────────────────────┘   │
-│                         │                                        │
+│                         │                                       │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │ Single-Collection Tests (5 types × 5 limits)             │   │
 │  │ • Same search types                                      │   │
@@ -324,7 +318,7 @@ cd performance_testing
 
 ---
 
-## 📊 Current Results & Metrics
+## 📊 Current Collections Info
 
 ### Collections Created:
 ```
@@ -362,6 +356,7 @@ nthScaling/
 │   ├── backup_v4.py             Backup (10k/batch, REST API)
 │   ├── restore_v4.py            Restore (fast, file range support)
 │   ├── create_all_schemas.py    Schema creator
+│   ├── delete_collection.py     Safe collection deletion
 │   └── check_blob_backups.py    List backups
 │
 ├── performance_testing/         Load testing suite
@@ -376,8 +371,7 @@ nthScaling/
 ├── utilities/                   Helper scripts
 │   ├── README.md
 │   ├── verify_setup.py          Verify all connections
-│   ├── count_objects.py         Count objects in collections
-│   └── delete_collection.py     Safe collection deletion
+│   └── count_objects.py         Count objects in collections
 │
 └── Results/                     Generated reports
     ├── multi_collection_reports/
@@ -407,23 +401,6 @@ nthScaling/
 - Azure Blob Storage
 - Backup/restore capability
 - ~10k objects per file
-
----
-
-## 📝 Current Status
-
-**Completed:**
-- ✅ Data indexed (1M+ objects)
-- ✅ Collection variants created (9 total)
-- ✅ Backup system working
-- ✅ Restore system working (fast!)
-- ✅ Performance testing complete (50 tests)
-- ✅ Baseline metrics established
-- ✅ All tools documented
-
-**Ready for:**
-- ✅ Parallel search implementation
-- ✅ Infrastructure scaling tests
 
 ---
 

@@ -217,6 +217,3 @@ python backup_v4.py
 ```
 
 ---
-
-**Version:** 2.0  
-**Last Updated:** 2025-10-25

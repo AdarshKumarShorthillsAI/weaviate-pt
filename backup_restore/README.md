@@ -14,9 +14,9 @@ python create_all_schemas.py
 ```
 
 **Options:**
-- Enter `11` - Create only SongLyrics_10k
-- Enter `all` - Create all 13 collections
-- Enter `1 11 13` - Create multiple
+- Enter `1` - Create one collection
+- Enter `all` - Create all 9 collections
+- Enter `1 2 3` - Create multiple
 
 ---
 
@@ -27,9 +27,9 @@ python backup_v4.py
 ```
 
 **Options:**
-- Enter `11` - Backup only SongLyrics_10k
+- Enter `1` - Backup only one collection
 - Enter `all` - Backup all collections
-- Enter `1 11` - Backup multiple collections
+- Enter `1 2` - Backup multiple collections
 
 **What happens:**
 - Fetches objects in batches of 10,000
@@ -37,8 +37,6 @@ python backup_v4.py
 - Uploads to Azure Blob Storage
 - Deletes local files (no disk usage)
 - Memory-optimized with GC
-
-**Time:** ~1-2 minutes per 10,000 objects
 
 ---
 
@@ -69,8 +67,6 @@ python restore_v4.py --end 10
 - Downloads JSON files from Azure
 - Batch inserts via REST API (FAST!)
 - Shows progress with memory cleanup
-
-**Time:** ~5-10 seconds per 2,000 objects
 
 ---
 
@@ -117,6 +113,28 @@ python restore_v4.py --end 10
 - ✅ Collection selection
 - ✅ Complete schema (12 properties)
 - ✅ All configuration included
+
+### delete_collection.py
+
+**Purpose:** Safely delete Weaviate collections
+
+**Features:**
+- Lists all collections with object counts
+- Number-based selection
+- Double confirmation (prevents accidents)
+- Shows what will be deleted
+
+**Usage:**
+```bash
+python delete_collection.py
+```
+
+**Workflow:**
+1. Lists collections with counts
+2. Enter number to delete
+3. Shows preview
+4. Type exact collection name to confirm
+5. Deletes collection
 
 ---
 
@@ -170,18 +188,6 @@ python restore_v4.py --start 11 --end 20
 
 ---
 
-## 📊 Performance
-
-| Operation | Objects | Time |
-|-----------|---------|------|
-| **Backup** | 10,000 | ~1-2 min |
-| **Restore** | 2,000 | ~5-10 sec |
-| **Restore** | 10,000 | ~30-60 sec |
-
-**Restore is 10-30x faster than old method!** ✅
-
----
-
 ## 🔑 Configuration
 
 Edit `../config.py`:
@@ -213,70 +219,18 @@ Azure Container: weaviate-backups/
 │       └── ...
 ```
 
-**Files:**
-- Plain JSON (no gzip)
-- ~10,000 objects per file
-- ~100-200 MB per file
-
 ---
-
-## ⚠️ Important Notes
-
-### Memory Management
-
-Both scripts use aggressive garbage collection:
-- Clears references after each file
-- GC after every file
-- Extra GC every 5 files
-- Final cleanup at end
-
-**Required for large collections!**
-
-### No Chunking
-
-- Long lyrics are truncated (not chunked)
-- Single object per song
-- Simpler and more reliable
-
-### REST API Only
-
-- No gRPC dependency
-- Works with HTTP-only Weaviate
-- More reliable
-- Faster for batch operations
-
----
-
-## 🆘 Troubleshooting
-
-### "0 objects backed up"
-→ Check collection exists and has data
-→ Run: `cd ../indexing && python count_objects.py`
-
-### "gRPC error"
-→ Should not happen (uses REST API only)
-→ Check if script is latest version
-
-### "Schema doesn't exist"
-→ Run: `python create_all_schemas.py`
-
-### "Connection string error"
-→ Check AZURE_BLOB_CONNECTION_STRING in config.py
-
----
-
-## ✅ Workflow
 
 ### Complete Backup/Restore Cycle:
 
 ```bash
 # 1. Create schema (if needed)
 python create_all_schemas.py
-# Enter: 11
+# Enter: 1
 
 # 2. Backup
 python backup_v4.py
-# Enter: 11
+# Enter: 1
 # Confirm: yes
 
 # 3. Verify backup
@@ -288,7 +242,3 @@ python restore_v4.py
 ```
 
 ---
-
-**Last Updated:** 2025-10-25  
-**Version:** 2.0 - REST API, Optimized  
-**Status:** Production Ready ✅
