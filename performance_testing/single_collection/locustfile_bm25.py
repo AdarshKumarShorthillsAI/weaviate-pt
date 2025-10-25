@@ -18,7 +18,7 @@ def on_locust_init(environment, **kwargs):
     global QUERIES
     
     # Will be updated by runner script
-    filename = "queries/queries_bm25_100.json"
+    filename = "queries/queries_bm25_200.json"
     
     print("=" * 70)
     print(f"Loading: {filename}")

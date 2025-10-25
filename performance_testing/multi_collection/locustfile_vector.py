@@ -25,7 +25,7 @@ def on_locust_init(environment, **kwargs):
     """Load vector query file when Locust starts"""
     global QUERIES_VECTOR
     
-    filename = "queries/queries_vector_150.json"
+    filename = "queries/queries_vector_200.json"
     
     print("=" * 70)
     print(f"Loading pure vector search queries: {filename}")
