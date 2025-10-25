@@ -97,8 +97,16 @@ PYEOF
         echo "   ⚠️  Warning: Expected queries_${search_type}_${limit}.json, got $actual_file"
     fi
     
-    # Run test
-    locust -f $locustfile --users $USERS --spawn-rate $SPAWN_RATE --run-time $DURATION --headless 2>&1 | grep -A 2 "Aggregated" | tail -3
+    # Create results folder
+    results_dir="../../multi_collection_reports/reports_${limit}"
+    mkdir -p "$results_dir"
+    
+    # Run test and save results
+    locust -f $locustfile --users $USERS --spawn-rate $SPAWN_RATE --run-time $DURATION --headless \
+        --html "$results_dir/${search_type}_report.html" \
+        --csv "$results_dir/${search_type}" 2>&1 | grep -A 2 "Aggregated" | tail -3
+    
+    echo "   💾 Saved to: multi_collection_reports/reports_${limit}/${search_type}_*"
     echo ""
 }
 
@@ -123,13 +131,54 @@ cd single_collection
 test_count=0
 total_tests=25
 
+# Redefine run_test for single-collection (different results path)
+run_test_single() {
+    local locustfile=$1
+    local search_type=$2
+    local limit=$3
+    
+    ((test_count++))
+    echo "🔍 Test $test_count/$total_tests: $search_type (limit=$limit) [Single]"
+    
+    # Update locustfile for this limit
+    python3 << PYEOF
+import re
+with open('$locustfile', 'r') as f:
+    content = f.read()
+content = re.sub(r'queries/queries_${search_type}_\d+\.json', 'queries/queries_${search_type}_${limit}.json', content)
+with open('$locustfile', 'w') as f:
+    f.write(content)
+PYEOF
+    
+    # Verify correct file is set
+    actual_file=$(grep "queries_${search_type}" $locustfile | grep "with open\|filename =" | head -1 | grep -o "queries_${search_type}_[0-9]*\.json")
+    
+    if [ "$actual_file" = "queries_${search_type}_${limit}.json" ]; then
+        echo "   ✅ Verified: Using $actual_file"
+    else
+        echo "   ⚠️  Warning: Expected queries_${search_type}_${limit}.json, got $actual_file"
+    fi
+    
+    # Create results folder
+    results_dir="../../single_collection_reports/reports_${limit}"
+    mkdir -p "$results_dir"
+    
+    # Run test and save results
+    locust -f $locustfile --users $USERS --spawn-rate $SPAWN_RATE --run-time $DURATION --headless \
+        --html "$results_dir/${search_type}_report.html" \
+        --csv "$results_dir/${search_type}" 2>&1 | grep -A 2 "Aggregated" | tail -3
+    
+    echo "   💾 Saved to: single_collection_reports/reports_${limit}/${search_type}_*"
+    echo ""
+}
+
 # Test each search type for each limit
 for LIMIT in "${LIMITS[@]}"; do
-    run_test "locustfile_bm25.py" "bm25" $LIMIT
-    run_test "locustfile_hybrid_01.py" "hybrid_01" $LIMIT
-    run_test "locustfile_hybrid_09.py" "hybrid_09" $LIMIT
-    run_test "locustfile_single_vector.py" "vector" $LIMIT
-    run_test "locustfile_mixed.py" "mixed" $LIMIT
+    run_test_single "locustfile_bm25.py" "bm25" $LIMIT
+    run_test_single "locustfile_hybrid_01.py" "hybrid_01" $LIMIT
+    run_test_single "locustfile_hybrid_09.py" "hybrid_09" $LIMIT
+    run_test_single "locustfile_single_vector.py" "vector" $LIMIT
+    run_test_single "locustfile_mixed.py" "mixed" $LIMIT
 done
 
 cd ..
