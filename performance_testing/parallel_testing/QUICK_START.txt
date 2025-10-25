@@ -82,7 +82,7 @@ locustfile_hybrid_09.py         → Hybrid α=0.9 (9 parallel requests)
 locustfile_mixed.py             → Mixed search types (9 parallel requests)
 run_parallel_tests.sh           → Automated test runner (all 5 types)
 quick_test.sh                   → Validation script
-queries/                        → 25 query files (30 sets × 9 queries each)
+queries/                        → 25 query files (40 sets × 9 queries each)
 README.md                       → Comprehensive documentation
 IMPLEMENTATION_SUMMARY.md       → Technical details & implementation notes
 QUICK_START.txt                 → This file

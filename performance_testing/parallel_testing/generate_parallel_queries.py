@@ -19,7 +19,7 @@ COLLECTIONS = [
     'SongLyrics_15k', 'SongLyrics_12k', 'SongLyrics_10k'
 ]
 
-# Test queries (same as generate_all_queries.py)
+# Test queries (40 total - same as generate_all_queries.py for consistency)
 SEARCH_QUERIES = [
     "love and heartbreak", "summer party vibes", "feeling alone tonight",
     "dance all night long", "broken dreams and hope", "city lights at midnight",
@@ -30,7 +30,12 @@ SEARCH_QUERIES = [
     "celebration and joy", "freedom and liberty", "hope for better tomorrow",
     "struggle and perseverance", "peace and tranquility", "anger and revenge",
     "happiness and laughter", "sadness and tears", "victory and triumph",
-    "loss and defeat", "passion and desire", "fear and courage"
+    "loss and defeat", "passion and desire", "fear and courage",
+    # 10 additional queries for perfect 40-query split (10 per search type in mixed)
+    "nature beauty mountains rivers", "faith hope spiritual journey", "young forever memories aging",
+    "transformation change new beginnings", "rebel against system rules", "missing you come back",
+    "adventure explore unknown world", "betrayal lies broken trust", "destiny fate written stars",
+    "redemption forgiveness second chance"
 ]
 
 
@@ -117,7 +122,7 @@ def generate_parallel_queries(search_type, limit, embeddings):
     all_query_sets = []
     
     print(f"\n🔨 Generating {search_type.upper()} queries (limit={limit})...")
-    print(f"   Creating 30 query sets × 9 collections = 270 individual queries")
+    print(f"   Creating 40 query sets × 9 collections = 360 individual queries")
     
     for query_text in SEARCH_QUERIES:
         query_vector = embeddings.get(query_text)
@@ -170,8 +175,8 @@ def generate_mixed_parallel_queries(limit, embeddings):
     search_types = ['bm25', 'hybrid_01', 'hybrid_09', 'vector']
     
     print(f"\n🔨 Generating MIXED queries (limit={limit})...")
-    print(f"   Creating 30 query sets × 9 collections = 270 individual queries")
-    print(f"   Each set rotates through: {', '.join(search_types)}")
+    print(f"   Creating 40 query sets × 9 collections = 360 individual queries")
+    print(f"   Each set rotates through: {', '.join(search_types)} (10 queries per type)")
     
     for idx, query_text in enumerate(SEARCH_QUERIES):
         query_vector = embeddings.get(query_text)
@@ -272,7 +277,8 @@ def main():
     print("\n" + "=" * 80)
     print(f"✅ SUCCESS! Generated {total_files} query files")
     print(f"📁 Location: parallel_testing/queries/")
-    print(f"📊 Each file contains 30 query sets × 9 collections = 270 queries")
+    print(f"📊 Each file contains 40 query sets × 9 collections = 360 queries")
+    print(f"📊 Mixed queries: Perfect 10 per search type (BM25, Hybrid 0.1, Hybrid 0.9, Vector)")
     print("=" * 80)
     print("\n🎯 Next steps:")
     print("   1. Run parallel tests: ./run_parallel_tests.sh")

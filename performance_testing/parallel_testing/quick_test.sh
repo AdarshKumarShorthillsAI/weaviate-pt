@@ -46,7 +46,7 @@ try:
         queries = json.load(f)
     
     # Validate structure
-    assert len(queries) == 30, f"Expected 30 query sets, got {len(queries)}"
+    assert len(queries) == 40, f"Expected 40 query sets, got {len(queries)}"
     
     first_set = queries[0]
     assert "query_text" in first_set, "Missing query_text field"
@@ -59,7 +59,7 @@ try:
     assert "SongLyrics" in first_query["collection"], "Invalid collection name"
     
     print("   ✅ Query structure validated")
-    print(f"   ✅ 30 query sets × 9 collections = {len(queries) * 9} individual queries")
+    print(f"   ✅ 40 query sets × 9 collections = {len(queries) * 9} individual queries")
     
 except Exception as e:
     print(f"   ❌ Validation failed: {e}")
