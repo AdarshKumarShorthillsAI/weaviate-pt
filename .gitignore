@@ -1,4 +1,5 @@
 # Virtual Environment
+ptVenv/
 venv/
 env/
 ENV/
@@ -41,12 +42,7 @@ song_lyrics.csv
 # OS
 .DS_Store
 Thumbs.db
-docFiles
-setup_github.sh
-AUTOMATED_TESTING_GUIDE.md
-PARALLEL_VS_SINGLE_COMPARISON.md
-*.html
+#*.html
 
 oldReports
 test_venv/
-config.py
