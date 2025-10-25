@@ -1,0 +1,5 @@
+Method,Name,Error,Occurrences
+POST,Parallel_Hybrid01_SongLyrics_12k,RemoteDisconnected('Remote end closed connection without response'),2
+POST,Parallel_Hybrid01_SongLyrics_15k,RemoteDisconnected('Remote end closed connection without response'),3
+PARTIAL,Parallel_Hybrid01_Partial_8_of_9,Exception('Only 8/9 collections succeeded'),3
+PARTIAL,Parallel_Hybrid01_Partial_7_of_9,Exception('Only 7/9 collections succeeded'),1

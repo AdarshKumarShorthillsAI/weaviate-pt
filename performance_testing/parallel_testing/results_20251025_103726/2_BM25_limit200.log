@@ -1,0 +1,9 @@
+[2025-10-25 10:42:27,330] AKS-weaviate-indexing-server/INFO/locust.main: Starting Locust 2.41.6
+[2025-10-25 10:42:27,331] AKS-weaviate-indexing-server/INFO/locust.main: Run time limit set to 300 seconds
+[2025-10-25 10:42:27,331] AKS-weaviate-indexing-server/INFO/locust.runners: Ramping to 100 users at a rate of 5.00 per second
+[2025-10-25 10:42:47,427] AKS-weaviate-indexing-server/INFO/locust.runners: All users spawned: {"ParallelBM25User": 100} (100 total users)
+[2025-10-25 10:42:47,719] AKS-weaviate-indexing-server/WARNING/root: CPU usage above 90%! This may constrain your throughput and may even give inconsistent response time measurements! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2025-10-25 10:47:27,237] AKS-weaviate-indexing-server/INFO/locust.main: --run-time limit reached, shutting down
+[2025-10-25 10:47:28,761] AKS-weaviate-indexing-server/WARNING/locust.runners: CPU usage was too high at some point during the test! See https://docs.locust.io/en/stable/running-distributed.html for how to distribute the load over multiple CPU cores or machines
+[2025-10-25 10:47:28,802] AKS-weaviate-indexing-server/INFO/locust.main: writing html report to file: results_20251025_103726/2_BM25_limit200_report.html
+[2025-10-25 10:47:28,804] AKS-weaviate-indexing-server/INFO/locust.main: Shutting down (exit code 0)

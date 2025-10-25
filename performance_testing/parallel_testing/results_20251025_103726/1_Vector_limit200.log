@@ -1,0 +1,7 @@
+[2025-10-25 10:37:26,889] AKS-weaviate-indexing-server/INFO/locust.main: Starting Locust 2.41.6
+[2025-10-25 10:37:26,921] AKS-weaviate-indexing-server/INFO/locust.main: Run time limit set to 300 seconds
+[2025-10-25 10:37:26,922] AKS-weaviate-indexing-server/INFO/locust.runners: Ramping to 100 users at a rate of 5.00 per second
+[2025-10-25 10:37:46,428] AKS-weaviate-indexing-server/INFO/locust.runners: All users spawned: {"ParallelVectorUser": 100} (100 total users)
+[2025-10-25 10:42:26,638] AKS-weaviate-indexing-server/INFO/locust.main: --run-time limit reached, shutting down
+[2025-10-25 10:42:26,742] AKS-weaviate-indexing-server/INFO/locust.main: writing html report to file: results_20251025_103726/1_Vector_limit200_report.html
+[2025-10-25 10:42:26,743] AKS-weaviate-indexing-server/INFO/locust.main: Shutting down (exit code 0)

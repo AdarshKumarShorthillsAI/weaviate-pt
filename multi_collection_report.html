@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weaviate Performance Test - Combined Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+        .subtitle {
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .metric-good {
+            color: #22c55e;
+            font-weight: bold;
+        }
+        .metric-warning {
+            color: #eab308;
+            font-weight: bold;
+        }
+        .metric-bad {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        .summary-box {
+            display: inline-block;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            background: #f0f9ff;
+            border-left: 4px solid #667eea;
+        }
+        .summary-box h3 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+        }
+        .summary-box p {
+            margin: 5px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Weaviate Performance Test - Combined Report</h1>
+        <div class="subtitle">
+            Comprehensive analysis across different result limits and search types<br>
+            Generated: 2025-10-25 06:04:10
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📊 Test Configuration</h2>
+        <div>
+            <div class="summary-box">
+                <h3>Result Limits Tested</h3>
+                <p>10, 100, 150, 200, 50</p>
+            </div>
+            <div class="summary-box">
+                <h3>Search Types</h3>
+                <p>BM25, Hybrid 0.1, Hybrid 0.9, Vector, Mixed</p>
+            </div>
+            <div class="summary-box">
+                <h3>Test Parameters</h3>
+                <p>100 users, 5min, ramp-up 5/s</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>⏱️ Average Response Time Comparison (ms)</h2>
+        <table>
+            <tr>
+                <th>Result Limit</th>
+                <th>BM25</th>
+                <th>Hybrid α=0.1</th>
+                <th>Hybrid α=0.9</th>
+                <th>nearVector</th>
+                <th>Mixed</th>
+            </tr>
+            <tr><td><b>Limit 10</b></td><td class="metric-good">23.2</td><td class="metric-good">180.1</td><td class="metric-good">180.2</td><td class="metric-good">119.8</td><td class="metric-good">128.6</td></tr>
+            <tr><td><b>Limit 50</b></td><td class="metric-good">42.7</td><td class="metric-good">190.7</td><td class="metric-good">189.9</td><td class="metric-good">169.1</td><td class="metric-good">151.4</td></tr>
+            <tr><td><b>Limit 100</b></td><td class="metric-good">62.9</td><td class="metric-good">211.3</td><td class="metric-good">207.6</td><td class="metric-good">198.3</td><td class="metric-good">162.0</td></tr>
+            <tr><td><b>Limit 150</b></td><td class="metric-good">84.5</td><td class="metric-good">231.7</td><td class="metric-good">226.3</td><td class="metric-good">215.9</td><td class="metric-good">187.9</td></tr>
+            <tr><td><b>Limit 200</b></td><td class="metric-good">109.9</td><td class="metric-good">257.0</td><td class="metric-good">249.9</td><td class="metric-good">235.5</td><td class="metric-good">213.1</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>📈 95th Percentile Response Time (ms)</h2>
+        <table>
+            <tr>
+                <th>Result Limit</th>
+                <th>BM25</th>
+                <th>Hybrid α=0.1</th>
+                <th>Hybrid α=0.9</th>
+                <th>nearVector</th>
+                <th>Mixed</th>
+            </tr>
+            <tr><td><b>Limit 10</b></td><td class="metric-good">53.0</td><td class="metric-good">200.0</td><td class="metric-good">210.0</td><td class="metric-good">130.0</td><td class="metric-good">190.0</td></tr>
+            <tr><td><b>Limit 50</b></td><td class="metric-good">77.0</td><td class="metric-good">210.0</td><td class="metric-good">210.0</td><td class="metric-good">180.0</td><td class="metric-good">210.0</td></tr>
+            <tr><td><b>Limit 100</b></td><td class="metric-good">98.0</td><td class="metric-good">240.0</td><td class="metric-good">230.0</td><td class="metric-good">220.0</td><td class="metric-good">230.0</td></tr>
+            <tr><td><b>Limit 150</b></td><td class="metric-good">120.0</td><td class="metric-good">260.0</td><td class="metric-good">260.0</td><td class="metric-good">230.0</td><td class="metric-good">260.0</td></tr>
+            <tr><td><b>Limit 200</b></td><td class="metric-good">150.0</td><td class="metric-good">290.0</td><td class="metric-good">290.0</td><td class="metric-good">270.0</td><td class="metric-good">280.0</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>🔥 Throughput (Requests/Second)</h2>
+        <table>
+            <tr>
+                <th>Result Limit</th>
+                <th>BM25</th>
+                <th>Hybrid α=0.1</th>
+                <th>Hybrid α=0.9</th>
+                <th>nearVector</th>
+                <th>Mixed</th>
+            </tr>
+            <tr><td><b>Limit 10</b></td><td class="metric-good">80.45</td><td class="metric-bad">10.74</td><td class="metric-bad">10.73</td><td class="metric-bad">9.91</td><td class="metric-bad">15.00</td></tr>
+            <tr><td><b>Limit 50</b></td><td class="metric-good">41.74</td><td class="metric-bad">9.98</td><td class="metric-bad">10.05</td><td class="metric-bad">11.22</td><td class="metric-bad">12.52</td></tr>
+            <tr><td><b>Limit 100</b></td><td class="metric-warning">27.73</td><td class="metric-bad">8.88</td><td class="metric-bad">9.07</td><td class="metric-bad">9.49</td><td class="metric-bad">11.48</td></tr>
+            <tr><td><b>Limit 150</b></td><td class="metric-warning">20.50</td><td class="metric-bad">8.01</td><td class="metric-bad">8.22</td><td class="metric-bad">8.59</td><td class="metric-bad">9.81</td></tr>
+            <tr><td><b>Limit 200</b></td><td class="metric-bad">15.63</td><td class="metric-bad">7.16</td><td class="metric-bad">7.38</td><td class="metric-bad">7.78</td><td class="metric-bad">8.57</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>📋 Detailed Metrics - Limit 10</h2>
+        <table>
+            <tr>
+                <th>Search Type</th>
+                <th>Requests</th>
+                <th>Failures</th>
+                <th>Avg (ms)</th>
+                <th>Median (ms)</th>
+                <th>95% (ms)</th>
+                <th>99% (ms)</th>
+                <th>Min (ms)</th>
+                <th>Max (ms)</th>
+                <th>RPS</th>
+            </tr>
+
+            <tr>
+                <td><b>BM25</b></td>
+                <td>1,530</td>
+                <td>0</td>
+                <td>23.2</td>
+                <td>18.0</td>
+                <td>53.0</td>
+                <td>63.0</td>
+                <td>10.6</td>
+                <td>119.2</td>
+                <td>80.45</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.1</b></td>
+                <td>203</td>
+                <td>0</td>
+                <td>180.1</td>
+                <td>180.0</td>
+                <td>200.0</td>
+                <td>220.0</td>
+                <td>158.0</td>
+                <td>219.6</td>
+                <td>10.74</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.9</b></td>
+                <td>203</td>
+                <td>0</td>
+                <td>180.2</td>
+                <td>180.0</td>
+                <td>210.0</td>
+                <td>230.0</td>
+                <td>157.3</td>
+                <td>236.9</td>
+                <td>10.73</td>
+            </tr>
+
+            <tr>
+                <td><b>nearVector</b></td>
+                <td>188</td>
+                <td>0</td>
+                <td>119.8</td>
+                <td>120.0</td>
+                <td>130.0</td>
+                <td>150.0</td>
+                <td>111.9</td>
+                <td>158.3</td>
+                <td>9.91</td>
+            </tr>
+
+            <tr>
+                <td><b>Mixed</b></td>
+                <td>284</td>
+                <td>0</td>
+                <td>128.6</td>
+                <td>170.0</td>
+                <td>190.0</td>
+                <td>220.0</td>
+                <td>12.0</td>
+                <td>227.4</td>
+                <td>15.00</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>📋 Detailed Metrics - Limit 50</h2>
+        <table>
+            <tr>
+                <th>Search Type</th>
+                <th>Requests</th>
+                <th>Failures</th>
+                <th>Avg (ms)</th>
+                <th>Median (ms)</th>
+                <th>95% (ms)</th>
+                <th>99% (ms)</th>
+                <th>Min (ms)</th>
+                <th>Max (ms)</th>
+                <th>RPS</th>
+            </tr>
+
+            <tr>
+                <td><b>BM25</b></td>
+                <td>793</td>
+                <td>0</td>
+                <td>42.7</td>
+                <td>37.0</td>
+                <td>77.0</td>
+                <td>88.0</td>
+                <td>26.0</td>
+                <td>102.6</td>
+                <td>41.74</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.1</b></td>
+                <td>189</td>
+                <td>0</td>
+                <td>190.7</td>
+                <td>190.0</td>
+                <td>210.0</td>
+                <td>230.0</td>
+                <td>170.1</td>
+                <td>227.3</td>
+                <td>9.98</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.9</b></td>
+                <td>190</td>
+                <td>0</td>
+                <td>189.9</td>
+                <td>190.0</td>
+                <td>210.0</td>
+                <td>240.0</td>
+                <td>168.5</td>
+                <td>238.5</td>
+                <td>10.05</td>
+            </tr>
+
+            <tr>
+                <td><b>nearVector</b></td>
+                <td>213</td>
+                <td>0</td>
+                <td>169.1</td>
+                <td>170.0</td>
+                <td>180.0</td>
+                <td>210.0</td>
+                <td>154.2</td>
+                <td>212.6</td>
+                <td>11.22</td>
+            </tr>
+
+            <tr>
+                <td><b>Mixed</b></td>
+                <td>238</td>
+                <td>0</td>
+                <td>151.4</td>
+                <td>190.0</td>
+                <td>210.0</td>
+                <td>250.0</td>
+                <td>26.9</td>
+                <td>248.2</td>
+                <td>12.52</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>📋 Detailed Metrics - Limit 100</h2>
+        <table>
+            <tr>
+                <th>Search Type</th>
+                <th>Requests</th>
+                <th>Failures</th>
+                <th>Avg (ms)</th>
+                <th>Median (ms)</th>
+                <th>95% (ms)</th>
+                <th>99% (ms)</th>
+                <th>Min (ms)</th>
+                <th>Max (ms)</th>
+                <th>RPS</th>
+            </tr>
+
+            <tr>
+                <td><b>BM25</b></td>
+                <td>527</td>
+                <td>0</td>
+                <td>62.9</td>
+                <td>58.0</td>
+                <td>98.0</td>
+                <td>110.0</td>
+                <td>41.8</td>
+                <td>138.5</td>
+                <td>27.73</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.1</b></td>
+                <td>169</td>
+                <td>0</td>
+                <td>211.3</td>
+                <td>210.0</td>
+                <td>240.0</td>
+                <td>250.0</td>
+                <td>187.9</td>
+                <td>260.4</td>
+                <td>8.88</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.9</b></td>
+                <td>172</td>
+                <td>0</td>
+                <td>207.6</td>
+                <td>200.0</td>
+                <td>230.0</td>
+                <td>260.0</td>
+                <td>187.9</td>
+                <td>263.1</td>
+                <td>9.07</td>
+            </tr>
+
+            <tr>
+                <td><b>nearVector</b></td>
+                <td>179</td>
+                <td>0</td>
+                <td>198.3</td>
+                <td>200.0</td>
+                <td>220.0</td>
+                <td>240.0</td>
+                <td>180.5</td>
+                <td>243.1</td>
+                <td>9.49</td>
+            </tr>
+
+            <tr>
+                <td><b>Mixed</b></td>
+                <td>218</td>
+                <td>0</td>
+                <td>162.0</td>
+                <td>200.0</td>
+                <td>230.0</td>
+                <td>250.0</td>
+                <td>43.1</td>
+                <td>255.7</td>
+                <td>11.48</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>📋 Detailed Metrics - Limit 150</h2>
+        <table>
+            <tr>
+                <th>Search Type</th>
+                <th>Requests</th>
+                <th>Failures</th>
+                <th>Avg (ms)</th>
+                <th>Median (ms)</th>
+                <th>95% (ms)</th>
+                <th>99% (ms)</th>
+                <th>Min (ms)</th>
+                <th>Max (ms)</th>
+                <th>RPS</th>
+            </tr>
+
+            <tr>
+                <td><b>BM25</b></td>
+                <td>390</td>
+                <td>0</td>
+                <td>84.5</td>
+                <td>80.0</td>
+                <td>120.0</td>
+                <td>140.0</td>
+                <td>56.9</td>
+                <td>171.4</td>
+                <td>20.50</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.1</b></td>
+                <td>152</td>
+                <td>0</td>
+                <td>231.7</td>
+                <td>230.0</td>
+                <td>260.0</td>
+                <td>280.0</td>
+                <td>209.0</td>
+                <td>282.0</td>
+                <td>8.01</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.9</b></td>
+                <td>156</td>
+                <td>0</td>
+                <td>226.3</td>
+                <td>220.0</td>
+                <td>260.0</td>
+                <td>280.0</td>
+                <td>202.4</td>
+                <td>288.0</td>
+                <td>8.22</td>
+            </tr>
+
+            <tr>
+                <td><b>nearVector</b></td>
+                <td>163</td>
+                <td>0</td>
+                <td>215.9</td>
+                <td>210.0</td>
+                <td>230.0</td>
+                <td>260.0</td>
+                <td>193.5</td>
+                <td>263.9</td>
+                <td>8.59</td>
+            </tr>
+
+            <tr>
+                <td><b>Mixed</b></td>
+                <td>186</td>
+                <td>0</td>
+                <td>187.9</td>
+                <td>220.0</td>
+                <td>260.0</td>
+                <td>280.0</td>
+                <td>58.6</td>
+                <td>291.4</td>
+                <td>9.81</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>📋 Detailed Metrics - Limit 200</h2>
+        <table>
+            <tr>
+                <th>Search Type</th>
+                <th>Requests</th>
+                <th>Failures</th>
+                <th>Avg (ms)</th>
+                <th>Median (ms)</th>
+                <th>95% (ms)</th>
+                <th>99% (ms)</th>
+                <th>Min (ms)</th>
+                <th>Max (ms)</th>
+                <th>RPS</th>
+            </tr>
+
+            <tr>
+                <td><b>BM25</b></td>
+                <td>298</td>
+                <td>0</td>
+                <td>109.9</td>
+                <td>100.0</td>
+                <td>150.0</td>
+                <td>170.0</td>
+                <td>75.6</td>
+                <td>174.3</td>
+                <td>15.63</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.1</b></td>
+                <td>136</td>
+                <td>0</td>
+                <td>257.0</td>
+                <td>250.0</td>
+                <td>290.0</td>
+                <td>310.0</td>
+                <td>217.3</td>
+                <td>326.7</td>
+                <td>7.16</td>
+            </tr>
+
+            <tr>
+                <td><b>Hybrid α=0.9</b></td>
+                <td>140</td>
+                <td>0</td>
+                <td>249.9</td>
+                <td>240.0</td>
+                <td>290.0</td>
+                <td>300.0</td>
+                <td>224.1</td>
+                <td>302.3</td>
+                <td>7.38</td>
+            </tr>
+
+            <tr>
+                <td><b>nearVector</b></td>
+                <td>148</td>
+                <td>0</td>
+                <td>235.5</td>
+                <td>230.0</td>
+                <td>270.0</td>
+                <td>290.0</td>
+                <td>207.5</td>
+                <td>327.5</td>
+                <td>7.78</td>
+            </tr>
+
+            <tr>
+                <td><b>Mixed</b></td>
+                <td>163</td>
+                <td>0</td>
+                <td>213.1</td>
+                <td>240.0</td>
+                <td>280.0</td>
+                <td>320.0</td>
+                <td>72.7</td>
+                <td>330.2</td>
+                <td>8.57</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
