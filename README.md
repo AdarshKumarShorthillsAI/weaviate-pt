@@ -1,60 +1,93 @@
-# Weaviate Performance Testing & Management Suite
+# Weaviate Performance Testing & Optimization
 
-**Complete toolkit for Weaviate indexing, backup, and performance testing.**
+Vector database performance testing and scaling project for song lyrics search.
+
+---
+
+## 🎯 Project Goals
+
+1. Index 1M+ song lyrics with vector embeddings
+2. Test search performance across different strategies
+3. Find performance bottlenecks
+4. Establish scaling strategies
+
+---
+
+## 🏗️ Infrastructure
+
+**Weaviate Cluster:**
+- Single node, single pod (current)
+- Azure-hosted
+- REST API only
+- Version: 1.32.7
+
+**Collections:**
+- 9 collections (1M, 400k, 200k, 50k, 30k, 20k, 15k, 12k, 10k objects)
+- Total: ~1.7M objects indexed
+- Embeddings: 3072-dim (Azure OpenAI text-embedding-3-large)
+
+---
 
 ## 📂 Project Structure
 
 ```
 nthScaling/
-│
-├── README.md ⭐                     This file - Start here
-├── HANDOVER_GUIDE.md ⭐             Complete handover guide
-│
-├── config.py                        Main configuration
-├── openai_client.py                 OpenAI client wrapper
-├── weaviate_client.py               Weaviate client wrapper
-├── error_tracker.py                 Error tracking
-├── resource_manager.py              Resource management
-├── requirements.txt                 Python dependencies
-│
-├── indexing/                        Data indexing & schema
-│   ├── README.md
-│   └── [6 Python scripts]
-│
-├── backup_restore/                  Azure Blob backup
-│   ├── README.md
-│   └── [5 Python scripts]
-│
-├── performance_testing/             Performance testing suite
-│   ├── README.md
-│   ├── QUICK_ACCESS.txt
-│   ├── generate_all_queries.py      ONE query generator
-│   ├── run_all_pt_tests.sh          Master test runner
-│   ├── multi_collection/            (6 files)
-│   ├── single_collection/           (2 files)
-│   └── report_generators/           (3 files)
-│
-├── utilities/                       Helper scripts
-│   ├── README.md
-│   └── [10 Python scripts]
-│
-└── Results/                         Generated
-    ├── multi_collection_reports/
-    ├── single_collection_reports/
-    ├── tax_reports/
-    └── *.html
+├── indexing/                    Data processing & schema
+├── backup_restore/              Azure Blob backup/restore
+├── performance_testing/         Load testing suite
+├── utilities/                   Helper scripts
+├── config.py                    Configuration
+└── requirements.txt             Dependencies
 ```
 
 ---
 
-## 🎯 What Each Module Does
+## 🚀 Quick Start
 
-### 1. Indexing (`indexing/`)
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Configure
+
+Edit `config.py`:
+```python
+WEAVIATE_URL = "http://your-url:8080"
+WEAVIATE_API_KEY = "your-key"
+AZURE_OPENAI_API_KEY = "your-key"
+AZURE_BLOB_CONNECTION_STRING = "your-connection-string"
+```
+
+### 3. Verify Setup
+
+```bash
+cd utilities
+python verify_setup.py
+```
+
+### 4. Run Performance Tests
+
+```bash
+cd performance_testing
+./quick_test.sh  # Quick (20 min)
+# or
+./run_all_pt_tests.sh  # Full (4.5 hours)
+```
+
+---
+
+## 📊 Modules
+
+### Indexing (`indexing/`)
+
 **Purpose:** Data ingestion and schema management
 
 **Main Scripts:**
-- `create_weaviate_schema.py` - Create Weaviate schema
-- `process_lyrics.py` - Process and index data
+- `create_weaviate_schema.py` - Create collection schema
+- `process_lyrics.py` - Index data with embeddings
+- `create_multiple_collections.py` - Create test collections
 - `count_objects.py` - Count objects in collections
 
 **Usage:**
@@ -64,231 +97,156 @@ python create_weaviate_schema.py
 python process_lyrics.py
 ```
 
-**Documentation:** `indexing/README.md`
+**See:** `indexing/README.md`
 
 ---
 
-### 2. Backup/Restore (`backup_restore/`)
-**Purpose:** Azure Blob Storage backup & disaster recovery
+### Backup/Restore (`backup_restore/`)
+
+**Purpose:** Azure Blob backup for quick restore
 
 **Main Scripts:**
-- `backup_to_blob.py` - Backup all collections
-- `restore_from_blob.py` - Restore from backup
+- `backup_v4.py` - Backup collections (REST API, 10k/batch)
+- `restore_v4.py` - Restore with file range support
+- `create_all_schemas.py` - Create schemas before restore
 - `check_blob_backups.py` - List available backups
 
 **Usage:**
 ```bash
 cd backup_restore
-python backup_to_blob.py
-python check_blob_backups.py
+
+# Backup
+python backup_v4.py  # Select collection
+
+# Restore
+python restore_v4.py  # All files
+python restore_v4.py --start 1 --end 10  # File range
 ```
 
-**Features:**
-- Streaming (no local disk)
-- Gzip compression (~80% reduction)
-- Versioned backups
+**Why:** Restore in 1-2 hours vs 10-20 hours re-indexing
 
-**Documentation:** `backup_restore/README.md`
+**See:** `backup_restore/README.md`
 
 ---
 
-### 3. Performance Testing (`performance_testing/`)
-**Purpose:** Comprehensive load testing suite
+### Performance Testing (`performance_testing/`)
 
-**3 Test Scenarios:**
+**Purpose:** Load testing and bottleneck identification
 
-**Quick Start:**
+**Test Scenarios:**
+- Multi-collection (9 collections in one query)
+- Single-collection (1M objects)
+
+**Search Types:**
+- BM25 (keyword)
+- Hybrid α=0.1 (keyword-focused)
+- Hybrid α=0.9 (vector-focused)
+- Vector (semantic)
+- Mixed (realistic)
+
+**Usage:**
 ```bash
 cd performance_testing
+
+# Quick test (50 tests, 20 seconds each)
+./quick_test.sh
+
+# Full test (50 tests, 5 minutes each)
 ./run_all_pt_tests.sh
 ```
-- Generates ALL query files automatically
-- Runs Multi-Collection (25 tests, ~2h 15m)
-- Runs Single-Collection (25 tests, ~2h 15m)
-- Generates combined reports
-- Total time: ~4.5 hours
 
-**Individual Scenarios:**
+**Output:**
+- Individual reports: `*_collection_reports/reports_*/`
+- Combined reports: `multi_collection_report.html`, `single_collection_report.html`
 
-**a) Multi-Collection Only** (9 collections)
-```bash
-python generate_all_queries.py --type multi
-cd multi_collection && ./run_multi_collection_all_limits.sh
-```
-
-**b) Single-Collection Only** (1M objects)
-```bash
-python generate_all_queries.py --type single
-cd single_collection && python run_automated_tests.py
-```
-
-**c) Specific Test Type** (e.g., BM25 only)
-```bash
-python generate_all_queries.py --type multi --search-types bm25
-# See HOW_TO_RUN_INDIVIDUAL_TESTS.md for details
-```
-
-**Documentation:** `performance_testing/README.md` and `performance_testing/QUICK_ACCESS.txt`
+**See:** `performance_testing/README.md`
 
 ---
 
-### 4. Utilities (`utilities/`)
-**Purpose:** Helper scripts for verification and analysis
+### Utilities (`utilities/`)
+
+**Purpose:** Helper scripts and verification tools
 
 **Main Scripts:**
-- `verify_setup.py` - Verify configuration
-- `check_all_collections.py` - Check all collections
-- `analyze_errors.py` - Analyze error logs
+- `verify_setup.py` - Verify all connections
+- `count_objects.py` - Count objects
+- `delete_collection.py` - Safe collection deletion
+- `check_test_data.py` - Verify test results
+- `analyze_lyrics_size.py` - Analyze data distribution
 
 **Usage:**
 ```bash
 cd utilities
 python verify_setup.py
-python check_all_collections.py
+python count_objects.py
 ```
 
-**Documentation:** `utilities/README.md`
+**See:** `utilities/README.md`
 
 ---
 
-## 🔑 Configuration
+## 🔧 Configuration
 
-Edit `config.py`:
+**Main Settings (`config.py`):**
 
 ```python
 # Weaviate
-WEAVIATE_URL = "http://your-url:8080"
+WEAVIATE_URL = "http://ip:port"
 WEAVIATE_API_KEY = "your-key"
+WEAVIATE_CLASS_NAME = "SongLyrics"
 
 # Azure OpenAI
 AZURE_OPENAI_API_KEY = "your-key"
 AZURE_OPENAI_ENDPOINT = "https://your.openai.azure.com/"
+AZURE_OPENAI_DEPLOYMENT = "text-embedding-3-large"
 
-# Azure Blob Storage
+# Azure Blob
 AZURE_BLOB_CONNECTION_STRING = "DefaultEndpointsProtocol=https;..."
 AZURE_BLOB_CONTAINER_NAME = "weaviate-backups"
 ```
 
 ---
 
-## 📊 Complete Workflow
+## 📈 Current Status
 
-### Initial Setup:
-```bash
-# 1. Install
-pip install -r requirements.txt
+**Data:**
+- ✅ 1M+ objects indexed
+- ✅ 9 collection variants
+- ✅ All backed up to Azure Blob
 
-# 2. Configure
-nano config.py
+**Testing:**
+- ✅ 50 tests completed
+- ✅ All search types benchmarked
+- ✅ Baseline metrics established
 
-# 3. Create schema
-cd indexing && python create_weaviate_schema.py
-
-# 4. Index data
-python process_lyrics.py
-```
+**Tools:**
+- ✅ All scripts working
+- ✅ Backup/restore optimized
+- ✅ Memory-managed for large operations
 
 ---
 
-## 🆘 Troubleshooting
+## 🔮 Next Steps
 
-### Common Issues:
+1. **Async parallel search** - 9 collections searched simultaneously
+2. **Pod scaling** - Test with 2x, 3x, 4x pods
+3. **Node scaling** - Add nodes horizontally
+4. **Combined scaling** - Optimal pod+node configuration
 
-**"Cannot import config"**
-→ Scripts auto-configure paths. Ensure config.py exists in root.
+**Each step:**
+- Backup → Change infra → Restore → Test → Compare
 
-**"Weaviate connection failed"**
+---
+
+## 🆘 Common Issues
+
+**"Cannot connect to Weaviate"**
 → Check WEAVIATE_URL in config.py
 
-**"Azure Blob upload failed"**
-→ Verify AZURE_BLOB_CONNECTION_STRING
+**"Azure Blob error"**
+→ Check AZURE_BLOB_CONNECTION_STRING
 
-**"Query files not found"**
-→ Scripts auto-generate. Requires Azure OpenAI credentials.
-
----
-
-## 📚 Documentation
-
-**Main Guides (Root):**
-- `README.md` - This file (project overview)
-- `HANDOVER_GUIDE.md` - Complete handover guide
-
-**Module Guides:**
-- `indexing/README.md` - Indexing module
-- `backup_restore/README.md` - Backup module
-- `performance_testing/README.md` - PT module
-- `utilities/README.md` - Utilities module
-
-**Quick References:**
-- `performance_testing/QUICK_ACCESS.txt` - One-line PT commands
+**"0 objects restored"**
+→ Check backup exists: `python check_blob_backups.py`
 
 ---
-
-## 📈 Performance Testing Details
-
-### Search Types:
-- **BM25** - Keyword-only (fastest)
-- **Hybrid α=0.1** - Keyword-focused
-- **Hybrid α=0.9** - Vector-focused
-- **Vector** - Pure semantic
-- **Mixed** - Realistic workload
-
-### Result Limits:
-- 10, 50, 100, 150, 200 results per collection
-
-### Test Parameters:
-- 100 concurrent users
-- 5 minutes per test
-- Fully automated
-
----
-
-## ⚠️ Important Notes
-
-### Weaviate Pagination:
-- Offset limit: ~100k objects
-- Use cursor-based for larger collections
-- `copy_collection.py` handles automatically
-
-### Backup Strategy:
-- Versioned by timestamp
-- Compression ~80% reduction
-- Streaming (no local disk)
-
-### Performance Testing:
-- All scripts fully automated
-- Auto-generate queries if missing
-- Results are reproducible
-
----
-
-## ✅ Verification Checklist
-
-Before running tests:
-- [ ] Dependencies installed (`pip install -r requirements.txt`)
-- [ ] config.py configured with credentials
-- [ ] Weaviate is running and accessible
-- [ ] Azure credentials set (if using backup)
-
----
-
-## 📞 Quick Reference
-
-| Task | Command |
-|------|---------|
-| **Verify Setup** | `cd utilities && python verify_setup.py` |
-| **Create Schema** | `cd indexing && python create_weaviate_schema.py` |
-| **Index Data** | `cd indexing && python process_lyrics.py` |
-| **Backup** | `cd backup_restore && python backup_to_blob.py` |
-| **PT Multi** | `cd performance_testing/multi_collection && ./run_multi_collection_all_limits.sh` |
-| **PT Single** | `cd performance_testing/single_collection && python run_automated_tests.py` |
-| **Reports** | `cd performance_testing/report_generators && python generate_combined_report.py` |
-
----
-
-**Version:** 3.0  
-**Last Updated:** 2025-10-24  
-
-**Total:** 50+ scripts, 6 documentation files, fully automated, enterprise-ready.
-

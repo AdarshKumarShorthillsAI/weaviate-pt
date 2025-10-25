@@ -1,57 +1,206 @@
-# Utilities & Testing Scripts
+# Utilities Module
 
 Helper scripts for testing, verification, and analysis.
 
 ---
 
-## 📂 Files
+## 📂 Scripts
 
-### Testing & Verification:
-- **`verify_setup.py`** - Verify Weaviate setup and configuration
-- **`test_graphql_query.py`** - Test GraphQL queries against Weaviate
-- **`test_pipeline.py`** - Test complete indexing pipeline
+### verify_setup.py
 
-### Analysis & Monitoring:
-- **`analyze_errors.py`** - Analyze error logs from processing
-- **`analyze_lyrics_size.py`** - Analyze lyrics data size/distribution
-- **`check_all_collections.py`** - Check all Weaviate collections
-- **`check_progress.py`** - Check processing progress
-- **`check_test_data.py`** - Verify test data completeness
+**Purpose:** Verify all connections and configuration
 
-### Setup:
-- **`setup_github.sh`** - GitHub repository setup script
+**Tests:**
+- Azure OpenAI connection
+- Weaviate connection
+- CSV file accessibility
+- Collection existence
 
----
-
-## 🚀 Usage
-
-### Test GraphQL Query:
-```bash
-python test_graphql_query.py
-```
-
-Tests sample queries to verify Weaviate is working.
-
-### Verify Setup:
+**Usage:**
 ```bash
 python verify_setup.py
 ```
 
-Checks:
-- Weaviate connection
-- Schema exists
-- Collections have data
-- Configuration is valid
-
-### Test Complete Pipeline:
-```bash
-python test_pipeline.py
+**Output:**
 ```
-
-Tests end-to-end data processing and indexing.
+✅ OpenAI: PASS
+✅ Weaviate: PASS (SongLyrics exists)
+✅ CSV File: PASS
+```
 
 ---
 
-**Configuration:** Uses ../config.py  
-**Dependencies:** See ../requirements.txt
+### count_objects.py
 
+**Purpose:** Count objects in all Weaviate collections
+
+**Usage:**
+```bash
+cd ../indexing  # Must run from indexing folder
+python count_objects.py
+```
+
+**Output:**
+```
+SongLyrics: 1,000,416 objects
+SongLyrics_400k: 400,000 objects
+...
+Total: 1,737,416 objects
+```
+
+---
+
+### delete_collection.py
+
+**Purpose:** Safely delete Weaviate collections
+
+**Features:**
+- Lists all collections with object counts
+- Number-based selection
+- Double confirmation (prevents accidents)
+- Shows what will be deleted
+
+**Usage:**
+```bash
+python delete_collection.py
+```
+
+**Workflow:**
+1. Lists collections with counts
+2. Enter number to delete
+3. Shows preview
+4. Type exact collection name to confirm
+5. Deletes collection
+
+---
+
+### check_test_data.py
+
+**Purpose:** Verify performance test results exist
+
+**Checks:**
+- `single_collection_reports/reports_*/`
+- `multi_collection_reports/reports_*/`
+- Shows missing test types/limits
+
+**Usage:**
+```bash
+python check_test_data.py
+```
+
+---
+
+### check_all_collections.py
+
+**Purpose:** Check status of all collections
+
+**Shows:**
+- Expected vs actual object counts
+- Collection status (complete/partial/empty)
+- Total objects across all collections
+
+**Usage:**
+```bash
+python check_all_collections.py
+```
+
+---
+
+### analyze_lyrics_size.py
+
+**Purpose:** Analyze lyrics data distribution
+
+**Analyzes:**
+- Character count distribution
+- Word count distribution
+- Statistics (mean, median, percentiles)
+
+**Usage:**
+```bash
+python analyze_lyrics_size.py
+# Or with sample size:
+python analyze_lyrics_size.py 100000
+```
+
+---
+
+### check_progress.py
+
+**Purpose:** Check indexing progress from checkpoint
+
+**Shows:**
+- Last processed row
+- Total processed
+- Progress percentage
+- Estimated remaining time
+- Error count
+
+**Usage:**
+```bash
+python check_progress.py
+```
+
+---
+
+### analyze_errors.py
+
+**Purpose:** Analyze errors from processing logs
+
+**Analyzes:**
+- Error types and frequencies
+- Failed song IDs
+- Error patterns
+
+**Usage:**
+```bash
+python analyze_errors.py
+```
+
+---
+
+## 🔧 Configuration
+
+All scripts read from `../config.py`:
+
+```python
+WEAVIATE_URL = "http://ip:port"
+WEAVIATE_API_KEY = "key"
+CSV_FILE_PATH = "song_lyrics.csv"
+```
+
+**Note:** Scripts handle relative paths from utilities/ folder automatically.
+
+---
+
+## 📝 Common Usage
+
+### Before Indexing:
+```bash
+python verify_setup.py  # Verify all connections
+```
+
+### During Indexing:
+```bash
+python check_progress.py  # Check progress
+```
+
+### After Indexing:
+```bash
+python count_objects.py  # Verify counts
+python check_all_collections.py  # Check status
+```
+
+### For Testing:
+```bash
+python check_test_data.py  # Verify PT results
+```
+
+### For Cleanup:
+```bash
+python delete_collection.py  # Delete collections safely
+```
+
+---
+
+**Version:** 2.0  
+**Last Updated:** 2025-10-25
