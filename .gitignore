@@ -46,3 +46,9 @@ Thumbs.db
 
 oldReports
 test_venv/
+
+backup_restore/SongLyrics*
+multi_collection_report.html
+single_collection_report.html
+multi_collection_reports/
+single_collection_reports/
