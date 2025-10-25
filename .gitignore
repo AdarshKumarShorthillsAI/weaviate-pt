@@ -22,6 +22,7 @@ failed_ids.txt
 performance_testing/multi_collection/queries/
 performance_testing/single_collection/queries/
 performance_testing/embeddings_cache.json
+performance_testing/parallel_testing/queries/
 
 # Configuration with credentials (DO NOT COMMIT)
 config.example.py

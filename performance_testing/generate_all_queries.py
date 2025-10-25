@@ -18,7 +18,7 @@ MULTI_COLLECTIONS = [
     'SongLyrics_50k', 'SongLyrics_30k', 'SongLyrics_20k', 'SongLyrics_15k', 'SongLyrics_12k', 'SongLyrics_10k'
 ]
 
-# Test queries
+# Test queries (40 total for perfect 4-way split in mixed queries)
 SEARCH_QUERIES = [
     "love and heartbreak", "summer party vibes", "feeling alone tonight",
     "dance all night long", "broken dreams and hope", "city lights at midnight",
@@ -29,7 +29,12 @@ SEARCH_QUERIES = [
     "celebration and joy", "freedom and liberty", "hope for better tomorrow",
     "struggle and perseverance", "peace and tranquility", "anger and revenge",
     "happiness and laughter", "sadness and tears", "victory and triumph",
-    "loss and defeat", "passion and desire", "fear and courage"
+    "loss and defeat", "passion and desire", "fear and courage",
+    # 10 new queries for perfect 40-query split (10 per search type in mixed)
+    "nature beauty mountains rivers", "faith hope spiritual journey", "young forever memories aging",
+    "transformation change new beginnings", "rebel against system rules", "missing you come back",
+    "adventure explore unknown world", "betrayal lies broken trust", "destiny fate written stars",
+    "redemption forgiveness second chance"
 ]
 
 
@@ -193,17 +198,21 @@ def generate_all_query_files(test_type, limit, collections, output_dir='.'):
             })
     
     elif test_type == 'mixed':
-        # Mix of all three types
+        # Mix of all four types (BM25, Hybrid 0.1, Hybrid 0.9, Vector)
+        # With 40 queries: 10 of each type for perfect balance
         for i, query_text in enumerate(SEARCH_QUERIES):
-            if i % 3 == 0:
+            if i % 4 == 0:
                 search_type = 'bm25'
                 graphql = generate_bm25_query(query_text, collections, limit)
-            elif i % 3 == 1:
+            elif i % 4 == 1:
                 search_type = 'hybrid_01'
                 graphql = generate_hybrid_query(query_text, embeddings[query_text], 0.1, collections, limit)
-            else:
+            elif i % 4 == 2:
                 search_type = 'hybrid_09'
                 graphql = generate_hybrid_query(query_text, embeddings[query_text], 0.9, collections, limit)
+            else:  # i % 4 == 3
+                search_type = 'vector'
+                graphql = generate_vector_query(embeddings[query_text], collections, limit)
             
             queries.append({
                 "query_text": query_text,
