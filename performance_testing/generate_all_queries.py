@@ -18,7 +18,7 @@ MULTI_COLLECTIONS = [
     'SongLyrics_50k', 'SongLyrics_30k', 'SongLyrics_20k', 'SongLyrics_15k', 'SongLyrics_12k', 'SongLyrics_10k'
 ]
 
-# Test queries
+# Test queries (40 total for perfect 4-way split in mixed queries)
 SEARCH_QUERIES = [
     "love and heartbreak", "summer party vibes", "feeling alone tonight",
     "dance all night long", "broken dreams and hope", "city lights at midnight",
@@ -29,7 +29,11 @@ SEARCH_QUERIES = [
     "celebration and joy", "freedom and liberty", "hope for better tomorrow",
     "struggle and perseverance", "peace and tranquility", "anger and revenge",
     "happiness and laughter", "sadness and tears", "victory and triumph",
-    "loss and defeat", "passion and desire", "fear and courage"
+    "loss and defeat", "passion and desire", "fear and courage",
+    "nature beauty mountains rivers", "faith hope spiritual journey", "young forever memories aging",
+    "transformation change new beginnings", "rebel against system rules", "missing you come back",
+    "adventure explore unknown world", "betrayal lies broken trust", "destiny fate written stars",
+    "redemption forgiveness second chance"
 ]
 
 
@@ -53,14 +57,14 @@ def get_embeddings(cache_file='embeddings_cache.json'):
             print(f"⚠️  Cache error: {e}, regenerating...")
     
     # Generate fresh embeddings
-    print("\n🔄 Generating embeddings for 30 queries (this takes ~30 seconds)...")
+    print("\n🔄 Generating embeddings for 40 queries (this takes ~40 seconds)...")
     print("   These will be cached for future use!")
     
     client, model = create_sync_openai_client()
     embeddings = {}
     
     for i, query in enumerate(SEARCH_QUERIES, 1):
-        print(f"  [{i}/30] {query}...", end=' ', flush=True)
+        print(f"  [{i}/40] {query}...", end=' ', flush=True)
         try:
             response = client.embeddings.create(model=model, input=query)
             embeddings[query] = response.data[0].embedding
@@ -89,7 +93,7 @@ def generate_bm25_query(query_text, collections, limit):
           bm25: {{query: "{query_text}", properties: ["title", "lyrics"]}}
           limit: {limit}
         ) {{
-          title artist year views lyrics song_id language
+          title tag artist year views features lyrics song_id language_cld3 language_ft language
           _additional {{ score }}
         }}''')
     
@@ -113,7 +117,7 @@ def generate_hybrid_query(query_text, query_vector, alpha, collections, limit):
           }}
           limit: {limit}
         ) {{
-          title artist year views lyrics song_id language
+          title tag artist year views features lyrics song_id language_cld3 language_ft language
           _additional {{ score }}
         }}''')
     
@@ -132,7 +136,7 @@ def generate_vector_query(query_vector, collections, limit):
           nearVector: {{vector: {vector_str}}}
           limit: {limit}
         ) {{
-          title artist year views lyrics song_id language
+          title tag artist year views features lyrics song_id language_cld3 language_ft language
           _additional {{ distance certainty }}
         }}''')
     
@@ -193,17 +197,21 @@ def generate_all_query_files(test_type, limit, collections, output_dir='.'):
             })
     
     elif test_type == 'mixed':
-        # Mix of all three types
+        # Mix of all four types (BM25, Hybrid 0.1, Hybrid 0.9, Vector)
+        # With 40 queries: 10 of each type for perfect balance
         for i, query_text in enumerate(SEARCH_QUERIES):
-            if i % 3 == 0:
+            if i % 4 == 0:
                 search_type = 'bm25'
                 graphql = generate_bm25_query(query_text, collections, limit)
-            elif i % 3 == 1:
+            elif i % 4 == 1:
                 search_type = 'hybrid_01'
                 graphql = generate_hybrid_query(query_text, embeddings[query_text], 0.1, collections, limit)
-            else:
+            elif i % 4 == 2:
                 search_type = 'hybrid_09'
                 graphql = generate_hybrid_query(query_text, embeddings[query_text], 0.9, collections, limit)
+            else:  # i % 4 == 3
+                search_type = 'vector'
+                graphql = generate_vector_query(embeddings[query_text], collections, limit)
             
             queries.append({
                 "query_text": query_text,

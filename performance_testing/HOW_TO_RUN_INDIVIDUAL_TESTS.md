@@ -225,13 +225,12 @@ cd multi_collection
 
 ---
 
-## 📝 Tips
+## 📝 Note
 
 1. **Always generate queries first** before running tests
 2. **Edit runner scripts** to skip unwanted tests (comment out sections)
 3. **Use specific limits** to save time during development
 4. **Start with limit 10** for quick validation
-5. **Run full suite** only for final validation
 
 ---
 

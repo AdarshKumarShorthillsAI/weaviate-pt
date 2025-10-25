@@ -7,7 +7,7 @@ Total: 20 tests (4 search types × 5 limits).
 
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
 import subprocess
 import os
