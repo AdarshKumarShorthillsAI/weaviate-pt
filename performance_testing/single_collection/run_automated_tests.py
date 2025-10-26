@@ -18,8 +18,8 @@ import sys
 def run_locust_test(locustfile, limit, search_type, users=100, spawn_rate=5, duration='5m'):
     """Run a single Locust test"""
     
-    # Create reports folder for this limit
-    reports_dir = f"reports_{limit}"
+    # Create reports folder for this limit (at project root level)
+    reports_dir = f"../../single_collection_reports/reports_{limit}"
     os.makedirs(reports_dir, exist_ok=True)
     
     # Update locustfile to use correct query file
@@ -220,7 +220,7 @@ def main():
     
     print("\n📂 Reports saved in:")
     for limit in limits:
-        print(f"   reports_{limit}/")
+        print(f"   ../../single_collection_reports/reports_{limit}/")
     
     print("\n📊 Generate combined report:")
     print("   cd ../report_generators")
