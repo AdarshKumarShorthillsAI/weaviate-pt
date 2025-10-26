@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parallel Collection Testing Report</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+        }
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .info-box strong {
+            color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .metric-good {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .metric-warning {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        .metric-bad {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+        canvas {
+            max-height: 400px;
+        }
+        .summary-card {
+            display: inline-block;
+            background: #fff;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            min-width: 200px;
+            text-align: center;
+        }
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .summary-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .summary-card .unit {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Parallel Collection Testing Report</h1>
+        
+        <div class="info-box">
+            <strong>Test Configuration:</strong> 9 collections queried in parallel (simultaneous HTTP requests)<br>
+            <strong>Results Folder:</strong> results_20251025_111153<br>
+            <strong>Generated:</strong> 2025-10-25 22:06:56<br>
+            <strong>Search Types Tested:</strong> 1 types
+        </div>
+
+        <h2>📊 Performance Summary</h2>
+        <div style="text-align: center;">
+
+            <div class="summary-card">
+                <h3>Best Performer</h3>
+                <div class="value">Vector</div>
+                <div class="unit">1891 ms avg</div>
+            </div>
+            <div class="summary-card">
+                <h3>Total Requests</h3>
+                <div class="value">89,687</div>
+                <div class="unit">all tests</div>
+            </div>
+            <div class="summary-card">
+                <h3>Overall Failure Rate</h3>
+                <div class="value">0.00%</div>
+                <div class="unit">2 failures</div>
+            </div>
+        
+        </div>
+
+        <h2>📈 Response Time Comparison</h2>
+        <div class="chart-container">
+            <canvas id="responseTimeChart"></canvas>
+        </div>
+
+        <h2>⚡ Throughput (Requests/Second)</h2>
+        <div class="chart-container">
+            <canvas id="throughputChart"></canvas>
+        </div>
+
+        <h2>📉 Response Time Percentiles</h2>
+        <div class="chart-container">
+            <canvas id="percentilesChart"></canvas>
+        </div>
+
+        <h2>❌ Failure Rate</h2>
+        <div class="chart-container">
+            <canvas id="failureChart"></canvas>
+        </div>
+
+        <h2>📋 Detailed Metrics</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Search Type</th>
+                    <th>Requests</th>
+                    <th>Failures</th>
+                    <th>Avg (ms)</th>
+                    <th>Median (ms)</th>
+                    <th>95% (ms)</th>
+                    <th>99% (ms)</th>
+                    <th>RPS</th>
+                    <th>Failure %</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td><strong>Vector</strong></td>
+                    <td>89,687</td>
+                    <td>2</td>
+                    <td>1891</td>
+                    <td>1700</td>
+                    <td>4000</td>
+                    <td>5500</td>
+                    <td>298.69</td>
+                    <td class="metric-good">0.00%</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <h2>💡 Key Insights</h2>
+        <div class="info-box">
+
+            <strong>🏆 Fastest:</strong> Vector with 1891ms average response time<br>
+            <strong>🐌 Slowest:</strong> Vector with 1891ms average response time (0.0% slower)<br>
+            <strong>⚡ Highest Throughput:</strong> Vector with 298.69 requests/second<br>
+            <strong>📊 Parallel Execution:</strong> Each test sends 9 simultaneous HTTP requests (one per collection)<br>
+            <strong>⏱️ Total Time:</strong> Time = max(slowest collection response) + HTTP overhead
+        
+        </div>
+
+        <div class="footer">
+            Generated by Parallel Collection Testing Report Generator | 
+            Weaviate Performance Testing Suite
+        </div>
+    </div>
+
+    <script>
+        // Color palette
+        const colors = {
+            blue: 'rgba(52, 152, 219, 0.8)',
+            green: 'rgba(46, 204, 113, 0.8)',
+            orange: 'rgba(230, 126, 34, 0.8)',
+            red: 'rgba(231, 76, 60, 0.8)',
+            purple: 'rgba(155, 89, 182, 0.8)',
+        };
+
+        const borderColors = {
+            blue: 'rgba(52, 152, 219, 1)',
+            green: 'rgba(46, 204, 113, 1)',
+            orange: 'rgba(230, 126, 34, 1)',
+            red: 'rgba(231, 76, 60, 1)',
+            purple: 'rgba(155, 89, 182, 1)',
+        };
+
+        // Data
+        const labels = ["Vector"];
+        const avgTimes = [1890.525247542453];
+        const medianTimes = [1700.0];
+        const p95Times = [4000.0];
+        const p99Times = [5500.0];
+        const rpsValues = [298.69435051824274];
+        const failureRates = [0.0022299775887252332];
+
+        // Response Time Chart
+        new Chart(document.getElementById('responseTimeChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Average',
+                        data: avgTimes,
+                        backgroundColor: colors.blue,
+                        borderColor: borderColors.blue,
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Median',
+                        data: medianTimes,
+                        backgroundColor: colors.green,
+                        borderColor: borderColors.green,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Average vs Median Response Time (ms)',
+                        font: { size: 16 }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Response Time (ms)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Throughput Chart
+        new Chart(document.getElementById('throughputChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Requests/Second',
+                    data: rpsValues,
+                    backgroundColor: colors.green,
+                    borderColor: borderColors.green,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Throughput Comparison',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Requests/Second'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Percentiles Chart
+        new Chart(document.getElementById('percentilesChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Average',
+                        data: avgTimes,
+                        borderColor: borderColors.blue,
+                        backgroundColor: colors.blue,
+                        fill: false,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Median (50%)',
+                        data: medianTimes,
+                        borderColor: borderColors.green,
+                        backgroundColor: colors.green,
+                        fill: false,
+                        tension: 0.1
+                    },
+                    {
+                        label: '95th Percentile',
+                        data: p95Times,
+                        borderColor: borderColors.orange,
+                        backgroundColor: colors.orange,
+                        fill: false,
+                        tension: 0.1
+                    },
+                    {
+                        label: '99th Percentile',
+                        data: p99Times,
+                        borderColor: borderColors.red,
+                        backgroundColor: colors.red,
+                        fill: false,
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Response Time Distribution',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Response Time (ms)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Failure Rate Chart
+        new Chart(document.getElementById('failureChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Failure Rate (%)',
+                    data: failureRates,
+                    backgroundColor: colors.red,
+                    borderColor: borderColors.red,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Failure Rate Comparison',
+                        font: { size: 16 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Failure Rate (%)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

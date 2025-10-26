@@ -1288,5 +1288,435 @@
         "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"fear and courage\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
       }
     ]
+  },
+  {
+    "query_text": "nature beauty mountains rivers",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"nature beauty mountains rivers\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "faith hope spiritual journey",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"faith hope spiritual journey\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "young forever memories aging",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"young forever memories aging\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "transformation change new beginnings",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"transformation change new beginnings\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "rebel against system rules",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"rebel against system rules\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "missing you come back",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"missing you come back\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "adventure explore unknown world",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"adventure explore unknown world\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "betrayal lies broken trust",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"betrayal lies broken trust\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "destiny fate written stars",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"destiny fate written stars\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
+  },
+  {
+    "query_text": "redemption forgiveness second chance",
+    "search_type": "bm25",
+    "limit": 10,
+    "queries": [
+      {
+        "collection": "SongLyrics",
+        "graphql": "{ Get {\n        SongLyrics(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_400k",
+        "graphql": "{ Get {\n        SongLyrics_400k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_200k",
+        "graphql": "{ Get {\n        SongLyrics_200k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_50k",
+        "graphql": "{ Get {\n        SongLyrics_50k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_30k",
+        "graphql": "{ Get {\n        SongLyrics_30k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_20k",
+        "graphql": "{ Get {\n        SongLyrics_20k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_15k",
+        "graphql": "{ Get {\n        SongLyrics_15k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_12k",
+        "graphql": "{ Get {\n        SongLyrics_12k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      },
+      {
+        "collection": "SongLyrics_10k",
+        "graphql": "{ Get {\n        SongLyrics_10k(\n          bm25: {query: \"redemption forgiveness second chance\", properties: [\"title\", \"lyrics\"]}\n          limit: 10\n        ) {\n          title tag artist year views features lyrics song_id language_cld3 language_ft language\n          _additional { score }\n        }\n      } }"
+      }
+    ]
   }
 ]

@@ -1,0 +1,5 @@
+Method,Name,Error,Occurrences
+POST,Parallel_Hybrid01_SongLyrics_10k,RemoteDisconnected('Remote end closed connection without response'),1
+POST,Parallel_Hybrid01_SongLyrics_50k,RemoteDisconnected('Remote end closed connection without response'),1
+POST,Parallel_Hybrid01_SongLyrics_10k,"ConnectionResetError(104, 'Connection reset by peer')",1
+PARTIAL,Parallel_Hybrid01_Partial_8_of_9,Exception('Only 8/9 collections succeeded'),3
