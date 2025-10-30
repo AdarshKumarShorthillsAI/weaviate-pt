@@ -78,7 +78,10 @@ async def startup_event():
     http_client = httpx.AsyncClient(
         timeout=60.0,
         headers=headers,
-        limits=httpx.Limits(max_keepalive_connections=50, max_connections=100)
+        limits=httpx.Limits(
+            max_keepalive_connections=500,  # Support high concurrency
+            max_connections=1000             # Handle 100 users × 9 queries = 900 connections
+        )
     )
     print(f"✅ FastAPI server started")
     print(f"✅ Connected to Weaviate: {WEAVIATE_URL}")
