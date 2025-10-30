@@ -1,6 +1,6 @@
-# 🚀 Parallel Collection Testing
+# 🚀 Parallel Collection Testing (Pure AsyncIO)
 
-Test performance by sending **9 simultaneous HTTP requests** (one per collection) instead of a single GraphQL query with 9 sub-queries.
+Test performance using **FastAPI with async Weaviate client** to query 9 collections in parallel. Returns only status codes and timing (no full results) for optimal performance.
 
 ---
 
@@ -37,7 +37,7 @@ parallel_testing/
 
 ## 🚀 Quick Start
 
-### 1. Generate Query Files
+### 1. Generate Query Files (One-Time Setup)
 
 ```bash
 cd performance_testing/parallel_testing
@@ -46,9 +46,20 @@ python generate_parallel_queries.py --search-types all --limits 10 50 100 150 20
 
 **Output:** 25 query files in `queries/` folder
 
-### 2. Run Tests
+### 2. Start FastAPI Server (Terminal 1)
 
 ```bash
+cd performance_testing/parallel_testing
+./start_fastapi_server.sh
+```
+
+**Keep this running!** Server runs on `http://localhost:8000`
+
+### 3. Run Tests (Terminal 2)
+
+```bash
+cd performance_testing/parallel_testing
+
 # Run all 5 tests (Vector, BM25, Hybrid 0.1, Hybrid 0.9, Mixed)
 ./run_parallel_tests.sh
 ```
@@ -83,36 +94,39 @@ python generate_parallel_report.py results_20251025_103726
 ### Parallel Execution Flow
 
 ```python
-# 1. Pick random query set (40 options, each with 9 queries)
-query_set = random.choice(QUERIES)
+# Locust Side (Simple HTTP POST):
+query_set = random.choice(QUERIES)  # Pick random query set
 
-# 2. Spawn 9 greenlets for parallel execution (gevent)
-greenlets = []
-for query in query_set["queries"]:  # 9 iterations
-    g = gevent.spawn(execute_request, query)
-    greenlets.append(g)
+response = self.client.post(
+    "/parallel_query",
+    json=query_set  # Send all 9 queries to FastAPI
+)
 
-# 3. Wait for ALL 9 to complete (30s timeout)
-gevent.joinall(greenlets, timeout=30)
-
-# 4. Total time = max(all response times)
-total_time = max(response_times)
-
-# 5. Report to Locust
-if all_9_succeeded:
-    report_success(total_time)
-elif some_succeeded:
-    report_partial(successful_count)
-else:
-    report_failure()
+# FastAPI Side (Async Parallel Execution):
+async def parallel_query(query_set):
+    # 1. Create async tasks for all 9 queries
+    tasks = [execute_single_query(q) for q in query_set.queries]
+    
+    # 2. Execute all 9 in parallel using asyncio
+    results = await asyncio.gather(*tasks)  # True async parallel!
+    
+    # 3. Aggregate results (status + timing only, no data)
+    return {
+        "total_time_ms": total_time,
+        "successful": count_successful,
+        "failed": count_failed,
+        "results": [{collection, status_code, response_time_ms}, ...]
+    }
 ```
 
-### Why Gevent?
+### Why Pure AsyncIO?
 
-- **Async I/O:** True parallel HTTP requests without threads
-- **Lightweight:** Much more efficient than OS threads
-- **Non-blocking:** Doesn't block on network I/O
-- **Locust Compatible:** Built-in support
+- **Modern Python:** Native async/await (Python 3.7+)
+- **No Gevent:** No monkey patching, no greenlets
+- **Better Performance:** Native async I/O is faster
+- **Standard Library:** Uses built-in asyncio
+- **Future-Proof:** AsyncIO is the future of Python async
+- **Cleaner Code:** Easier to understand and maintain
 
 ---
 
@@ -269,7 +283,8 @@ Then edit locustfiles to load the correct query file (e.g., `queries_vector_100.
    - Connection errors
 
 4. **Resource Cleanup**
-   - Greenlets properly disposed
+   - Async tasks properly cleaned up
+   - httpx connection pool managed
    - No memory leaks
 
 ---
@@ -302,11 +317,14 @@ This is expected! Some collections are slower.
 - Consider optimizing those collections
 - Review Weaviate logs
 
-### Issue: "Import error: gevent"
+### Issue: "FastAPI server not running"
 
 ```bash
-# Solution: Install gevent
-pip install gevent>=23.9.0
+# Solution: Start FastAPI server first
+cd performance_testing/parallel_testing
+./start_fastapi_server.sh
+
+# Then run tests in another terminal
 ```
 
 ---
