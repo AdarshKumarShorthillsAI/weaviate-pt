@@ -44,9 +44,7 @@ BASE_SCHEMA = {
     # Vector index configuration with RQ (Roaring Quantization)
     # RQ is supported in Weaviate v1.32+, default in v1.33+
     "vectorIndexConfig": {
-        "quantizer": {
-            "type": "rq",
-            "bits": 8,  # 8-bit RQ for optimal balance (memory vs accuracy)
+        "rq": {
             "enabled": True
         }
     },
