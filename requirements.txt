@@ -25,7 +25,6 @@ locust>=2.15.0
 # HTTP client libraries
 requests>=2.31.0
 aiohttp>=3.9.0
-httpx>=0.25.0  # For async HTTP requests in FastAPI
 
 # Progress bars
 tqdm>=4.66.0
