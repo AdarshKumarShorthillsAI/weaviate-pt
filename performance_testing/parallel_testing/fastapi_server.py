@@ -95,11 +95,13 @@ async def startup_event():
         http_host=host,
         http_port=port,
         http_secure=is_https,
-        auth_client_secret=auth_config,
+        grpc_host=host,
+        grpc_port=50051,  # Default gRPC port
+        grpc_secure=is_https,
         additional_config=AdditionalConfig(
             timeout=Timeout(query=60, insert=60),
         ),
-        skip_init_checks=False
+        skip_init_checks=True  # Skip gRPC health check (HTTP-only mode)
     )
     
     # Connect the client
