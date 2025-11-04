@@ -1,6 +1,6 @@
 """
 FastAPI Server for Parallel Collection Testing
-Uses async Weaviate client to query 9 collections in parallel
+Uses official Weaviate async client to query 9 collections in parallel
 Returns only status codes and timing info (not full results)
 """
 
@@ -13,7 +13,8 @@ import time
 from typing import List, Dict, Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import httpx
+import weaviate
+from weaviate.classes.init import Auth, AdditionalConfig, Timeout
 import config
 
 # Initialize FastAPI
@@ -62,78 +63,93 @@ class ParallelQueryResponse(BaseModel):
     results: List[QueryResult]
 
 
-# Async HTTP client (reused across requests)
-http_client: Optional[httpx.AsyncClient] = None
+# Weaviate async client (reused across requests)
+weaviate_client: Optional[weaviate.WeaviateAsyncClient] = None
 
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize async HTTP client on startup"""
-    global http_client
+    """Initialize Weaviate async client on startup"""
+    global weaviate_client
     
-    headers = {"Content-Type": "application/json"}
+    # Parse Weaviate URL
+    url = WEAVIATE_URL
+    is_https = url.startswith("https://")
+    url_without_protocol = url.replace("https://", "").replace("http://", "")
+    
+    # Split host and port
+    if ":" in url_without_protocol:
+        host, port = url_without_protocol.split(":")
+        port = int(port)
+    else:
+        host = url_without_protocol
+        port = 443 if is_https else 80
+    
+    # Configure authentication
+    auth_config = None
     if WEAVIATE_API_KEY and WEAVIATE_API_KEY != "your-weaviate-api-key":
-        headers["Authorization"] = f"Bearer {WEAVIATE_API_KEY}"
+        auth_config = Auth.api_key(WEAVIATE_API_KEY)
     
-    http_client = httpx.AsyncClient(
-        timeout=60.0,
-        headers=headers,
-        limits=httpx.Limits(
-            max_keepalive_connections=500,  # Support high concurrency
-            max_connections=1000             # Handle 100 users × 9 queries = 900 connections
-        )
+    # Create async Weaviate client
+    weaviate_client = weaviate.use_async_with_custom(
+        http_host=host,
+        http_port=port,
+        http_secure=is_https,
+        grpc_host=host,
+        grpc_port=50051,  # Default gRPC port
+        grpc_secure=is_https,
+        additional_config=AdditionalConfig(
+            timeout=Timeout(query=60, insert=60),
+        ),
+        skip_init_checks=True  # Skip gRPC health check (HTTP-only mode)
     )
+    
+    # Connect the client
+    await weaviate_client.connect()
+    
     print(f"✅ FastAPI server started")
     print(f"✅ Connected to Weaviate: {WEAVIATE_URL}")
+    print(f"✅ Using official Weaviate async client")
     print(f"✅ Ready to handle parallel queries for {len(COLLECTIONS)} collections")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    """Close async HTTP client on shutdown"""
-    global http_client
-    if http_client:
-        await http_client.aclose()
+    """Close Weaviate async client on shutdown"""
+    global weaviate_client
+    if weaviate_client:
+        await weaviate_client.close()
     print("✅ FastAPI server shutdown complete")
 
 
 async def execute_single_query(query: QueryRequest) -> QueryResult:
     """
-    Execute a single GraphQL query to Weaviate
+    Execute a single GraphQL query to Weaviate using official async client
     Returns only status code and timing (not full results)
     """
     start_time = time.time()
     
     try:
-        response = await http_client.post(
-            f"{WEAVIATE_URL}/v1/graphql",
-            json={"query": query.graphql},
-            timeout=60.0
-        )
+        # Execute GraphQL query using Weaviate async client
+        response = await weaviate_client.graphql_raw_query(query.graphql)
         
         response_time = (time.time() - start_time) * 1000  # Convert to ms
         
-        # Check if response is successful
-        success = response.status_code == 200
-        
-        if success:
-            # Also check for GraphQL errors
-            try:
-                data = response.json()
-                if "errors" in data:
-                    success = False
-                    error = f"GraphQL errors: {data['errors']}"
-                else:
-                    error = None
-            except:
-                error = "Invalid JSON response"
-                success = False
+        # Check if query was successful
+        if response.errors:
+            # GraphQL returned errors
+            success = False
+            error = f"GraphQL errors: {response.errors}"
+            status_code = 400  # GraphQL error
         else:
-            error = f"HTTP {response.status_code}"
+            # Success
+            success = True
+            error = None
+            status_code = 200
         
         return QueryResult(
             collection=query.collection,
-            status_code=response.status_code,
+            status_code=status_code,
             response_time_ms=response_time,
             success=success,
             error=error
