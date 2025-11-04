@@ -90,7 +90,7 @@
         <h1>Weaviate Performance Test - Combined Report</h1>
         <div class="subtitle">
             Comprehensive analysis across different result limits and search types<br>
-            Generated: 2025-11-04 09:58:40
+            Generated: 2025-11-04 11:17:11
         </div>
     </div>
 
@@ -123,8 +123,8 @@
                 <th>nearVector</th>
                 <th>Mixed</th>
             </tr>
-            <tr><td><b>Limit 100</b></td><td class="metric-bad">1148.1</td><td>-</td><td class="metric-bad">4028.7</td><td class="metric-bad">2382.1</td><td>-</td></tr>
-            <tr><td><b>Limit 200</b></td><td class="metric-bad">2570.1</td><td>-</td><td class="metric-bad">6895.2</td><td class="metric-bad">2350.2</td><td>-</td></tr>
+            <tr><td><b>Limit 100</b></td><td class="metric-bad">1110.2</td><td>-</td><td class="metric-bad">3113.6</td><td class="metric-bad">2232.7</td><td>-</td></tr>
+            <tr><td><b>Limit 200</b></td><td class="metric-bad">2425.6</td><td>-</td><td class="metric-bad">4343.4</td><td class="metric-bad">2279.8</td><td>-</td></tr>
         </table>
     </div>
 
@@ -139,8 +139,8 @@
                 <th>nearVector</th>
                 <th>Mixed</th>
             </tr>
-            <tr><td><b>Limit 100</b></td><td class="metric-warning">1400.0</td><td>-</td><td class="metric-bad">7400.0</td><td class="metric-bad">4600.0</td><td>-</td></tr>
-            <tr><td><b>Limit 200</b></td><td class="metric-bad">4100.0</td><td>-</td><td class="metric-bad">15000.0</td><td class="metric-bad">3000.0</td><td>-</td></tr>
+            <tr><td><b>Limit 100</b></td><td class="metric-warning">1400.0</td><td>-</td><td class="metric-bad">5600.0</td><td class="metric-bad">4000.0</td><td>-</td></tr>
+            <tr><td><b>Limit 200</b></td><td class="metric-bad">3900.0</td><td>-</td><td class="metric-bad">7300.0</td><td class="metric-bad">2800.0</td><td>-</td></tr>
         </table>
     </div>
 
@@ -155,8 +155,8 @@
                 <th>nearVector</th>
                 <th>Mixed</th>
             </tr>
-            <tr><td><b>Limit 100</b></td><td class="metric-good">103.26</td><td>-</td><td class="metric-good">66.33</td><td class="metric-good">86.07</td><td>-</td></tr>
-            <tr><td><b>Limit 200</b></td><td class="metric-good">48.80</td><td>-</td><td class="metric-good">38.34</td><td class="metric-good">51.82</td><td>-</td></tr>
+            <tr><td><b>Limit 100</b></td><td class="metric-good">106.31</td><td>-</td><td class="metric-good">59.41</td><td class="metric-good">81.18</td><td>-</td></tr>
+            <tr><td><b>Limit 200</b></td><td class="metric-good">50.79</td><td>-</td><td class="metric-good">42.17</td><td class="metric-good">52.25</td><td>-</td></tr>
         </table>
     </div>
 
@@ -178,15 +178,15 @@
 
             <tr>
                 <td><b>BM25</b></td>
-                <td>31,254</td>
+                <td>32,095</td>
                 <td>0</td>
-                <td>1148.1</td>
-                <td>1200.0</td>
+                <td>1110.2</td>
+                <td>1100.0</td>
                 <td>1400.0</td>
-                <td>1500.0</td>
-                <td>77.5</td>
-                <td>4717.8</td>
-                <td>103.26</td>
+                <td>1400.0</td>
+                <td>84.8</td>
+                <td>3725.0</td>
+                <td>106.31</td>
             </tr>
 
             <tr>
@@ -196,28 +196,28 @@
 
             <tr>
                 <td><b>Hybrid α=0.9</b></td>
-                <td>19,833</td>
+                <td>17,784</td>
                 <td>0</td>
-                <td>4028.7</td>
-                <td>3900.0</td>
+                <td>3113.6</td>
+                <td>3000.0</td>
+                <td>5600.0</td>
                 <td>7400.0</td>
-                <td>9800.0</td>
-                <td>262.7</td>
-                <td>16240.8</td>
-                <td>66.33</td>
+                <td>271.7</td>
+                <td>13149.9</td>
+                <td>59.41</td>
             </tr>
 
             <tr>
                 <td><b>nearVector</b></td>
-                <td>26,031</td>
+                <td>24,335</td>
                 <td>0</td>
-                <td>2382.1</td>
-                <td>2200.0</td>
-                <td>4600.0</td>
-                <td>5700.0</td>
-                <td>259.4</td>
-                <td>7795.6</td>
-                <td>86.07</td>
+                <td>2232.7</td>
+                <td>2100.0</td>
+                <td>4000.0</td>
+                <td>5000.0</td>
+                <td>249.4</td>
+                <td>8782.0</td>
+                <td>81.18</td>
             </tr>
 
             <tr>
@@ -245,15 +245,15 @@
 
             <tr>
                 <td><b>BM25</b></td>
-                <td>14,932</td>
+                <td>15,261</td>
                 <td>0</td>
-                <td>2570.1</td>
-                <td>2500.0</td>
-                <td>4100.0</td>
-                <td>5100.0</td>
-                <td>166.1</td>
-                <td>11233.1</td>
-                <td>48.80</td>
+                <td>2425.6</td>
+                <td>2400.0</td>
+                <td>3900.0</td>
+                <td>4600.0</td>
+                <td>183.2</td>
+                <td>8345.9</td>
+                <td>50.79</td>
             </tr>
 
             <tr>
@@ -263,28 +263,28 @@
 
             <tr>
                 <td><b>Hybrid α=0.9</b></td>
-                <td>11,470</td>
+                <td>12,622</td>
                 <td>0</td>
-                <td>6895.2</td>
-                <td>6200.0</td>
-                <td>15000.0</td>
-                <td>21000.0</td>
-                <td>372.3</td>
-                <td>34538.8</td>
-                <td>38.34</td>
+                <td>4343.4</td>
+                <td>4200.0</td>
+                <td>7300.0</td>
+                <td>8800.0</td>
+                <td>339.7</td>
+                <td>16772.9</td>
+                <td>42.17</td>
             </tr>
 
             <tr>
                 <td><b>nearVector</b></td>
-                <td>15,819</td>
+                <td>15,825</td>
                 <td>0</td>
-                <td>2350.2</td>
+                <td>2279.8</td>
                 <td>2300.0</td>
-                <td>3000.0</td>
-                <td>7100.0</td>
-                <td>311.6</td>
-                <td>12342.0</td>
-                <td>51.82</td>
+                <td>2800.0</td>
+                <td>3800.0</td>
+                <td>299.5</td>
+                <td>7211.9</td>
+                <td>52.25</td>
             </tr>
 
             <tr>
