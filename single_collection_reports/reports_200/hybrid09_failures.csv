@@ -1,2 +1,0 @@
-Method,Name,Error,Occurrences
-POST,Single_Hybrid09_Search,CatchResponseError('GraphQL errors'),1
