@@ -1,0 +1,2 @@
+Method,Name,Error,Occurrences
+POST,Vector_Multi_Collection_Search,CatchResponseError('HTTP 0'),5
